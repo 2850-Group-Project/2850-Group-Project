@@ -1,0 +1,6 @@
+.idea/
+.gradle/
+.kotlin/
+build/
+META-INF/
+*.class
