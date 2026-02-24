@@ -18,9 +18,20 @@ repositories {
     mavenCentral()
 }
 
+// versions
+val kotlinVersion = "2.2.21"
+val ktorVersion = "2.3.11"
+val pebbleVersion = "3.2.2"
+val exposedVersion = "0.45.0"
+
 dependencies {
     // Use the Kotlin Test integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+
+    // exposed - Kotlin DSL library for SQL DB abstraction
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
 
     // Use the JUnit 5 integration.
     testImplementation(libs.junit.jupiter.engine)
