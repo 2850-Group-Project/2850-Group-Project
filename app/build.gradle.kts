@@ -7,7 +7,9 @@
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    alias(libs.plugins.kotlin.jvm)
+    // alias(libs.plugins.kotlin.jvm)
+    kotlin("jvm") version "2.2.20"
+    id("io.ktor.plugin") version "3.1.1"
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
@@ -20,26 +22,48 @@ repositories {
 
 // versions
 val kotlinVersion = "2.2.21"
-val ktorVersion = "2.3.11"
+val ktorVersion = "3.1.1"
 val pebbleVersion = "3.2.2"
 val exposedVersion = "0.45.0"
 
 dependencies {
     // Use the Kotlin Test integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.2.20")
+    implementation("io.ktor:ktor-server-core:2.3.7")
+    implementation("io.ktor:ktor-server-auth-jwt:2.3.7")
+    
+    // library for hashing passwords reliably
+    implementation("com.password4j:password4j:1.8.4")
+
+    // sqlite package
+    implementation("org.xerial:sqlite-jdbc:3.45.1.0")
 
     // exposed - Kotlin DSL library for SQL DB abstraction
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
 
+    // ktor
+    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-sessions-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-call-logging-jvm:$ktorVersion")
+
+    // pebble templating
+    implementation("io.pebbletemplates:pebble:$pebbleVersion")
+
     // Use the JUnit 5 integration.
     testImplementation(libs.junit.jupiter.engine)
-
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // This dependency is used by the application.
     implementation(libs.guava)
+
+    // logback
+    implementation("ch.qos.logback:logback-classic:1.4.11")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -51,7 +75,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.AppKt"
+    mainClass = "flight_booking_system.AppKt"
 }
 
 tasks.named<Test>("test") {
