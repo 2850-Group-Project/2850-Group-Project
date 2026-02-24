@@ -3,6 +3,10 @@ plugins {
     application
 }
 
+kotlin {
+    jvmToolchain(21)
+}
+
 group = "com.example"
 version = "1.0.0"
 
