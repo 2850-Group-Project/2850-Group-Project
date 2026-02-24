@@ -212,6 +212,8 @@ select * from flight;
 --       INPUT SOME RANDOM DATA       --
 ----------------------------------------
 
+-- GENERATED THIS DATA USING CLAUDE BECAUSE I AM LAZY
+
 -- -- Airports
 -- INSERT INTO "airport" VALUES (1, 'LHR', 'London Heathrow', 'London', 'GB');
 -- INSERT INTO "airport" VALUES (2, 'JFK', 'John F. Kennedy International', 'New York', 'US');
