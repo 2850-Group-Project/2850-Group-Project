@@ -1,25 +1,30 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.ktor)
+    kotlin("jvm") version "1.9.22"
+    application
 }
 
 group = "com.example"
-version = "0.0.1"
+version = "1.0.0"
 
-application {
-    mainClass = "io.ktor.server.netty.EngineMain"
+repositories {
+    mavenCentral()
 }
 
-kotlin {
-    jvmToolchain(21)
+application {
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 dependencies {
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.netty)
-    implementation(libs.logback.classic)
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.config.yaml)
-    testImplementation(libs.ktor.server.test.host)
-    testImplementation(libs.kotlin.test.junit)
+    implementation("io.ktor:ktor-server-core:2.3.7")
+    implementation("io.ktor:ktor-server-netty:2.3.7")
+    implementation("io.ktor:ktor-server-pebble:2.3.7")
+    implementation("io.ktor:ktor-server-content-negotiation:2.3.7")
+
+    implementation("com.h2database:h2:2.2.224")
+
+    implementation("org.jetbrains.exposed:exposed-core:0.43.0")
+    implementation("org.jetbrains.exposed:exposed-dao:0.43.0")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.43.0")
+
+    implementation("org.mindrot:jbcrypt:0.4")
 }
