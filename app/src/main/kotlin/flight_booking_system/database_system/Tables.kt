@@ -2,6 +2,8 @@ package tables
 
 import org.jetbrains.exposed.sql.Table
 
+// these objects act as boxes which help us reference the tables
+
 object AirportTable : Table("airport") {
     val id = integer("airport_id").autoIncrement()
     val iataCode = varchar("iata_code", 10).uniqueIndex()
