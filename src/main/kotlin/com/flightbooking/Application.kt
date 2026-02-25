@@ -6,7 +6,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.pebble.*
 import io.ktor.server.routing.*
-import com.flightbooking.routes.authRoutes
+import com.flightbooking.routes.authRoutes.*
 
 fun main(args: Array<String>): Unit =
     EngineMain.main(args)
