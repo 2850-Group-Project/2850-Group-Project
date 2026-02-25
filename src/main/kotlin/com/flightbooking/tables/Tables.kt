@@ -1,4 +1,4 @@
-package tables
+package com.flightbooking.tables
 
 import org.jetbrains.exposed.sql.Table
 

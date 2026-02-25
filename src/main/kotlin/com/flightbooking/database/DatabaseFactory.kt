@@ -1,10 +1,10 @@
-package database
+package com.flightbooking.database
 
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 
-import tables.*
+import com.flightbooking.tables.*
 
 // DB factory is an object that creates a connection to DB
 // it makes sure that all the tables exist, and adds them if they don't
@@ -12,13 +12,12 @@ import tables.*
 object DBFactory {
     fun init() {
         Database.connect(
-            url = "jdbc:sqlite:src/main/kotlin/flight_booking_system/database_system/flight_booking_DB.db",
+            url = "jdbc:sqlite:data/flight_booking_DB.db",
             driver = "org.sqlite.JDBC"
         )
-
         println("Checking if all tables exist...")
         transaction {
-            SchemaUtils.create( // check if these tables exist, if they don't, create them
+            SchemaUtils.create(
                 AirportTable,
                 FlightTable,
                 FareClassTable,
