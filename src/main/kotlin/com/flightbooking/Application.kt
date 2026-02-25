@@ -1,4 +1,4 @@
- package com.flightbooking
+package com.flightbooking
 
 import com.flightbooking.database.DBFactory
 import com.flightbooking.routes.authRoutes
@@ -54,7 +54,7 @@ fun Application.module() {
     }
     routing {
         get("/") {
-            call.respondText("root ok")
+            call.respondRedirect("/login")
         }
         get("/__health") {
             call.respondText("ok")
