@@ -27,7 +27,7 @@ class StaffTableAccess {
                         firstName = it[StaffTable.firstName],
                         lastName = it[StaffTable.lastName],
                         phoneNumber = it[StaffTable.phoneNumber],
-                        role = it[StaffTable.role]
+                        role = it[StaffTable.role],
                         createdAt = it[StaffTable.createdAt],
                     )
     }

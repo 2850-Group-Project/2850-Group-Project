@@ -26,7 +26,7 @@ class FlightFareTableAccess {
                         fareClassId = it[FlightFareTable.fareClassId],
                         price = it[FlightFareTable.price],
                         currency = it[FlightFareTable.currency],
-                        seatsAvailable = it[FlightFareTable.seatsAvailable]
+                        seatsAvailable = it[FlightFareTable.seatsAvailable],
                         saleStart = it[FlightFareTable.saleStart],
                         saleEnd = it[FlightFareTable.saleEnd]
                     )

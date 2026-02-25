@@ -24,13 +24,13 @@ class PassengerTableAccess {
                         id = it[PassengerTable.id],
                         bookingId = it[PassengerTable.bookingId],
                         email = it[PassengerTable.email],
-                        checkedIn = it[PassengerTable.checkedIn]
+                        checkedIn = it[PassengerTable.checkedIn],
                         title = it[PassengerTable.title],
                         firstName = it[PassengerTable.firstName],
                         lastName = it[PassengerTable.lastName],
                         dateOfBirth = it[PassengerTable.dateOfBirth],
                         gender = it[PassengerTable.gender],
-                        nationality = it[PassengerTable.nationality]
+                        nationality = it[PassengerTable.nationality],
                         documentType = it[PassengerTable.documentType],
                         documentNumber = it[PassengerTable.documentNumber],
                         documentCountry = it[PassengerTable.documentCountry],
