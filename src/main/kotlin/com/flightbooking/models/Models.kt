@@ -80,7 +80,6 @@ data class FlightFare(
     val saleEnd: String?
 )
 
-
 data class Booking(
     val id: Int,
     val userId: Int?,
@@ -176,6 +175,9 @@ data class Notification(
     val readAt: String?
 )
 
+// following functions transform rows returned from Exposed queries
+// into data objects that we can treat as kotlin classes
+// rather than having to parse the sql query return (which can be funky sometimes)
 fun ResultRow.toAirport(): Airport = Airport(
     id = this[AirportTable.id],
     iataCode = this[AirportTable.iataCode],
