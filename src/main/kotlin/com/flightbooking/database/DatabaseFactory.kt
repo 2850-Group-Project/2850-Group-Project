@@ -12,7 +12,7 @@ import com.flightbooking.tables.*
 object DBFactory {
     fun init() {
         Database.connect(
-            url = "jdbc:sqlite:src/main/kotlin/flight_booking_system/database_system/flight_booking_DB.db",
+            url = "jdbc:sqlite:src/main/kotlin/com/flightbooking/database/flight_booking_DB.db",
             driver = "org.sqlite.JDBC"
         )
 
