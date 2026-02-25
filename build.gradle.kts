@@ -1,14 +1,16 @@
+// group = "com.flightbooking"
+// val version = "1.0.0"
+val ktorVersion = "2.3.7"
+val kotlinVersion = "1.9.22"
+
 plugins {
-    kotlin("jvm") version "2.2.21"
+    kotlin("jvm") version "1.9.22"
     application
 }
 
 kotlin {
     jvmToolchain(21)
 }
-
-group = "com.flightbooking"
-version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -19,13 +21,13 @@ application {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core:2.3.7")
-    implementation("io.ktor:ktor-server-netty:2.3.7")
-    implementation("io.ktor:ktor-server-pebble:2.3.7")
-    implementation("io.ktor:ktor-server-sessions:2.3.7")
-    implementation("io.ktor:ktor-server-call-logging:2.3.7")
-    implementation("io.ktor:ktor-server-status-pages:2.3.7")
-    implementation("io.ktor:ktor-server-content-negotiation:2.3.7")
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-pebble:$ktorVersion")
+    implementation("io.ktor:ktor-server-sessions:$ktorVersion")
+    implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
 
     implementation("com.h2database:h2:2.2.224")
 
