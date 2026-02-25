@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - SkyFlow</title>
+  <style>
+    :root{
+      --bg0:#0b0d12;
+      --bg1:#101420;
+      --card:#0f1320;
+      --line:rgba(255,255,255,.10);
+      --muted:rgba(255,255,255,.70);
+      --muted2:rgba(255,255,255,.55);
+      --text:#ffffff;
+      --accent:#3f5efb;
+      --accent2:#38bdf8;
+      --danger:#ff4d4d;
+      --shadow:0 20px 60px rgba(0,0,0,.45);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 20% 20%, rgba(63,94,251,.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 10%, rgba(56,189,248,.12), transparent 55%),
+                  linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height:100vh;
+    }
+
+    .shell{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+    }
+
+    .hero{
+      position:relative;
+      padding:44px 48px;
+      overflow:hidden;
+      background:
+        radial-gradient(900px 700px at 10% 15%, rgba(56,189,248,.18), transparent 60%),
+        radial-gradient(1200px 900px at 70% 60%, rgba(63,94,251,.22), transparent 65%),
+        linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      border-right:1px solid rgba(255,255,255,.06);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      letter-spacing:.2px;
+      opacity:.95;
+    }
+    .brand-badge{
+      width:34px;height:34px;
+      border-radius:10px;
+      display:grid;place-items:center;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+      font-size:16px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      margin-top:34px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.12);
+      color:rgba(255,255,255,.9);
+      font-size:13px;
+      width:fit-content;
+    }
+
+    .hero h1{
+      margin:18px 0 12px;
+      font-size:56px;
+      line-height:1.02;
+      letter-spacing:-1px;
+    }
+    .hero h1 .grad{
+      background: linear-gradient(90deg, #7dd3fc, #a78bfa, #60a5fa);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .hero p{
+      margin:0;
+      max-width:560px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.6;
+    }
+
+    .hero-cards{
+      margin-top:30px;
+      display:grid;
+      gap:14px;
+      max-width:520px;
+    }
+    .hcard{
+      padding:16px 16px;
+      border-radius:16px;
+      background:rgba(15,19,32,.55);
+      border:1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(10px);
+    }
+    .hcard-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:650;
+      margin-bottom:6px;
+    }
+    .hcard small{
+      color:var(--muted2);
+      line-height:1.45;
+      display:block;
+    }
+    .icon{
+      width:30px;height:30px;border-radius:10px;
+      display:grid;place-items:center;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:14px;
+    }
+
+    .quote{
+      position:absolute;
+      left:48px;
+      bottom:34px;
+      color:rgba(255,255,255,.65);
+      font-size:13px;
+      font-style:italic;
+    }
+
+    .panel{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:44px 26px;
+    }
+
+    .card{
+      width:100%;
+      max-width:460px;
+      border-radius:var(--radius);
+      background: rgba(15,19,32,.90);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      padding:34px 34px 26px;
+    }
+
+    .card h2{
+      margin:0 0 6px;
+      font-size:30px;
+      letter-spacing:-.4px;
+    }
+    .card p.sub{
+      margin:0 0 22px;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:14px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .btn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      padding:12px 12px;
+      border-radius:14px;
+      font-weight:600;
+      cursor:pointer;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      transition: .18s ease;
+      user-select:none;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px); }
+
+    .divider{
+      margin:18px 0 16px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color: rgba(255,255,255,.55);
+      font-size:12px;
+      letter-spacing:.4px;
+    }
+    .divider::before, .divider::after{
+      content:"";
+      flex:1;
+      height:1px;
+      background: rgba(255,255,255,.10);
+    }
+
+    label{
+      display:block;
+      margin:10px 0 8px;
+      color: rgba(255,255,255,.78);
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .field{
+      position:relative;
+    }
+    .input{
+      width:100%;
+      padding:13px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(10,12,18,.55);
+      color: white;
+      outline:none;
+      font-size:14px;
+      transition:.18s ease;
+    }
+    .input:focus{
+      border-color: rgba(63,94,251,.65);
+      box-shadow: 0 0 0 4px rgba(63,94,251,.18);
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:12px 0 16px;
+      color: rgba(255,255,255,.70);
+      font-size:13px;
+    }
+    .meta a{
+      color: rgba(125,211,252,.95);
+      text-decoration:none;
+    }
+    .meta a:hover{ text-decoration:underline; }
+
+    .primary{
+      width:100%;
+      padding:13px 14px;
+      border:none;
+      border-radius:14px;
+      background: linear-gradient(90deg, var(--accent), #2b7bff);
+      color:white;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+    .primary:hover{ filter:brightness(1.05); transform: translateY(-1px); }
+    .primary:active{ transform: translateY(0px); }
+
+    .error{
+      margin:0 0 14px;
+      padding:12px 12px;
+      border-radius:14px;
+      background: rgba(255,77,77,.12);
+      border:1px solid rgba(255,77,77,.25);
+      color: #ffd0d0;
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    .footer{
+      margin-top:18px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:12px;
+      color: rgba(255,255,255,.55);
+    }
+    .footer a{
+      color: rgba(255,255,255,.55);
+      text-decoration:none;
+    }
+    .footer a:hover{ text-decoration:underline; }
+
+    .cta{
+      margin-top:18px;
+      display:flex;
+      justify-content:center;
+      gap:6px;
+      color: rgba(255,255,255,.70);
+      font-size:13px;
+    }
+    .cta a{
+      color: rgba(125,211,252,.95);
+      text-decoration:none;
+      font-weight:700;
+    }
+    .cta a:hover{ text-decoration:underline; }
+
+    @media (max-width: 980px){
+      .shell{ grid-template-columns: 1fr; }
+      .hero{ display:none; }
+      .panel{ padding:26px 16px; }
+      .card{ padding:28px 22px 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="brand">
+        <div class="brand-badge">✈</div>
+        <div>SkyFlow</div>
+      </div>
+
+      <div class="pill">New Destination: Santorini</div>
+
+      <h1>Elevate Your <span class="grad">Journey</span><br/>Above The Ordinary.</h1>
+
+      <p>
+        Experience the future of flight booking. Swift, secure, and tailored to your preferences.
+        Your next adventure starts with a single click.
+      </p >
+
+      <div class="hero-cards">
+        <div class="hcard">
+          <div class="hcard-title"><span class="icon">🌐</span> Global Network</div>
+          <small>Access 1,200+ destinations across 180 countries with our premium partner airlines.</small>
+        </div>
+        <div class="hcard">
+          <div class="hcard-title"><span class="icon">✨</span> Smart Booking</div>
+          <small>Personalized suggestions and best-value fare options to help you book faster.</small>
+        </div>
+      </div>
+
+      <div class="quote">“The best booking experience I’ve had in years.” — @travel_enthusiast</div>
+    </section>
+
+    <main class="panel">
+      <div class="card">
+        <h2>Welcome Back</h2>
+        <p class="sub">Enter your credentials to access your flights and rewards.</p >
+
+        {% if error %}
+          <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <div class="row">
+          <button class="btn" type="button">Google</button>
+          <button class="btn" type="button">Apple</button>
+        </div>
+
+        <div class="divider">OR CONTINUE WITH EMAIL</div>
+
+        <form action="/login" method="post">
+          <label for="email">Email Address</label>
+          <div class="field">
+            <input class="input" id="email" type="email" name="email" placeholder="you@example.com" required />
+          </div>
+
+          <label for="password">Password</label>
+          <div class="field">
+            <input class="input" id="password" type="password" name="password" placeholder="••••••••" required />
+          </div>
+
+          <div class="meta">
+            <label style="margin:0; display:flex; align-items:center; gap:8px; font-weight:600;">
+              <input type="checkbox" name="remember" />
+              Remember me
+            </label>
+            <a href=" " onclick="return false;">Forgot password?</a >
+          </div>
+
+          <button class="primary" type="submit">Sign In →</button>
+        </form>
+
+        <div class="cta">
+          <span>Don’t have an account?</span>
+          <a href="/register">Create Account</a >
+        </div>
+
+        <div class="footer">
+          <a href="#" onclick="return false;">Privacy Policy</a >
+          <span>•</span>
+          <a href="#" onclick="return false;">Terms of Service</a >
+          <span>•</span>
+          <a href="#" onclick="return false;">Help Center</a >
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
