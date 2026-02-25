@@ -19,6 +19,10 @@ class FlightFareTableAccess {
             constructFlightFareRecord(it)
         }
     }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<FlightFare> = transaction {
+        FlightFareTable.select { attribute eq value } 
+            .map { constructFlightFareRecord(it) } 
+    }
     fun constructFlightFareRecord(it: ResultRow): FlightFare {
         return FlightFare (
                         id = it[FlightFareTable.id],

@@ -19,6 +19,10 @@ class FareClassTableAccess {
             constructFareClassRecord(it)
         }
     }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<FareClass> = transaction {
+        FareClassTable.select { attribute eq value } 
+            .map { constructFareClassRecord(it) } 
+    }
     fun constructFareClassRecord(it: ResultRow): FareClass {
         return FareClass (
                         id = it[FareClassTable.id],

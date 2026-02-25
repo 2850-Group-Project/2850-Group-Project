@@ -19,6 +19,10 @@ class SeatAssignmentTableAccess {
             constructSeatAssignmentRecord(it)
         }
     }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<SeatAssignment> = transaction {
+        SeatAssignmentTable.select { attribute eq value } 
+            .map { constructSeatAssignmentRecord(it) } 
+    }
     fun constructSeatAssignmentRecord(it: ResultRow): SeatAssignment {
         return SeatAssignment (
                         id = it[SeatAssignmentTable.id],

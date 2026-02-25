@@ -24,8 +24,11 @@ class AirportTableAccess {
             constructAirportRecord(it)
         }
     }
-
     // need to add more functions!
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<Airport> = transaction {
+        AirportTable.select { attribute eq value } 
+            .map { constructAirportRecord(it) } 
+    }
 
     // take record (row) and transforms into airport object which we can use like a normal object
     fun constructAirportRecord(it: ResultRow): Airport {

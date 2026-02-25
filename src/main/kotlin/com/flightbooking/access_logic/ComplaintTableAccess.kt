@@ -19,6 +19,10 @@ class ComplaintTableAccess {
             constructComplaintRecord(it)
         }
     }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<Complaint> = transaction {
+        ComplaintTable.select { attribute eq value } 
+            .map { constructComplaintRecord(it) } 
+    }
     fun constructComplaintRecord(it: ResultRow): Complaint {
         return Complaint (
                         id = it[ComplaintTable.id],

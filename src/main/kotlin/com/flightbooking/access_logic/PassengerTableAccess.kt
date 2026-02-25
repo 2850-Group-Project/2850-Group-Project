@@ -19,6 +19,10 @@ class PassengerTableAccess {
             constructPassengerRecord(it)
         }
     }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<Passenger> = transaction {
+        PassengerTable.select { attribute eq value } 
+            .map { constructPassengerRecord(it) } 
+    }
     fun constructPassengerRecord(it: ResultRow): Passenger {
         return Passenger (
                         id = it[PassengerTable.id],

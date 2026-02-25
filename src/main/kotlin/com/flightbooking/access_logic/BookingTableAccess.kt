@@ -19,6 +19,10 @@ class BookingTableAccess {
             constructBookingRecord(it)
         }
     }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<Booking> = transaction {
+        BookingTable.select { attribute eq value } 
+            .map { constructBookingRecord(it) } 
+    }
     fun constructBookingRecord(it: ResultRow): Booking {
         return Booking (
                         id = it[BookingTable.id],

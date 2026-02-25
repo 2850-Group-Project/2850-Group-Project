@@ -19,6 +19,10 @@ class PaymentTableAccess {
             constructPaymentRecord(it)
         }
     }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<Payment> = transaction {
+        PaymentTable.select { attribute eq value } 
+            .map { constructPaymentRecord(it) } 
+    }
     fun constructPaymentRecord(it: ResultRow): Payment {
         return Payment (
                         id = it[PaymentTable.id],

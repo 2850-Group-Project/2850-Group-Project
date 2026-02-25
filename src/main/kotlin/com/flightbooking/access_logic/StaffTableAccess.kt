@@ -19,6 +19,10 @@ class StaffTableAccess {
             constructStaffRecord(it)
         }
     }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<Staff> = transaction {
+        StaffTable.select { attribute eq value } 
+            .map { constructStaffRecord(it) } 
+    }
     fun constructStaffRecord(it: ResultRow): Staff {
         return Staff (
                         id = it[StaffTable.id],

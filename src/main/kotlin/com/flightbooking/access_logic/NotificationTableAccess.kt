@@ -19,6 +19,10 @@ class NotificationTableAccess {
             constructNotificationRecord(it)
         }
     }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<Notification> = transaction {
+        NotificationTable.select { attribute eq value } 
+            .map { constructNotificationRecord(it) } 
+    }
     fun constructNotificationRecord(it: ResultRow): Notification {
         return Notification (
                         id = it[NotificationTable.id],
