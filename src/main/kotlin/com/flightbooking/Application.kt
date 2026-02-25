@@ -1,7 +1,5 @@
 package com.flightbooking
 
-import com.flightbooking.database.DBFactory
-import com.flightbooking.routes.authRoutes
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.application.*
@@ -16,6 +14,7 @@ import io.ktor.http.ContentType
 import io.ktor.server.plugins.defaultheaders.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.http.content.*
+import com.flightbooking.routes.authRoutes
 import io.pebbletemplates.pebble.PebbleEngine
 import io.pebbletemplates.pebble.loader.ClasspathLoader
 import java.io.StringWriter
@@ -49,7 +48,6 @@ fun Application.module() {
         allowMethod(io.ktor.http.HttpMethod.Get)
         allowMethod(io.ktor.http.HttpMethod.Post)
     }
-
     install(Sessions) {
         cookie<String>("COMP2850_SESSION") {
             cookie.path = "/"
@@ -57,34 +55,21 @@ fun Application.module() {
         }
     }
 
-    // create Pebble engine similar to your previous working project
+    // Pebble engine setup (explicit, matches your working project style)
     val pebbleEngine = PebbleEngine.Builder()
         .loader(ClasspathLoader().apply { prefix = "templates/" })
         .autoEscaping(true)
         .cacheActive(false)
         .build()
     attributes.put(PebbleEngineKey, pebbleEngine)
-    environment.monitor.subscribe(ApplicationStarted) {
-        log.info("✓ Pebble templates loaded from resources/templates/")
-        log.info("✓ Server running on port ${environment.connectors.firstOrNull()?.port ?: "unknown"}")
-    }
-
-    // initialize DB but don't crash the whole app if DB init fails
-    try {
-        DBFactory.init()
-    } catch (e: Throwable) {
-        e.printStackTrace()
-        log.warn("DB init failed (starting app anyway) — check DB configuration")
-    }
 
     routing {
-        // static files from resources/static
         static("/static") {
             resources("static")
         }
 
         get("/") {
-            call.respondText(renderTemplate(this.call, "index.peb", mapOf("title" to "Flight Booking")), ContentType.Text.Html)
+            call.respondText("<html><body><h1>Flight Booking (dev)</h1><p><a href= "/register\">Register</a ></p ></body></html>", ContentType.Text.Html)
         }
 
         get("/__health") {
@@ -93,40 +78,21 @@ fun Application.module() {
 
         get("/__testpeb") {
             try {
-                call.respondText(renderTemplate(this.call, "register.peb", mapOf("error" to null)), ContentType.Text.Html)
+                val writer = StringWriter()
+                val template = pebbleEngine.getTemplate("register.peb")
+                template.evaluate(writer, mapOf<String, Any>())
+                call.respondText(writer.toString(), ContentType.Text.Html)
             } catch (e: Throwable) {
                 e.printStackTrace()
                 call.respondText("pebble error: ${e::class.simpleName}: ${e.message}", ContentType.Text.Plain)
             }
         }
 
-        // mount auth routes (your existing file)
+        // mount auth routes if present; authRoutes file below is a minimal safe version
         try {
             authRoutes()
         } catch (e: Throwable) {
             e.printStackTrace()
-            log.warn("authRoutes failed to mount: ${e.message}")
-        }
-
-        // a minimal tasks page (safe fallback if your taskRoutes isn't present)
-        get("/tasks") {
-            val model = mapOf("title" to "Tasks (demo)", "tasks" to listOf<String>())
-            call.respondText(renderTemplate(this.call, "tasks/index.peb", model), ContentType.Text.Html)
         }
     }
-}
-
-/**
- * Render a Pebble template to string using the engine stored on application attributes.
- * templateName is path relative to resources/templates/, e.g. "tasks/index.peb" or "register.peb"
- */
-fun renderTemplate(call: ApplicationCall, templateName: String, context: Map<String, Any?> = emptyMap()): String {
-    val app = call.application
-    val engine = app.attributes.getOrNull(PebbleEngineKey)
-        ?: throw IllegalStateException("PebbleEngine not found in application attributes")
-    val writer = StringWriter()
-    val template = engine.getTemplate(templateName)
-    val enriched = context.mapValues { it.value ?: "" }
-    template.evaluate(writer, enriched)
-    return writer.toString()
 }
