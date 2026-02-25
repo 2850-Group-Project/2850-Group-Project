@@ -17,26 +17,26 @@ class UserTableAccess {
     }
 
     fun createUser(
-    email: String,
-    passwordHash: String,
-    firstName: String?,
-    lastName: String?
-): Boolean = transaction {
-    val exists = UserTable.select { UserTable.email eq email }.count() > 0
-    if (exists) return@transaction false
+        email: String,
+        passwordHash: String,
+        firstName: String?,
+        lastName: String?
+    ): Boolean = transaction {
+        val exists = UserTable.select { UserTable.email eq email }.count() > 0
+        if (exists) return@transaction false
 
-    UserTable.insert {
-        it[UserTable.email] = email
-        it[UserTable.passwordHash] = passwordHash
-        it[UserTable.firstName] = firstName
-        it[UserTable.lastName] = lastName
-        it[UserTable.phoneNumber] = null
-        it[UserTable.dateOfBirth] = null
-        it[UserTable.createdAt] = java.time.Instant.now().toString()
-        it[UserTable.accountStatus] = "active"
+        UserTable.insert {
+            it[UserTable.email] = email
+            it[UserTable.passwordHash] = passwordHash
+            it[UserTable.firstName] = firstName
+            it[UserTable.lastName] = lastName
+            it[UserTable.phoneNumber] = null
+            it[UserTable.dateOfBirth] = null
+            it[UserTable.createdAt] = java.time.Instant.now().toString()
+            it[UserTable.accountStatus] = "active"
+        }
+        true
     }
-    true
-}
 
     private fun toUser(row: ResultRow): User {
         return User(

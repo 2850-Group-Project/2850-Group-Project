@@ -30,11 +30,11 @@ class AirportTableAccess {
     // take record (row) and transforms into airport object which we can use like a normal object
     fun constructAirportRecord(it: ResultRow): Airport {
         return Airport (
-                        id = it[AirportTable.id],
-                        iataCode = it[AirportTable.iataCode],
-                        name = it[AirportTable.name],
-                        city = it[AirportTable.city],
-                        country = it[AirportTable.country]
-                    )
+            id = it[AirportTable.id],
+            iataCode = it[AirportTable.iataCode],
+            name = it[AirportTable.name],
+            city = it[AirportTable.city],
+            country = it[AirportTable.country]
+        )
     }
 }
