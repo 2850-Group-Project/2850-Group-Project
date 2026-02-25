@@ -15,7 +15,7 @@ repositories {
 }
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("com.flightbooking.ApplicationKt")
 }
 
 dependencies {
