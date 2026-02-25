@@ -80,7 +80,6 @@ data class FlightFare(
     val saleEnd: String?
 )
 
-
 data class Booking(
     val id: Int,
     val userId: Int?,
