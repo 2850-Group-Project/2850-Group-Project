@@ -1,6 +1,7 @@
 package access // we want to be able to access all access_logic files from a single package "access"
 
 import com.flightbooking.models.Airport
+import com.flightbooking.models.toAirport
 import com.flightbooking.tables.AirportTable
 
 import org.jetbrains.exposed.sql.selectAll
