@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.2.21"
+    kotlin("jvm") version "1.9.22"
     application
 }
 
@@ -15,7 +15,7 @@ repositories {
 }
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("com.flightbooking.MainKt")
 }
 
 dependencies {
@@ -23,15 +23,11 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:2.3.7")
     implementation("io.ktor:ktor-server-pebble:2.3.7")
     implementation("io.ktor:ktor-server-content-negotiation:2.3.7")
-
-    implementation("com.h2database:h2:2.2.224")
-
+    implementation("org.xerial:sqlite-jdbc:3.43.0.0")
     implementation("org.jetbrains.exposed:exposed-core:0.43.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.43.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.43.0")
-
     implementation("org.mindrot:jbcrypt:0.4")
-
-    implementation("org.xerial:sqlite-jdbc:3.43.0.0")
-    implementation("org.slf4j:slf4j-simple:2.0.7")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
+    testImplementation(kotlin("test"))
 }
