@@ -35,6 +35,6 @@ dependencies {
 
     implementation("org.mindrot:jbcrypt:0.4")
 
-    implementation("org.xerial:sqlite-jdbc:3.43.0.0")
+    implementation("org.xerial:sqlite-jdbc:3.41.2.2")
     implementation("org.slf4j:slf4j-simple:2.0.7")
 }

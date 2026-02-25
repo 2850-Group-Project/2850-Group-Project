@@ -16,6 +16,18 @@ import com.flightbooking.tables.StaffTable
 import com.flightbooking.tables.ComplaintTable
 import com.flightbooking.tables.NotificationTable
 
+data class User(
+    val id: Int,
+    val email: String,
+    val passwordHash: String?,
+    val firstName: String?,
+    val lastName: String?,
+    val phoneNumber: String?,
+    val dateOfBirth: String?,
+    val createdAt: String,
+    val accountStatus: String
+)
+
 data class Airport(
     val id: Int,
     val iataCode: String,
@@ -68,17 +80,6 @@ data class FlightFare(
     val saleEnd: String?
 )
 
-data class User(
-    val id: Int,
-    val email: String,
-    val passwordHash: String?,
-    val firstName: String?,
-    val lastName: String?,
-    val phoneNumber: String?,
-    val dateOfBirth: String?,
-    val createdAt: String,
-    val accountStatus: String
-)
 
 data class Booking(
     val id: Int,
