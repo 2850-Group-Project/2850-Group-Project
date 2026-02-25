@@ -21,6 +21,7 @@ application {
 }
 
 dependencies {
+    // ktor dependencies
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-server-pebble:$ktorVersion")
@@ -29,14 +30,20 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
 
-    implementation("com.h2database:h2:2.2.224")
-
+    // implementation("com.h2database:h2:2.2.224")
+    
+    // exposed dependencies (abstraction over sql database)
     implementation("org.jetbrains.exposed:exposed-core:0.43.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.43.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.43.0")
-
+    
+    
+    // library we use for password hashing
     implementation("org.mindrot:jbcrypt:0.4")
 
+    // sqlite dependencies
     implementation("org.xerial:sqlite-jdbc:3.41.2.2")
+
+    // simple logging
     implementation("org.slf4j:slf4j-simple:2.0.7")
 }
