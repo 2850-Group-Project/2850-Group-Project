@@ -1,22 +1,19 @@
-package com.x
+package com.flightbooking
 
-import database.DatabaseFactory
+import com.flightbooking.database.DBFactory
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.pebble.*
 import io.ktor.server.routing.*
-import routes.authRoutes
+import com.flightbooking.routes.authRoutes
 
 fun main(args: Array<String>): Unit =
     EngineMain.main(args)
 
 fun Application.module() {
-
-    DatabaseFactory.init()
-
+    DBFactory.init()
     install(Pebble)
-
     routing {
         authRoutes()
     }
