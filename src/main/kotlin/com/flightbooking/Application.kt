@@ -2,6 +2,7 @@
 
 import com.flightbooking.database.DBFactory
 import com.flightbooking.routes.authRoutes
+import io.pebbletemplates.pebble.loader.ClasspathLoader
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.application.*
@@ -34,7 +35,10 @@ fun Application.module() {
     }
     install(ContentNegotiation)
     install(Pebble) {
-        cacheActive = false
+        loader(ClasspathLoader().apply {
+            prefix = "templates" 
+        })
+        cacheActive(false) 
     }
     install(Sessions) {
         cookie<String>("COMP2850_SESSION") {
