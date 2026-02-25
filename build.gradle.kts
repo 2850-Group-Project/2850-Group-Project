@@ -15,7 +15,7 @@ repositories {
 }
 
 application {
-    mainClass.set("com.flightbooking.MainKt")
+    mainClass.set("com.flightbooking.ApplicationKt")
 }
 
 dependencies {
