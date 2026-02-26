@@ -10,8 +10,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.ResultRow
-
 import access.SeatTableAccess
+import org.jetbrains.exposed.sql.Column
 
 class SeatTableAccess {
     fun getAll(): List<Seat> = transaction {

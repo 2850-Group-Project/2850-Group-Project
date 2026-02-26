@@ -15,6 +15,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.ResultRow
 import access.AirportTableAccess
+import org.jetbrains.exposed.sql.Column
 
 // class instance/reference of the airport table
 class AirportTableAccess {
