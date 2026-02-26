@@ -1,0 +1,37 @@
+package access
+
+import com.flightbooking.models.Complaint
+import com.flightbooking.models.toComplaint
+import com.flightbooking.tables.ComplaintTable
+
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.ResultRow
+import access.ComplaintTableAccess
+import org.jetbrains.exposed.sql.Column
+
+class ComplaintTableAccess {
+    fun getAll(): List<Complaint> = transaction {
+        ComplaintTable.selectAll().map {
+            constructComplaintRecord(it)
+        }
+    }
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<Complaint> = transaction {
+        ComplaintTable.select { attribute eq value } 
+            .map { constructComplaintRecord(it) } 
+    }
+    fun constructComplaintRecord(it: ResultRow): Complaint {
+        return Complaint (
+                        id = it[ComplaintTable.id],
+                        userId = it[ComplaintTable.userId],
+                        type = it[ComplaintTable.type],
+                        message = it[ComplaintTable.message],
+                        createdAt = it[ComplaintTable.createdAt],
+                        status = it[ComplaintTable.status],
+                        handledByStaffId = it[ComplaintTable.handledByStaffId]
+                    )
+    }
+}
