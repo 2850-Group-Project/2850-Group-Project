@@ -1,4 +1,4 @@
-package access
+package com.flightbooking.access
 
 import com.flightbooking.models.Staff
 import com.flightbooking.models.toStaff
@@ -10,8 +10,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.ResultRow
-import access.StaffTableAccess
 import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.insert
 
 class StaffTableAccess {
     fun getAll(): List<Staff> = transaction {
@@ -23,16 +23,45 @@ class StaffTableAccess {
         StaffTable.select { attribute eq value } 
             .map { constructStaffRecord(it) } 
     }
+    fun findByEmail(email: String): Staff? = transaction {
+        StaffTable.select { StaffTable.email eq email }
+            .limit(1)
+            .firstOrNull()
+            ?.let { constructStaffRecord(it) }
+    }
+
+    fun createStaff(
+        email: String,
+        passwordHash: String,
+        firstName: String?,
+        lastName: String?,
+        role: String?
+    ): Boolean = transaction {
+        val exists = StaffTable.select { StaffTable.email eq email }.limit(1).any()
+        if (exists) return@transaction false
+
+        StaffTable.insert {
+            it[StaffTable.email] = email
+            it[StaffTable.passwordHash] = passwordHash
+            it[StaffTable.firstName] = firstName
+            it[StaffTable.lastName] = lastName
+            it[StaffTable.phoneNumber] = null
+            it[StaffTable.role] = role
+            it[StaffTable.createdAt] = java.time.Instant.now().toString()
+        }
+        true
+    }
+
     fun constructStaffRecord(it: ResultRow): Staff {
-        return Staff (
-                        id = it[StaffTable.id],
-                        email = it[StaffTable.email],
-                        passwordHash = it[StaffTable.passwordHash],
-                        firstName = it[StaffTable.firstName],
-                        lastName = it[StaffTable.lastName],
-                        phoneNumber = it[StaffTable.phoneNumber],
-                        role = it[StaffTable.role],
-                        createdAt = it[StaffTable.createdAt],
-                    )
+        return Staff(
+            id = it[StaffTable.id],
+            email = it[StaffTable.email],
+            passwordHash = it[StaffTable.passwordHash],
+            firstName = it[StaffTable.firstName],
+            lastName = it[StaffTable.lastName],
+            phoneNumber = it[StaffTable.phoneNumber],
+            role = it[StaffTable.role],
+            createdAt = it[StaffTable.createdAt]
+        )
     }
 }
