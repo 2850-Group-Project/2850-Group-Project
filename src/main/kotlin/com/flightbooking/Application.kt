@@ -2,6 +2,7 @@ package com.flightbooking
 
 import com.flightbooking.database.DBFactory
 import com.flightbooking.routes.authRoutes
+import com.flightbooking.routes.pagesRoutes
 import io.pebbletemplates.pebble.loader.ClasspathLoader
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -60,5 +61,6 @@ fun Application.module() {
             call.respondText("ok")
         }
         authRoutes()
+        pagesRoutes()
     }
 }
