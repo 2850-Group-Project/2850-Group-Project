@@ -1,49 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Staff Dashboard - SkyFlow</title>
   <style>
     :root{
-      --bg:#0b0d12;
+      --bg0:#0b0d12;
+      --bg1:#101420;
       --panel:#0f1320;
       --panel2:#0c1020;
       --line:rgba(255,255,255,.10);
-      --muted:rgba(255,255,255,.68);
-      --muted2:rgba(255,255,255,.52);
-      --text:#fff;
+      --muted:rgba(255,255,255,.70);
+      --muted2:rgba(255,255,255,.55);
+      --text:#ffffff;
       --accent:#3f5efb;
       --accent2:#38bdf8;
-      --good:#36d399;
+      --good:#22c55e;
       --warn:#f59e0b;
       --bad:#ef4444;
-      --radius:16px;
       --shadow:0 18px 50px rgba(0,0,0,.45);
+      --radius:18px;
+      --radius2:14px;
     }
 
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--text);
       background:
-        radial-gradient(1200px 800px at 15% 10%, rgba(63,94,251,.14), transparent 60%),
-        radial-gradient(900px 600px at 85% 0%, rgba(56,189,248,.10), transparent 55%),
-        linear-gradient(180deg, var(--bg), #0f1220 75%, #0a0c12);
-      min-height:100vh;
+        radial-gradient(1200px 800px at 20% 20%, rgba(63,94,251,.16), transparent 60%),
+        radial-gradient(900px 650px at 85% 10%, rgba(56,189,248,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
     }
 
     .app{
-      display:grid;
-      grid-template-columns: 280px 1fr;
       min-height:100vh;
+      display:grid;
+      grid-template-columns: 270px 1fr;
     }
 
-    .side{
-      padding:20px 16px;
+    .sidebar{
       border-right:1px solid rgba(255,255,255,.06);
-      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+      padding:18px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
     }
 
     .brand{
@@ -52,23 +57,27 @@
       gap:10px;
       padding:10px 10px;
       border-radius:14px;
+    }
+    .brand-badge{
+      width:34px;height:34px;
+      border-radius:12px;
+      display:grid;place-items:center;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 12px 28px rgba(0,0,0,.25);
+      font-size:16px;
+    }
+    .brand-title{
       font-weight:800;
       letter-spacing:.2px;
-    }
-    .brand .badge{
-      width:34px;height:34px;border-radius:12px;
-      display:grid;place-items:center;
-      background:rgba(63,94,251,.18);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow: 0 12px 28px rgba(0,0,0,.25);
+      opacity:.95;
     }
 
-    .menuTitle{
-      margin:18px 10px 10px;
-      font-size:12px;
-      color:rgba(255,255,255,.45);
-      letter-spacing:.6px;
-      text-transform:uppercase;
+    .nav-title{
+      font-size:11px;
+      letter-spacing:.9px;
+      color:rgba(255,255,255,.50);
+      padding:6px 10px 0;
     }
 
     .nav{
@@ -81,368 +90,521 @@
     .nav a{
       text-decoration:none;
       color:rgba(255,255,255,.80);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      padding:10px 10px;
+      border-radius:14px;
       display:flex;
       align-items:center;
       gap:10px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid transparent;
-      transition:.16s ease;
-      user-select:none;
+      transition:.18s ease;
     }
-    .nav a:hover{
-      background:rgba(255,255,255,.06);
-      border-color:rgba(255,255,255,.08);
-    }
+    .nav a:hover{ background: rgba(255,255,255,.06); transform: translateY(-1px); }
     .nav a.active{
-      background: linear-gradient(90deg, rgba(63,94,251,.35), rgba(63,94,251,.10));
-      border-color:rgba(63,94,251,.35);
+      background: rgba(63,94,251,.18);
+      border-color: rgba(63,94,251,.40);
     }
-    .ico{
-      width:26px;height:26px;border-radius:10px;
+    .nav .ico{
+      width:30px;height:30px;border-radius:12px;
       display:grid;place-items:center;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-      font-size:13px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:14px;
     }
 
-    .sideFooter{
+    .sidebar-footer{
       margin-top:auto;
-      padding:14px 10px 8px;
-      color:rgba(255,255,255,.55);
-      font-size:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding:8px 6px 0;
     }
+
     .logout{
-      margin-top:12px;
-      display:inline-flex;
+      display:flex;
       align-items:center;
-      gap:8px;
-      color:rgba(255,255,255,.75);
+      gap:10px;
       text-decoration:none;
-      padding:10px 12px;
+      color:rgba(255,255,255,.75);
+      padding:10px 10px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
+      background: rgba(255,255,255,.03);
+      transition:.18s ease;
     }
-    .logout:hover{ background:rgba(255,255,255,.07); }
+    .logout:hover{ background: rgba(255,255,255,.06); transform: translateY(-1px); }
 
     .main{
-      padding:18px 18px 26px;
+      display:flex;
+      flex-direction:column;
+      min-width:0;
     }
 
     .topbar{
+      padding:14px 18px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:14px;
-      padding:10px 10px 18px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      background: rgba(10,12,18,.35);
+      backdrop-filter: blur(10px);
     }
 
     .search{
       flex:1;
-      max-width:680px;
-      position:relative;
-    }
-    .search input{
-      width:100%;
-      padding:12px 14px 12px 40px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(15,19,32,.55);
-      color:white;
-      outline:none;
-      transition:.16s ease;
-    }
-    .search input:focus{
-      border-color: rgba(63,94,251,.55);
-      box-shadow: 0 0 0 4px rgba(63,94,251,.16);
-    }
-    .search .sico{
-      position:absolute;
-      left:12px; top:50%;
-      transform:translateY(-50%);
-      opacity:.7;
-    }
-
-    .userbox{
+      max-width:720px;
       display:flex;
       align-items:center;
       gap:10px;
       padding:10px 12px;
-      border-radius:16px;
-      background:rgba(255,255,255,.04);
+      border-radius:14px;
       border:1px solid rgba(255,255,255,.10);
+      background: rgba(15,19,32,.55);
+    }
+    .search input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      color:white;
+      font-size:13px;
+    }
+    .search .mag{
+      width:28px;height:28px;border-radius:12px;
+      display:grid;place-items:center;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:13px;
+      color:rgba(255,255,255,.80);
+    }
+
+    .right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .pill{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color:rgba(255,255,255,.80);
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .profile{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 10px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
     }
     .avatar{
       width:34px;height:34px;border-radius:14px;
-      display:grid;place-items:center;
-      background:rgba(56,189,248,.10);
-      border:1px solid rgba(255,255,255,.10);
-      font-weight:800;
+      background: radial-gradient(circle at 30% 20%, rgba(125,211,252,.8), rgba(63,94,251,.65));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 12px 28px rgba(0,0,0,.35);
     }
-    .userbox .name{
-      font-weight:800;
-      font-size:13px;
-      line-height:1.1;
-    }
-    .userbox .role{
-      color:rgba(255,255,255,.55);
-      font-size:12px;
-      line-height:1.1;
-      margin-top:2px;
-    }
-
-    .crumb{
-      color:rgba(255,255,255,.55);
-      font-size:12px;
-      padding:0 10px;
-    }
-    .title{
-      padding:6px 10px 0;
-      font-size:32px;
-      letter-spacing:-.6px;
-      font-weight:900;
-    }
-
-    .kpis{
-      margin-top:16px;
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap:12px;
-      padding:0 10px;
-    }
-
-    .kpi{
-      border-radius:16px;
-      background:rgba(15,19,32,.78);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow);
-      padding:14px 14px;
-      min-height:86px;
+    .profile .name{
       display:flex;
       flex-direction:column;
-      gap:8px;
+      line-height:1.1;
     }
-    .kpiTop{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-      color:rgba(255,255,255,.72);
+    .profile .name b{font-size:12px}
+    .profile .name span{font-size:11px;color:rgba(255,255,255,.55)}
+
+    .content{
+      padding:18px 18px 26px;
+      min-width:0;
+    }
+
+    .crumbs{
+      color:rgba(255,255,255,.55);
       font-size:12px;
+      margin-bottom:4px;
     }
-    .kpiVal{
-      font-size:28px;
-      font-weight:900;
+    .crumbs b{color:rgba(125,211,252,.9); font-weight:700}
+
+    h1{
+      margin:0 0 14px;
+      font-size:30px;
       letter-spacing:-.4px;
     }
-    .chip{
-      font-size:11px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.05);
-      color:rgba(255,255,255,.75);
-      white-space:nowrap;
-    }
-    .chip.bad{ border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.10); color:#ffd2d2; }
-    .chip.good{ border-color:rgba(54,211,153,.35); background:rgba(54,211,153,.10); color:#d6ffeF; }
 
-    .grid{
-      margin-top:14px;
+    .cards{
       display:grid;
-      grid-template-columns: 1.6fr .9fr;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
       gap:12px;
-      padding:0 10px;
-      align-items:start;
+      margin-bottom:14px;
     }
 
     .card{
-      border-radius:16px;
-      background:rgba(15,19,32,.78);
+      border-radius:18px;
+      background: rgba(15,19,32,.75);
       border:1px solid rgba(255,255,255,.10);
       box-shadow: var(--shadow);
-      padding:14px 14px;
+      padding:14px 14px 12px;
+      min-width:0;
     }
-    .card h3{
-      margin:0 0 10px;
+    .card .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .badge{
+      width:34px;height:34px;border-radius:14px;
+      display:grid;place-items:center;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
       font-size:14px;
-      color:rgba(255,255,255,.88);
-      letter-spacing:.2px;
     }
+    .kpi{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .kpi span{
+      color:rgba(255,255,255,.60);
+      font-size:12px;
+    }
+    .kpi b{
+      font-size:22px;
+      letter-spacing:-.4px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.55fr .85fr;
+      gap:12px;
+      align-items:start;
+      margin-top:12px;
+      margin-bottom:14px;
+    }
+
+    .panel{
+      border-radius:18px;
+      background: rgba(15,19,32,.75);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      padding:14px;
+      min-width:0;
+    }
+
+    .panel h2{
+      margin:0 0 8px;
+      font-size:14px;
+      letter-spacing:.2px;
+      color:rgba(255,255,255,.85);
+    }
+
     .sub{
-      margin:0 0 10px;
+      margin:0 0 12px;
       color:rgba(255,255,255,.55);
       font-size:12px;
       line-height:1.45;
     }
 
+    .mini{
+      height:190px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(700px 240px at 30% 0%, rgba(63,94,251,.22), transparent 60%),
+        radial-gradient(600px 220px at 80% 20%, rgba(56,189,248,.16), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      padding:12px;
+      gap:10px;
+      overflow:hidden;
+    }
+    .spark{
+      flex:1;
+      height:120px;
+      display:flex;
+      align-items:flex-end;
+      gap:8px;
+      opacity:.9;
+    }
+    .bar{
+      width:16px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(125,211,252,.85), rgba(63,94,251,.75));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+    .mini .legend{
+      min-width:150px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .tag{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:rgba(255,255,255,.70);
+      font-size:12px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: rgba(63,94,251,.9);
+      box-shadow: 0 0 0 4px rgba(63,94,251,.18);
+    }
+
     table{
       width:100%;
-      border-collapse:collapse;
-      font-size:12px;
-      color:rgba(255,255,255,.86);
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(10,12,18,.35);
     }
-    th, td{
-      padding:12px 10px;
-      border-bottom:1px solid rgba(255,255,255,.08);
+    thead th{
       text-align:left;
-      vertical-align:middle;
+      font-size:12px;
+      font-weight:700;
+      padding:12px 12px;
+      color:rgba(255,255,255,.80);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
     }
-    th{
-      color:rgba(255,255,255,.58);
-      font-weight:800;
-      font-size:11px;
-      letter-spacing:.6px;
-      text-transform:uppercase;
+    tbody td{
+      padding:12px 12px;
+      font-size:12px;
+      color:rgba(255,255,255,.78);
+      border-bottom:1px solid rgba(255,255,255,.07);
+      white-space:nowrap;
     }
+    tbody tr:hover td{
+      background: rgba(255,255,255,.03);
+    }
+    tbody tr:last-child td{border-bottom:none}
 
     .status{
       display:inline-flex;
       align-items:center;
+      gap:7px;
       padding:6px 10px;
       border-radius:999px;
-      font-size:11px;
       border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.05);
-      color:rgba(255,255,255,.85);
+      background: rgba(255,255,255,.04);
+      font-weight:700;
+      color:rgba(255,255,255,.80);
     }
-    .status.on{ border-color:rgba(54,211,153,.35); background:rgba(54,211,153,.10); }
-    .status.delay{ border-color:rgba(245,158,11,.35); background:rgba(245,158,11,.10); }
-    .status.cancel{ border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.10); }
+    .status .s{
+      width:8px;height:8px;border-radius:50%;
+      background: rgba(255,255,255,.55);
+    }
+    .status.scheduled .s{ background: rgba(56,189,248,.9); }
+    .status.boarding .s{ background: rgba(245,158,11,.95); }
+    .status.ontime .s{ background: rgba(34,197,94,.95); }
+    .status.delayed .s{ background: rgba(239,68,68,.95); }
+    .status.cancelled .s{ background: rgba(239,68,68,.95); }
 
-    .rightStack{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
+    .muted{ color: rgba(255,255,255,.55); }
 
-    .miniList{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-top:6px;
-    }
-    .miniItem{
+    .bottom{
+      margin-top:14px;
       display:flex;
       justify-content:space-between;
+      align-items:center;
       gap:10px;
-      padding:10px 10px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.03);
-      color:rgba(255,255,255,.78);
-      font-size:12px;
-    }
-
-    .footer{
-      margin-top:16px;
-      padding:0 10px;
       color:rgba(255,255,255,.45);
-      font-size:12px;
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
+      font-size:11px;
       flex-wrap:wrap;
     }
 
-    @media (max-width: 1100px){
-      .app{ grid-template-columns: 1fr; }
-      .side{ display:none; }
-      .kpis{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .links{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .links a{
+      color:rgba(255,255,255,.55);
+      text-decoration:none;
+    }
+    .links a:hover{ text-decoration:underline; }
+
+    @media (max-width: 1080px){
+      .cards{ grid-template-columns: repeat(2, minmax(180px, 1fr)); }
       .grid{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 860px){
+      .app{ grid-template-columns: 1fr; }
+      .sidebar{ display:none; }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <aside class="side">
+    <aside class="sidebar">
       <div class="brand">
-        <div class="badge">✈</div>
-        <div>SkyFlow</div>
+        <div class="brand-badge">✈</div>
+        <div class="brand-title">SkyFlow Staff</div>
       </div>
 
-      <div class="menuTitle">Main Menu</div>
+      <div class="nav-title">MAIN MENU</div>
       <nav class="nav">
-        <a class="active" href=" "><span class="ico">▦</span> Operations Control</a >
-        <a href="#" onclick="return false;"><span class="ico">✈</span> Flight Scheduler</a >
+        <a class="active" href=" "><span class="ico">📊</span> Operations Control</a >
+        <a href="/staff/flights"><span class="ico">🗓</span> Flight Scheduler</a >
         <a href="#" onclick="return false;"><span class="ico">👥</span> Crew Assignments</a >
-        <a href="#" onclick="return false;"><span class="ico">🧾</span> Booking History</a >
-        <a href="#" onclick="return false;"><span class="ico">🗺</span> Route Network</a >
-        <a href="#" onclick="return false;"><span class="ico">📄</span> Compliance Reports</a >
+        <a href="/staff/bookings"><span class="ico">🧾</span> Bookings</a >
+        <a href="#" onclick="return false;"><span class="ico">🧭</span> Route Network</a >
+        <a href="#" onclick="return false;"><span class="ico">✅</span> Compliance Reports</a >
       </nav>
 
-      <div class="menuTitle">System</div>
+      <div class="nav-title">SYSTEM</div>
       <nav class="nav">
-        <a href="#" onclick="return false;"><span class="ico">⚙</span> Global Settings</a >
+        <a href="#" onclick="return false;"><span class="ico">⚙️</span> Global Settings</a >
         <a href="#" onclick="return false;"><span class="ico">🔔</span> Alert Configuration</a >
       </nav>
 
-      <div class="sideFooter">
-        <a class="logout" href="/staff/logout">⟵ Log Out</a >
+      <div class="sidebar-footer">
+        <a class="logout" href="/staff/logout"><span class="ico">⎋</span> Log Out</a >
       </div>
     </aside>
 
-    <main class="main">
-      <div class="topbar">
+    <div class="main">
+      <header class="topbar">
         <div class="search">
-          <span class="sico">⌕</span>
-          <input type="text" placeholder="Search flights, crew, or PNR numbers..." onkeydown="return false;">
+          <div class="mag">⌕</div>
+          <input type="text" value="" placeholder="Search flights, crew, or PNR numbers..." />
         </div>
-        <div class="userbox">
-          <div class="avatar">{{ staffName|first }}</div>
-          <div>
-            <div class="name">{{ staffName }}</div>
-            <div class="role">Duty Manager</div>
+        <div class="right">
+          <div class="pill">Today</div>
+          <div class="pill">Weekly</div>
+          <div class="profile">
+            <div class="avatar"></div>
+            <div class="name">
+              <b>{{ staffName }}</b>
+              <span>{{ staffRole }}</span>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div class="crumb">Operations Control &nbsp;›&nbsp; Dashboard</div>
-      <div class="title">Operational Overview</div>
+      <div class="content">
+        <div class="crumbs">Operations Control <span class="muted">›</span> <b>Dashboard</b></div>
+        <h1>Operational Overview</h1>
 
-      <section class="kpis">
-        <div class="kpi">
-          <div class="kpiTop">
-            <span>Active Flights</span>
-            <span class="chip good">Live</span>
+        <section class="cards">
+          <div class="card">
+            <div class="top">
+              <div class="badge">✈️</div>
+              <div class="pill">Live</div>
+            </div>
+            <div class="kpi">
+              <span>Active Flights</span>
+              <b>{{ activeFlights }}</b>
+            </div>
           </div>
-          <div class="kpiVal">{{ activeFlights }}</div>
-        </div>
 
-        <div class="kpi">
-          <div class="kpiTop">
-            <span>Load Factor</span>
-            <span class="chip">{{ loadFactor }}%</span>
+          <div class="card">
+            <div class="top">
+              <div class="badge">📈</div>
+              <div class="pill">Seat Utilization</div>
+            </div>
+            <div class="kpi">
+              <span>Load Factor</span>
+              <b>{{ loadFactor }}</b>
+            </div>
           </div>
-          <div class="kpiVal">{{ loadFactor }}%</div>
-        </div>
 
-        <div class="kpi">
-          <div class="kpiTop">
-            <span>Departures Today</span>
-            <span class="chip">{{ departuresToday }}</span>
+          <div class="card">
+            <div class="top">
+              <div class="badge">🗓️</div>
+              <div class="pill">Today</div>
+            </div>
+            <div class="kpi">
+              <span>Departures Today</span>
+              <b>{{ departuresToday }}</b>
+            </div>
           </div>
-          <div class="kpiVal">{{ departuresToday }}</div>
-        </div>
 
-        <div class="kpi">
-          <div class="kpiTop">
-            <span>System Alerts</span>
-            {% if systemAlerts > 0 %}
-              <span class="chip bad">{{ systemAlerts }} Open</span>
-            {% else %}
-              <span class="chip good">0 Open</span>
-            {% endif %}
+          <div class="card">
+            <div class="top">
+              <div class="badge">⚠️</div>
+              <div class="pill">Open</div>
+            </div>
+            <div class="kpi">
+              <span>System Alerts</span>
+              <b>{{ systemAlerts }}</b>
+            </div>
           </div>
-          <div class="kpiVal">{{ systemAlerts }}</div>
-        </div>
-      </section>
+        </section>
 
-      <section class="grid">
-        <div class="card">
-          <h3>Active Flight Operations</h3>
-          <p class="sub">All rows below are loaded from the database.</p >
+        <section class="grid">
+          <div class="panel">
+            <h2>Global Booking Velocity</h2>
+            <p class="sub">Summary view powered by current database state (live counts).</p >
+            <div class="mini">
+              <div class="spark">
+                <div class="bar" style="height:38%"></div>
+                <div class="bar" style="height:52%"></div>
+                <div class="bar" style="height:45%"></div>
+                <div class="bar" style="height:62%"></div>
+                <div class="bar" style="height:58%"></div>
+                <div class="bar" style="height:72%"></div>
+                <div class="bar" style="height:66%"></div>
+                <div class="bar" style="height:78%"></div>
+              </div>
+              <div class="legend">
+                <div class="tag"><span class="dot"></span> Active Flights: <b style="color:white">{{ activeFlights }}</b></div>
+                <div class="tag"><span class="dot" style="background:rgba(56,189,248,.9); box-shadow:0 0 0 4px rgba(56,189,248,.18)"></span> Departures Today: <b style="color:white">{{ departuresToday }}</b></div>
+                <div class="tag"><span class="dot" style="background:rgba(239,68,68,.95); box-shadow:0 0 0 4px rgba(239,68,68,.14)"></span> Open Alerts: <b style="color:white">{{ systemAlerts }}</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <h2>Quick Status</h2>
+            <p class="sub">Operational signals derived from flight/seat/complaint tables.</p >
+            <table>
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="muted">Load Factor</td>
+                  <td><b>{{ loadFactor }}</b></td>
+                </tr>
+                <tr>
+                  <td class="muted">Active Flights</td>
+                  <td><b>{{ activeFlights }}</b></td>
+                </tr>
+                <tr>
+                  <td class="muted">Departures Today</td>
+                  <td><b>{{ departuresToday }}</b></td>
+                </tr>
+                <tr>
+                  <td class="muted">Open Alerts</td>
+                  <td><b>{{ systemAlerts }}</b></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Active Flight Operations</h2>
+          <p class="sub">Live flight list (no gate/crew fields because they do not exist in current schema).</p >
+
           <table>
             <thead>
               <tr>
@@ -450,67 +612,49 @@
                 <th>Destination</th>
                 <th>Departure</th>
                 <th>Status</th>
+                <th>Capacity</th>
+                <th>Assigned Seats</th>
+                <th>Util</th>
               </tr>
             </thead>
             <tbody>
-              {% for f in flights %}
-              <tr>
-                <td>{{ f.flightNo }}</td>
-                <td>{{ f.destination }}</td>
-                <td>{{ f.departure }}</td>
-                <td>
-                  {% if f.status == "delayed" %}
-                    <span class="status delay">Delayed</span>
-                  {% elseif f.status == "cancelled" %}
-                    <span class="status cancel">Cancelled</span>
-                  {% else %}
-                    <span class="status on">{{ f.status }}</span>
-                  {% endif %}
-                </td>
-              </tr>
-              {% endfor %}
+              {% if flights is not empty %}
+                {% for f in flights %}
+                  <tr>
+                    <td><b>{{ f.no }}</b></td>
+                    <td>{{ f.dest }}</td>
+                    <td>{{ f.dep }}</td>
+                    <td>
+                      <span class="status {{ f.status | lower }}">
+                        <span class="s"></span>
+                        {{ f.status }}
+                      </span>
+                    </td>
+                    <td>{{ f.capacity }}</td>
+                    <td>{{ f.assigned }}</td>
+                    <td><b>{{ f.util }}</b></td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="7" class="muted">No flights available.</td>
+                </tr>
+              {% endif %}
             </tbody>
           </table>
-        </div>
 
-        <div class="rightStack">
-          <div class="card">
-            <h3>Quick Alerts</h3>
-            <p class="sub">Open complaints are treated as alerts.</p >
-            <div class="miniList">
-              <div class="miniItem">
-                <div>Open Complaints</div>
-                <div><strong>{{ systemAlerts }}</strong></div>
-              </div>
-              <div class="miniItem">
-                <div>Total Booking Segments</div>
-                <div><strong>{{ bookingsToday }}</strong></div>
-              </div>
+          <div class="bottom">
+            <div>Signed in as <b>{{ staffEmail }}</b></div>
+            <div class="links">
+              <a href=" " onclick="return false;">Operational Policy</a >
+              <a href="#" onclick="return false;">Privacy</a >
+              <a href="#" onclick="return false;">Help Desk</a >
             </div>
           </div>
+        </section>
 
-          <div class="card">
-            <h3>System Status</h3>
-            <p class="sub">Database connected and dashboard is live.</p >
-            <div class="miniList">
-              <div class="miniItem">
-                <div>Realtime Sync</div>
-                <div><strong>On</strong></div>
-              </div>
-              <div class="miniItem">
-                <div>Environment</div>
-                <div><strong>Server</strong></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="footer">
-        <div>© 2026 SkyFlow Inc. All rights reserved.</div>
-        <div>Operational Policy • Privacy • Help Desk</div>
       </div>
-    </main>
+    </div>
   </div>
 </body>
 </html>

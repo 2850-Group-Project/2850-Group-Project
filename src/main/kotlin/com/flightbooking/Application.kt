@@ -6,6 +6,7 @@ import com.flightbooking.routes.staffAuthRoutes
 import com.flightbooking.routes.staffPagesRoutes
 import com.flightbooking.models.StaffSession
 import com.flightbooking.routes.pagesRoutes
+import com.flightbooking.routes.staffBookingsRoutes
 import com.flightbooking.models.UserSession
 import io.pebbletemplates.pebble.loader.ClasspathLoader
 import io.ktor.server.engine.embeddedServer
@@ -72,5 +73,6 @@ fun Application.module() {
         staffAuthRoutes()
         pagesRoutes()
         staffPagesRoutes()
+        staffBookingsRoutes()
     }
 }
