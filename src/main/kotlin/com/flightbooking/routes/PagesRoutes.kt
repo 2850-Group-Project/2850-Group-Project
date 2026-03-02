@@ -8,6 +8,7 @@ import io.ktor.server.pebble.*
 
 fun Route.pagesRoutes() {
     get("/home") {
+        // need to add check to make sure user is logged in before loading the home page
         call.respond(PebbleContent("home.peb", mapOf()))
     }
 }

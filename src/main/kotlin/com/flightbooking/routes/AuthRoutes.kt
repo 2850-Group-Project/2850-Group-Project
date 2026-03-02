@@ -33,6 +33,7 @@ fun Route.authRoutes() {
         val email = params["email"] ?: ""
         val password = params["password"] ?: ""
         if (AuthService.login(email, password)) {
+            // need to add variable that is set to loggedIn = True when the user logs in
             call.respondRedirect("/home")
         } else {
             call.respond(PebbleContent("login.peb", mapOf("error" to "Invalid credentials")))
