@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Staff Dashboard - SkyFlow</title>
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --panel:#0f1320;
+      --panel2:#0c1020;
+      --line:rgba(255,255,255,.10);
+      --muted:rgba(255,255,255,.68);
+      --muted2:rgba(255,255,255,.52);
+      --text:#fff;
+      --accent:#3f5efb;
+      --accent2:#38bdf8;
+      --good:#36d399;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+      --radius:16px;
+      --shadow:0 18px 50px rgba(0,0,0,.45);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(63,94,251,.14), transparent 60%),
+        radial-gradient(900px 600px at 85% 0%, rgba(56,189,248,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg), #0f1220 75%, #0a0c12);
+      min-height:100vh;
+    }
+
+    .app{
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      min-height:100vh;
+    }
+
+    .side{
+      padding:20px 16px;
+      border-right:1px solid rgba(255,255,255,.06);
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 10px;
+      border-radius:14px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .brand .badge{
+      width:34px;height:34px;border-radius:12px;
+      display:grid;place-items:center;
+      background:rgba(63,94,251,.18);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 12px 28px rgba(0,0,0,.25);
+    }
+
+    .menuTitle{
+      margin:18px 10px 10px;
+      font-size:12px;
+      color:rgba(255,255,255,.45);
+      letter-spacing:.6px;
+      text-transform:uppercase;
+    }
+
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      padding:0 6px;
+    }
+
+    .nav a{
+      text-decoration:none;
+      color:rgba(255,255,255,.80);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      transition:.16s ease;
+      user-select:none;
+    }
+    .nav a:hover{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.08);
+    }
+    .nav a.active{
+      background: linear-gradient(90deg, rgba(63,94,251,.35), rgba(63,94,251,.10));
+      border-color:rgba(63,94,251,.35);
+    }
+    .ico{
+      width:26px;height:26px;border-radius:10px;
+      display:grid;place-items:center;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      font-size:13px;
+    }
+
+    .sideFooter{
+      margin-top:auto;
+      padding:14px 10px 8px;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+    }
+    .logout{
+      margin-top:12px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:rgba(255,255,255,.75);
+      text-decoration:none;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+    }
+    .logout:hover{ background:rgba(255,255,255,.07); }
+
+    .main{
+      padding:18px 18px 26px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:10px 10px 18px;
+    }
+
+    .search{
+      flex:1;
+      max-width:680px;
+      position:relative;
+    }
+    .search input{
+      width:100%;
+      padding:12px 14px 12px 40px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(15,19,32,.55);
+      color:white;
+      outline:none;
+      transition:.16s ease;
+    }
+    .search input:focus{
+      border-color: rgba(63,94,251,.55);
+      box-shadow: 0 0 0 4px rgba(63,94,251,.16);
+    }
+    .search .sico{
+      position:absolute;
+      left:12px; top:50%;
+      transform:translateY(-50%);
+      opacity:.7;
+    }
+
+    .userbox{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .avatar{
+      width:34px;height:34px;border-radius:14px;
+      display:grid;place-items:center;
+      background:rgba(56,189,248,.10);
+      border:1px solid rgba(255,255,255,.10);
+      font-weight:800;
+    }
+    .userbox .name{
+      font-weight:800;
+      font-size:13px;
+      line-height:1.1;
+    }
+    .userbox .role{
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+      line-height:1.1;
+      margin-top:2px;
+    }
+
+    .crumb{
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+      padding:0 10px;
+    }
+    .title{
+      padding:6px 10px 0;
+      font-size:32px;
+      letter-spacing:-.6px;
+      font-weight:900;
+    }
+
+    .kpis{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap:12px;
+      padding:0 10px;
+    }
+
+    .kpi{
+      border-radius:16px;
+      background:rgba(15,19,32,.78);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      padding:14px 14px;
+      min-height:86px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .kpiTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      color:rgba(255,255,255,.72);
+      font-size:12px;
+    }
+    .kpiVal{
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:-.4px;
+    }
+    .chip{
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.05);
+      color:rgba(255,255,255,.75);
+      white-space:nowrap;
+    }
+    .chip.bad{ border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.10); color:#ffd2d2; }
+    .chip.good{ border-color:rgba(54,211,153,.35); background:rgba(54,211,153,.10); color:#d6ffeF; }
+
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 1.6fr .9fr;
+      gap:12px;
+      padding:0 10px;
+      align-items:start;
+    }
+
+    .card{
+      border-radius:16px;
+      background:rgba(15,19,32,.78);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      padding:14px 14px;
+    }
+    .card h3{
+      margin:0 0 10px;
+      font-size:14px;
+      color:rgba(255,255,255,.88);
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:0 0 10px;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      color:rgba(255,255,255,.86);
+    }
+    th, td{
+      padding:12px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      text-align:left;
+      vertical-align:middle;
+    }
+    th{
+      color:rgba(255,255,255,.58);
+      font-weight:800;
+      font-size:11px;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.05);
+      color:rgba(255,255,255,.85);
+    }
+    .status.on{ border-color:rgba(54,211,153,.35); background:rgba(54,211,153,.10); }
+    .status.delay{ border-color:rgba(245,158,11,.35); background:rgba(245,158,11,.10); }
+    .status.cancel{ border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.10); }
+
+    .rightStack{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .miniList{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:6px;
+    }
+    .miniItem{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.78);
+      font-size:12px;
+    }
+
+    .footer{
+      margin-top:16px;
+      padding:0 10px;
+      color:rgba(255,255,255,.45);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width: 1100px){
+      .app{ grid-template-columns: 1fr; }
+      .side{ display:none; }
+      .kpis{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="side">
+      <div class="brand">
+        <div class="badge">✈</div>
+        <div>SkyFlow</div>
+      </div>
+
+      <div class="menuTitle">Main Menu</div>
+      <nav class="nav">
+        <a class="active" href=" "><span class="ico">▦</span> Operations Control</a >
+        <a href="#" onclick="return false;"><span class="ico">✈</span> Flight Scheduler</a >
+        <a href="#" onclick="return false;"><span class="ico">👥</span> Crew Assignments</a >
+        <a href="#" onclick="return false;"><span class="ico">🧾</span> Booking History</a >
+        <a href="#" onclick="return false;"><span class="ico">🗺</span> Route Network</a >
+        <a href="#" onclick="return false;"><span class="ico">📄</span> Compliance Reports</a >
+      </nav>
+
+      <div class="menuTitle">System</div>
+      <nav class="nav">
+        <a href="#" onclick="return false;"><span class="ico">⚙</span> Global Settings</a >
+        <a href="#" onclick="return false;"><span class="ico">🔔</span> Alert Configuration</a >
+      </nav>
+
+      <div class="sideFooter">
+        <a class="logout" href="/staff/logout">⟵ Log Out</a >
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="search">
+          <span class="sico">⌕</span>
+          <input type="text" placeholder="Search flights, crew, or PNR numbers..." onkeydown="return false;">
+        </div>
+        <div class="userbox">
+          <div class="avatar">{{ staffName|first }}</div>
+          <div>
+            <div class="name">{{ staffName }}</div>
+            <div class="role">Duty Manager</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="crumb">Operations Control &nbsp;›&nbsp; Dashboard</div>
+      <div class="title">Operational Overview</div>
+
+      <section class="kpis">
+        <div class="kpi">
+          <div class="kpiTop">
+            <span>Active Flights</span>
+            <span class="chip good">Live</span>
+          </div>
+          <div class="kpiVal">{{ activeFlights }}</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpiTop">
+            <span>Load Factor</span>
+            <span class="chip">{{ loadFactor }}%</span>
+          </div>
+          <div class="kpiVal">{{ loadFactor }}%</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpiTop">
+            <span>Departures Today</span>
+            <span class="chip">{{ departuresToday }}</span>
+          </div>
+          <div class="kpiVal">{{ departuresToday }}</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpiTop">
+            <span>System Alerts</span>
+            {% if systemAlerts > 0 %}
+              <span class="chip bad">{{ systemAlerts }} Open</span>
+            {% else %}
+              <span class="chip good">0 Open</span>
+            {% endif %}
+          </div>
+          <div class="kpiVal">{{ systemAlerts }}</div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h3>Active Flight Operations</h3>
+          <p class="sub">All rows below are loaded from the database.</p >
+          <table>
+            <thead>
+              <tr>
+                <th>Flight No.</th>
+                <th>Destination</th>
+                <th>Departure</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for f in flights %}
+              <tr>
+                <td>{{ f.flightNo }}</td>
+                <td>{{ f.destination }}</td>
+                <td>{{ f.departure }}</td>
+                <td>
+                  {% if f.status == "delayed" %}
+                    <span class="status delay">Delayed</span>
+                  {% elseif f.status == "cancelled" %}
+                    <span class="status cancel">Cancelled</span>
+                  {% else %}
+                    <span class="status on">{{ f.status }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="rightStack">
+          <div class="card">
+            <h3>Quick Alerts</h3>
+            <p class="sub">Open complaints are treated as alerts.</p >
+            <div class="miniList">
+              <div class="miniItem">
+                <div>Open Complaints</div>
+                <div><strong>{{ systemAlerts }}</strong></div>
+              </div>
+              <div class="miniItem">
+                <div>Total Booking Segments</div>
+                <div><strong>{{ bookingsToday }}</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>System Status</h3>
+            <p class="sub">Database connected and dashboard is live.</p >
+            <div class="miniList">
+              <div class="miniItem">
+                <div>Realtime Sync</div>
+                <div><strong>On</strong></div>
+              </div>
+              <div class="miniItem">
+                <div>Environment</div>
+                <div><strong>Server</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <div>© 2026 SkyFlow Inc. All rights reserved.</div>
+        <div>Operational Policy • Privacy • Help Desk</div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
