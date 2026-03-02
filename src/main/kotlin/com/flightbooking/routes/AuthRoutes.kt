@@ -5,8 +5,10 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.pebble.*
+import io.ktor.server.sessions.*
 import com.flightbooking.service.AuthService
 import com.flightbooking.routes.pagesRoutes
+import com.flightbooking.models.UserSession
 
 fun Route.authRoutes() {
     get("/register") {
@@ -34,6 +36,7 @@ fun Route.authRoutes() {
         val password = params["password"] ?: ""
         if (AuthService.login(email, password)) {
             // need to add variable that is set to loggedIn = True when the user logs in
+            call.sessions.set(UserSession(userEmail = email))
             call.respondRedirect("/home")
         } else {
             call.respond(PebbleContent("login.peb", mapOf("error" to "Invalid credentials")))

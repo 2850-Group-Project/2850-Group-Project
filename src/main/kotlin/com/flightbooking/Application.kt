@@ -3,6 +3,7 @@ package com.flightbooking
 import com.flightbooking.database.DBFactory
 import com.flightbooking.routes.authRoutes
 import com.flightbooking.routes.pagesRoutes
+import com.flightbooking.models.UserSession
 import io.pebbletemplates.pebble.loader.ClasspathLoader
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -42,7 +43,7 @@ fun Application.module() {
         cacheActive(false) 
     }
     install(Sessions) {
-        cookie<String>("COMP2850_SESSION") {
+        cookie<UserSession>("COMP2850_SESSION") {
             cookie.path = "/"
             cookie.httpOnly = true
         }
