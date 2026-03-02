@@ -16,6 +16,9 @@ import com.flightbooking.tables.StaffTable
 import com.flightbooking.tables.ComplaintTable
 import com.flightbooking.tables.NotificationTable
 
+// data class for storing user session data (ie, if they are logged in)
+data class UserSession(val userEmail: String)
+
 data class User(
     val id: Int,
     val email: String,
