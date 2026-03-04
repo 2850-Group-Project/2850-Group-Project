@@ -14,6 +14,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.sessions.*
 import io.ktor.server.response.*
 import org.slf4j.event.Level
+import access.AirportTableAccess
 
 fun main() {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
@@ -52,6 +53,42 @@ fun Application.module() {
         e.printStackTrace()
         throw e
     }
+
+    """
+    TESTING ACCESS FUNCTIONS pls ignore or comment it out
+    """
+    // AirportTableAccess connection test
+    val airporttableaccess = AirportTableAccess()
+    val airports = airporttableaccess.getAll()
+    println("Found ${airports.size} airports in the database")
+
+    // testing insert
+    try {
+        val inserted = airporttableaccess.addAirport(
+            iataCode = "TST", 
+            name = "Test Airport", 
+            city = "TestTown", 
+            country = "Testland"
+        )
+        println("Inserted airport with ID: ${inserted.id}")
+    } catch (e: Throwable) {
+        println("FAILED TO INSERT, ALREADY EXISTS: ${e.message}")
+    }
+
+    "
+    val updated = airporttableaccess.updateRecordByAttribute(
+        id = 7, 
+        column = Column<String>("name"), 
+        value = "Updated Test Airport"
+    )
+    println("Update successful on record with ID: ${updated.id}")
+    "
+    
+    airporttableaccess.deleteByID(7) // cleanup
+    """
+    end of testing access functions
+    """
+
     routing {
         get("/") {
             call.respondRedirect("/login")
