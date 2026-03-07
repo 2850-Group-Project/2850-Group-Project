@@ -9,20 +9,42 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.ResultRow
-import access.BookingSegmentTableAccess
 import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.SqlExpressionBuilder
 
 class BookingSegmentTableAccess {
     fun getAll(): List<BookingSegment> = transaction {
         BookingSegmentTable.selectAll().map {
             constructBookingSegmentRecord(it)
-        }
-    }
+        }}
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<BookingSegment> = transaction {
         BookingSegmentTable.select { attribute eq value } 
-            .map { constructBookingSegmentRecord(it) } 
-    }
-
+            .map { constructBookingSegmentRecord(it) } }
+    fun addBookingSegment(
+        bookingId: Int, 
+        flightId: Int, 
+        flightFareId: Int
+        ): BookingSegment = transaction { 
+        val id = BookingSegmentTable.insert { 
+            it[BookingSegmentTable.bookingId] = bookingId 
+            it[BookingSegmentTable.flightId] = flightId 
+            it[BookingSegmentTable.flightFareId] = flightFareId 
+        } get BookingSegmentTable.id 
+        BookingSegment( 
+            id = id!!, 
+            bookingId = bookingId, 
+            flightId = flightId, 
+            flightFareId = flightFareId 
+        ) }
+    fun deleteByID(id: Int) = transaction { 
+        BookingSegmentTable.deleteWhere { BookingSegmentTable.id eq id } }
+    fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 
+        val rows = BookingSegmentTable.update({ BookingSegmentTable.id eq id }) { 
+            stmt -> stmt[column] = value } 
+        rows > 0 }
     fun constructBookingSegmentRecord(it: ResultRow): BookingSegment {
         return BookingSegment (
                         id = it[BookingSegmentTable.id],

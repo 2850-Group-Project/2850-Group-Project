@@ -10,8 +10,11 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.ResultRow
-import access.PassengerTableAccess
 import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.SqlExpressionBuilder
 
 class PassengerTableAccess {
     fun getAll(): List<Passenger> = transaction {
@@ -23,6 +26,58 @@ class PassengerTableAccess {
         PassengerTable.select { attribute eq value } 
             .map { constructPassengerRecord(it) } 
     }
+    fun addPassenger(
+        bookingId: Int?,
+        email: String?,
+        checkedIn: Int,
+        title: String?,
+        firstName: String?,
+        lastName: String?,
+        dateOfBirth: String?,
+        gender: String?,
+        nationality: String?,
+        documentType: String?,
+        documentNumber: String?,
+        documentCountry: String?,
+        documentExpiry: String?
+        ): Passenger = transaction { 
+        val id = PassengerTable.insert { 
+            it[PassengerTable.bookingId] = bookingId
+            it[PassengerTable.email] = email
+            it[PassengerTable.checkedIn] = checkedIn
+            it[PassengerTable.title] = title
+            it[PassengerTable.firstName] = firstName
+            it[PassengerTable.lastName] = lastName
+            it[PassengerTable.dateOfBirth] = dateOfBirth
+            it[PassengerTable.gender] = gender
+            it[PassengerTable.nationality] = nationality
+            it[PassengerTable.documentType] = documentType
+            it[PassengerTable.documentNumber] = documentNumber
+            it[PassengerTable.documentCountry] = documentCountry
+            it[PassengerTable.documentExpiry] = documentExpiry
+        } get PassengerTable.id 
+        Passenger( 
+            id = id!!,
+            bookingId = bookingId,
+            email = email,
+            checkedIn = checkedIn,
+            title = title,
+            firstName = firstName,
+            lastName = lastName,
+            dateOfBirth = dateOfBirth,
+            gender = gender,
+            nationality = nationality,
+            documentType = documentType,
+            documentNumber = documentNumber,
+            documentCountry = documentCountry,
+            documentExpiry = documentExpiry
+        ) }
+    fun deleteByID(id: Int) = transaction { 
+        PassengerTable.deleteWhere { PassengerTable.id eq id } }
+    fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 
+        val rows = PassengerTable.update({ PassengerTable.id eq id }) { 
+            stmt -> stmt[column] = value } 
+        rows > 0 }
     fun constructPassengerRecord(it: ResultRow): Passenger {
         return Passenger (
                         id = it[PassengerTable.id],

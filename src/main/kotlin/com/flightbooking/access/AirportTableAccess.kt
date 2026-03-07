@@ -35,7 +35,13 @@ class AirportTableAccess {
             .map { constructAirportRecord(it) } 
     }
 
-    fun addAirport(iataCode: String, name: String?, city: String?, country: String?): Airport = transaction { 
+    fun addAirport(
+        iataCode: String, 
+        name: String?, 
+        city: String?, 
+        country: String?
+        ): Airport = transaction { 
+        // inserts new record into the table and returns the generated id
         val id = AirportTable.insert { 
             it[AirportTable.iataCode] = iataCode 
             it[AirportTable.name] = name 
@@ -50,11 +56,14 @@ class AirportTableAccess {
             country = country 
         ) 
     }
-    fun deleteByID(id: String) = transaction { 
+
+    fun deleteByID(id: Int) = transaction { 
+        // deletes record by id
         AirportTable.deleteWhere { AirportTable.id eq id } 
     }
 
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 
+        //updates the record with given id, given column and value
         val rows = AirportTable.update({ AirportTable.id eq id }) { 
             stmt -> stmt[column] = value 
         } 
