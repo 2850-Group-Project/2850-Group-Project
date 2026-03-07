@@ -1,7 +1,7 @@
 comments are in AirportTableAccess.kt, omitted for the rest
 UserTableAccess.kt is incomplete/unchanged
 
-Example for the functions (in tested and works in Application.kt)
+Example for the functions (is tested and works in Application.kt)
 
 import access.AirportTableAccess // just "import access" is what we'll use
 import com.flightbooking.tables.AirportTable // similarly "import com.flightbooking.tables"
