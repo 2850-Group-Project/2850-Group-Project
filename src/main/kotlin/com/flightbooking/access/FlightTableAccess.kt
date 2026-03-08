@@ -1,4 +1,4 @@
-package access
+package com.flightbooking.access
 
 import com.flightbooking.models.Flight
 import com.flightbooking.models.toFlight
@@ -44,6 +44,7 @@ class FlightTableAccess {
             it[FlightTable.status] = status
             it[FlightTable.capacity] = capacity
         }
+        true
     }
     fun deleteByID(id: Int) = transaction { 
         FlightTable.deleteWhere { FlightTable.id eq id } }

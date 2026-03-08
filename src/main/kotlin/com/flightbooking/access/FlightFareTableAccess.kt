@@ -1,4 +1,4 @@
-package access
+package com.flightbooking.access
 
 import com.flightbooking.models.FlightFare
 import com.flightbooking.models.toFlightFare

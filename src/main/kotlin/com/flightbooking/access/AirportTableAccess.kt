@@ -1,4 +1,4 @@
-package access // we want to be able to access all access files from a single package "access"
+package com.flightbooking.access // we want to be able to access all access files from a single package "access"
 
 import com.flightbooking.models.Airport
 import com.flightbooking.models.toAirport
