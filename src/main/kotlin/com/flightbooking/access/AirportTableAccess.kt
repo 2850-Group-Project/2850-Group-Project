@@ -64,6 +64,27 @@ class AirportTableAccess {
         rows > 0 
     }
 
+    fun upsertByIata(airport: Airport) = transaction {
+        //used for the db import
+        val existing = AirportTable
+            .select {AirportTable.iataCode eq airport.iataCode}
+            .singleOrNull()
+        if (existing == null) {
+            AirportTable.insert {
+                it[iataCode] = airport.iataCode
+                it[name] = airport.name
+                it[AirportTable.city] = airport.city
+                it[AirportTable.country] = airport.country
+            }
+        } else {
+            AirportTable.update({ AirportTable.iataCode eq airport.iataCode }) {
+                it[name] = airport.name
+                it[city] = airport.city
+                it[country] = airport.country
+            }
+        }
+    }
+
     // take record (row) and transforms into airport object which we can use like a normal object
     fun constructAirportRecord(it: ResultRow): Airport {
         return Airport (
