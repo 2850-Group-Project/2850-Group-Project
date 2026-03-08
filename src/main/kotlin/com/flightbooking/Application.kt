@@ -62,6 +62,7 @@ fun Application.module() {
         e.printStackTrace()
         throw e
     }
+
     routing {
         get("/") {
             call.respondRedirect("/login")
