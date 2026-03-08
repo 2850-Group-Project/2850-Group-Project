@@ -1,5 +1,4 @@
-package access
-
+package com.flightbooking.access
 import com.flightbooking.models.Complaint
 import com.flightbooking.models.toComplaint
 import com.flightbooking.tables.ComplaintTable
@@ -42,7 +41,7 @@ class ComplaintTableAccess {
             it[ComplaintTable.status] = status 
             it[ComplaintTable.handledByStaffId] = handledByStaffId
         }
-        return@transation true
+        true
     }
     fun deleteByID(id: Int) = transaction { 
         ComplaintTable.deleteWhere { ComplaintTable.id eq id } }

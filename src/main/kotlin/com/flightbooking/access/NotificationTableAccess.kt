@@ -1,4 +1,4 @@
-package access
+package com.flightbooking.access
 
 import com.flightbooking.models.Notification
 import com.flightbooking.models.toNotification
@@ -40,6 +40,7 @@ class NotificationTableAccess {
             it[NotificationTable.createdAt] = java.time.Instant.now().toString()
             it[NotificationTable.readAt] = readAt
         }
+        true
     }
     fun deleteByID(id: Int) = transaction { 
         NotificationTable.deleteWhere { NotificationTable.id eq id } }

@@ -1,4 +1,4 @@
-package access
+package com.flightbooking.access
 
 import com.flightbooking.models.FareClass
 import com.flightbooking.models.toFareClass
@@ -16,6 +16,7 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import java.time.Instant
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNull
 
 class FareClassTableAccess {
     fun getAll(): List<FareClass> = transaction {
@@ -23,16 +24,23 @@ class FareClassTableAccess {
             constructFareClassRecord(it)
         }
     }
-    fun <T> getByAttribute(attribute: Column<T>, value: T): List<FareClass> = transaction {
-        FareClassTable.select { attribute eq value } 
-            .map { constructFareClassRecord(it) } 
+    fun <T : Any> getByAttribute(attribute: Column<T?>, value: T?): List<FareClass> = transaction {
+        val condition = if (value == null) {
+            attribute.isNull()
+        } else {
+            attribute eq value
+        }
+
+        FareClassTable.select { condition }
+            .map { constructFareClassRecord(it) }
     }
+
     fun createFareClass(
         classCode: String,
         cabinClass: String?, 
         displayName: String?,
         refundable: Int, 
-        cancelProtocol: String?,
+        cancelProtocol: String,
         advancedSeatSelection: Int,
         priorityCheckin: Int,
         priorityBoarding: Int,
@@ -51,7 +59,7 @@ class FareClassTableAccess {
             it[FareClassTable.cabinClass] = cabinClass 
             it[FareClassTable.displayName] = displayName 
             it[FareClassTable.refundable] = refundable 
-            it[FareClassTable.cancelProtocol] = cancelProtocol 
+            it[FareClassTable.cancelProtocol] = cancelProtocol
             it[FareClassTable.advanceSeatSelection] = advancedSeatSelection 
             it[FareClassTable.priorityCheckin] = priorityCheckin 
             it[FareClassTable.priorityBoarding] = priorityBoarding 

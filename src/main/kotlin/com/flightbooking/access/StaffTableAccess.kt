@@ -1,4 +1,4 @@
-package access
+package com.flightbooking.access
 
 import com.flightbooking.models.Staff
 import com.flightbooking.models.toStaff
@@ -29,20 +29,20 @@ class StaffTableAccess {
     }
     fun createStaff(
         email: String,
-        passwordHash: String?,
+        passwordHash: String,
         firstName: String?,
         lastName: String?,
-        phoneNumber: String?,
-        role: String?,
-        ): Boolean = transaction { 
-        val exists = UserTable.select { UserTable.email eq email }.count() > 0
+        role: String?
+    ): Boolean = transaction {
+        val exists = StaffTable.select { StaffTable.email eq email }.limit(1).any()
         if (exists) return@transaction false
-        StaffTable.insert { 
+
+        StaffTable.insert {
             it[StaffTable.email] = email
             it[StaffTable.passwordHash] = passwordHash
             it[StaffTable.firstName] = firstName
             it[StaffTable.lastName] = lastName
-            it[StaffTable.phoneNumber] = phoneNumber
+            it[StaffTable.phoneNumber] = null
             it[StaffTable.role] = role
             it[StaffTable.createdAt] = java.time.Instant.now().toString()
         }
@@ -54,14 +54,12 @@ class StaffTableAccess {
         val rows = StaffTable.update({ StaffTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-        
     fun findByEmail(email: String): Staff? = transaction {
         StaffTable.select { StaffTable.email eq email }
             .limit(1)
             .firstOrNull()
             ?.let { constructStaffRecord(it) }
     }
-
     fun constructStaffRecord(it: ResultRow): Staff {
         return Staff (
                         id = it[StaffTable.id],
