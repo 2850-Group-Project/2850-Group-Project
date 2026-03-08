@@ -26,7 +26,7 @@ class PaymentTableAccess {
         PaymentTable.select { attribute eq value } 
             .map { constructPaymentRecord(it) } 
     }
-    fun addPayment(
+    fun createPayment(
         bookingId: Int, 
         amount: Double?, 
         paymentMethod: String?, 
@@ -34,8 +34,8 @@ class PaymentTableAccess {
         paidAt: String?,
         providerReference: String?,
         currency: String
-        ): Payment = transaction { 
-        val id = PaymentTable.insert { 
+        ): Boolean = transaction { 
+        PaymentTable.insert { 
             it[PaymentTable.bookingId] = bookingId
             it[PaymentTable.amount] = amount
             it[PaymentTable.paymentMethod] = paymentMethod
@@ -43,17 +43,9 @@ class PaymentTableAccess {
             it[PaymentTable.paidAt] = paidAt
             it[PaymentTable.providerReference] = providerReference
             it[PaymentTable.currency] = currency
-        } get PaymentTable.id 
-        Payment( 
-            id = id!!,
-            bookingId = bookingId,
-            amount = amount,
-            paymentMethod = paymentMethod,
-            paymentStatus = paymentStatus,
-            paidAt = paidAt,
-            providerReference = providerReference,
-            currency = currency
-        ) }
+        }
+        true
+    }
     fun deleteByID(id: Int) = transaction { 
         PaymentTable.deleteWhere { PaymentTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 

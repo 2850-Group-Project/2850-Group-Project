@@ -26,7 +26,7 @@ class PassengerTableAccess {
         PassengerTable.select { attribute eq value } 
             .map { constructPassengerRecord(it) } 
     }
-    fun addPassenger(
+    fun createPassenger(
         bookingId: Int?,
         email: String?,
         checkedIn: Int,
@@ -40,8 +40,8 @@ class PassengerTableAccess {
         documentNumber: String?,
         documentCountry: String?,
         documentExpiry: String?
-        ): Passenger = transaction { 
-        val id = PassengerTable.insert { 
+        ): Boolean = transaction { 
+        PassengerTable.insert { 
             it[PassengerTable.bookingId] = bookingId
             it[PassengerTable.email] = email
             it[PassengerTable.checkedIn] = checkedIn
@@ -55,23 +55,9 @@ class PassengerTableAccess {
             it[PassengerTable.documentNumber] = documentNumber
             it[PassengerTable.documentCountry] = documentCountry
             it[PassengerTable.documentExpiry] = documentExpiry
-        } get PassengerTable.id 
-        Passenger( 
-            id = id!!,
-            bookingId = bookingId,
-            email = email,
-            checkedIn = checkedIn,
-            title = title,
-            firstName = firstName,
-            lastName = lastName,
-            dateOfBirth = dateOfBirth,
-            gender = gender,
-            nationality = nationality,
-            documentType = documentType,
-            documentNumber = documentNumber,
-            documentCountry = documentCountry,
-            documentExpiry = documentExpiry
-        ) }
+        }
+        true
+    }
     fun deleteByID(id: Int) = transaction { 
         PassengerTable.deleteWhere { PassengerTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 

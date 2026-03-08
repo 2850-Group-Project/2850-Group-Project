@@ -23,22 +23,18 @@ class BookingSegmentTableAccess {
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<BookingSegment> = transaction {
         BookingSegmentTable.select { attribute eq value } 
             .map { constructBookingSegmentRecord(it) } }
-    fun addBookingSegment(
+    fun createBookingSegment(
         bookingId: Int, 
         flightId: Int, 
         flightFareId: Int
-        ): BookingSegment = transaction { 
-        val id = BookingSegmentTable.insert { 
+        ): Boolean = transaction { 
+        BookingSegmentTable.insert { 
             it[BookingSegmentTable.bookingId] = bookingId 
             it[BookingSegmentTable.flightId] = flightId 
             it[BookingSegmentTable.flightFareId] = flightFareId 
-        } get BookingSegmentTable.id 
-        BookingSegment( 
-            id = id!!, 
-            bookingId = bookingId, 
-            flightId = flightId, 
-            flightFareId = flightFareId 
-        ) }
+        }
+        true
+    }
     fun deleteByID(id: Int) = transaction { 
         BookingSegmentTable.deleteWhere { BookingSegmentTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 

@@ -26,7 +26,7 @@ class FlightFareTableAccess {
         FlightFareTable.select { attribute eq value } 
             .map { constructFlightFareRecord(it) } 
     }
-    fun addFlightFare(
+    fun createFlightFare(
         flightId: Int, 
         fareClassId: Int, 
         price: Double, 
@@ -34,8 +34,8 @@ class FlightFareTableAccess {
         seatsAvailable: Int, 
         saleStart: String?, 
         saleEnd: String?
-        ): Complaint = transaction { 
-        val id = FlightFareTable.insert { 
+        ): Boolean = transaction { 
+        FlightFareTable.insert { 
             it[FlightFareTable.flightId] = flightId 
             it[FlightFareTable.fareClassId] = fareClassId 
             it[FlightFareTable.price] = price 
@@ -43,17 +43,9 @@ class FlightFareTableAccess {
             it[FlightFareTable.seatsAvailable] = seatsAvailable 
             it[FlightFareTable.saleStart] = saleStart 
             it[FlightFareTable.saleEnd] = saleEnd 
-        } get FlightFareTable.id 
-        FlightFare( 
-            id = id!!,
-            flightId = flightId,
-            fareClassId = fareClassId,
-            price = price,
-            currency = currency,
-            seatsAvailable = seatsAvailable,
-            saleStart = saleStart,
-            saleEnd = saleEnd
-        ) }
+        }
+        true
+    }
     fun deleteByID(id: Int) = transaction { 
         FlightFareTable.deleteWhere { FlightFareTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 

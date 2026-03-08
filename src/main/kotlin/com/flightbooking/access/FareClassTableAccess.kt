@@ -15,6 +15,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import java.time.Instant
 
 class FareClassTableAccess {
     fun getAll(): List<FareClass> = transaction {
@@ -26,7 +27,7 @@ class FareClassTableAccess {
         FareClassTable.select { attribute eq value } 
             .map { constructFareClassRecord(it) } 
     }
-    fun addFareClass(
+    fun createFareClass(
         classCode: String,
         cabinClass: String?, 
         displayName: String?,
@@ -43,10 +44,9 @@ class FareClassTableAccess {
         milesEarnRate: Double,
         minimumMilesForBooking: Int?,
         description: String?,
-        createdAt: String,
         updatedAt: String
-        ):FareClass  = transaction { 
-        val id = FareClassTable.insert { 
+        ):Boolean = transaction { 
+        FareClassTable.insert { 
             it[FareClassTable.classCode] = classCode 
             it[FareClassTable.cabinClass] = cabinClass 
             it[FareClassTable.displayName] = displayName 
@@ -63,30 +63,11 @@ class FareClassTableAccess {
             it[FareClassTable.milesEarnRate] = milesEarnRate
             it[FareClassTable.minimumMilesForBooking] = minimumMilesForBooking
             it[FareClassTable.description] = description
-            it[FareClassTable.createdAt] = createdAt
+            it[FareClassTable.createdAt] = java.time.Instant.now().toString()
             it[FareClassTable.updatedAt] = updatedAt
-        } get FareClassTable.id 
-        FareClass( 
-            id = id!!, 
-            classCode = classCode,
-            cabinClass = cabinClass,
-            displayName = displayName,
-            refundable = refundable,
-            cancelProtocol = cancelProtocol,
-            advanceSeatSelection = advancedSeatSelection,
-            priorityCheckin = priorityCheckin,
-            priorityBoarding = priorityBoarding,
-            loungeAccess = loungeAccess,
-            carryOnAllowed = carryOnAllowed,
-            carryOnWeightKg = carryOnWeightKg,
-            checkedBaggagePieces = checkedBaggagePieces,
-            checkedBaggageWeightKg = checkedBaggageWeightKg,
-            milesEarnRate = milesEarnRate,
-            minimumMilesForBooking = minimumMilesForBooking,
-            description = description,
-            createdAt = createdAt,
-            updatedAt = updatedAt
-        ) }
+        }
+        true
+    }
     fun deleteByID(id: Int) = transaction { 
         FareClassTable.deleteWhere { FareClassTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 
