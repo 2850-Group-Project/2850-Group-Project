@@ -15,6 +15,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import java.time.Instant
 
 class NotificationTableAccess {
     fun getAll(): List<Notification> = transaction {
@@ -26,28 +27,20 @@ class NotificationTableAccess {
         NotificationTable.select { attribute eq value } 
             .map { constructNotificationRecord(it) } 
     }
-    fun addNotification(
+    fun createNotification(
         userId: Int?, 
         type: String?, 
         message: String?, 
-        createdAt: String, 
         readAt: String?
-        ): Complaint = transaction { 
-        val id = NotificationTable.insert { 
+        ): Boolean = transaction { 
+        NotificationTable.insert { 
             it[NotificationTable.userId] = userId
             it[NotificationTable.type] = type
             it[NotificationTable.message] = message
-            it[NotificationTable.createdAt] = createdAt
+            it[NotificationTable.createdAt] = java.time.Instant.now().toString()
             it[NotificationTable.readAt] = readAt
-        } get NotificationTable.id 
-        Notification( 
-            id = id!!,
-            userId = userId,
-            type = type,
-            message = message,
-            createdAt = createdAt,
-            readAt = readAt
-        ) }
+        }
+    }
     fun deleteByID(id: Int) = transaction { 
         NotificationTable.deleteWhere { NotificationTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 

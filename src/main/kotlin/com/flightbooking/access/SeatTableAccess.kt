@@ -26,7 +26,7 @@ class SeatTableAccess {
         SeatTable.select { attribute eq value } 
             .map { constructSeatRecord(it) } 
     }
-    fun addSeat(
+    fun createSeat(
         flightId: Int,
         seatCode: String,
         cabinClass: String?,
@@ -35,8 +35,8 @@ class SeatTableAccess {
         exitRow: Int,
         reducedMobility: Int,
         status: String
-        ): Seat = transaction { 
-        val id = SeatTable.insert { 
+        ):Boolean = transaction { 
+        SeatTable.insert { 
             it[SeatTable.flightId] = flightId
             it[SeatTable.seatCode] = seatCode
             it[SeatTable.cabinClass] = cabinClass
@@ -45,18 +45,9 @@ class SeatTableAccess {
             it[SeatTable.exitRow] = exitRow
             it[SeatTable.reducedMobility] = reducedMobility
             it[SeatTable.status] = status
-        } get SeatTable.id 
-        Seat( 
-            id = id!!,
-            flightId = flightId
-            seatCode = seatCode
-            cabinClass = cabinClass
-            position = position
-            extraLegroom = extraLegroom
-            exitRow = exitRow
-            reducedMobility = reducedMobility
-            status = status
-        ) }
+        }
+        true
+    }
     fun deleteByID(id: Int) = transaction { 
         SeatTable.deleteWhere { SeatTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 

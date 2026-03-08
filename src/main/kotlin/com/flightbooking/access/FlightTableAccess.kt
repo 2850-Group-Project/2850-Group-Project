@@ -26,7 +26,7 @@ class FlightTableAccess {
         FlightTable.select { attribute eq value } 
             .map { constructFlightRecord(it) } 
     }
-    fun addFlight(
+    fun createFlight(
         flightNumber: Int?, 
         originAirport: Int, 
         destinationAirport: Int, 
@@ -34,8 +34,8 @@ class FlightTableAccess {
         scheduledArrivalTime: String?, 
         status: String, 
         capacity: Int?
-        ): Complaint = transaction { 
-        val id = FlightTable.insert { 
+        ): Boolean = transaction { 
+        FlightTable.insert { 
             it[FlightTable.flightNumber] = flightNumber 
             it[FlightTable.originAirport] = originAirport
             it[FlightTable.destinationAirport] = destinationAirport
@@ -43,17 +43,8 @@ class FlightTableAccess {
             it[FlightTable.scheduledArrivalTime] = scheduledArrivalTime
             it[FlightTable.status] = status
             it[FlightTable.capacity] = capacity
-        } get FlightTable.id 
-        Flight( 
-            id = id!!,
-            flightNumber = flightNumber,
-            originAirport = originAirport,
-            destinationAirport = destinationAirport,
-            scheduledDepartureTime = scheduledDepartureTime,
-            scheduledArrivalTime = scheduledArrivalTime,
-            status = status,
-            capacity = capacity
-        ) }
+        }
+    }
     fun deleteByID(id: Int) = transaction { 
         FlightTable.deleteWhere { FlightTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 

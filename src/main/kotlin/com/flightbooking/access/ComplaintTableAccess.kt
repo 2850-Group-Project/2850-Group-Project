@@ -15,6 +15,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import java.time.Instant
 
 class ComplaintTableAccess {
     fun getAll(): List<Complaint> = transaction {
@@ -26,31 +27,23 @@ class ComplaintTableAccess {
         ComplaintTable.select { attribute eq value } 
             .map { constructComplaintRecord(it) } 
     }
-    fun addComplaint(
+    fun createComplaint(
         userId: Int?, 
         type: String?, 
         message: String?, 
-        createdAt: String, 
         status: String, 
         handledByStaffId: Int?
-        ): Complaint = transaction { 
-        val id = ComplaintTable.insert { 
+        ): Boolean = transaction { 
+        ComplaintTable.insert { 
             it[ComplaintTable.userId] = userId 
             it[ComplaintTable.type] = type 
             it[ComplaintTable.message] = message 
-            it[ComplaintTable.createdAt] = createdAt 
+            it[ComplaintTable.createdAt] = java.time.Instant.now().toString()
             it[ComplaintTable.status] = status 
             it[ComplaintTable.handledByStaffId] = handledByStaffId
-        } get ComplaintTable.id 
-        Complaint( 
-            id = id!!, 
-            userId = userId, 
-            type = type, 
-            message = message, 
-            createdAt = createdAt, 
-            status = status, 
-            handledByStaffId = handledByStaffId
-        ) }
+        }
+        return@transation true
+    }
     fun deleteByID(id: Int) = transaction { 
         ComplaintTable.deleteWhere { ComplaintTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 

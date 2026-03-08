@@ -15,6 +15,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import java.time.Instant
 
 class StaffTableAccess {
     fun getAll(): List<Staff> = transaction {
@@ -26,15 +27,16 @@ class StaffTableAccess {
         StaffTable.select { attribute eq value } 
             .map { constructStaffRecord(it) } 
     }
-    fun addStaff(
+    fun createStaff(
         email: String,
         passwordHash: String?,
         firstName: String?,
         lastName: String?,
         phoneNumber: String?,
         role: String?,
-        createdAt: String
         ): Boolean = transaction { 
+        val exists = UserTable.select { UserTable.email eq email }.count() > 0
+        if (exists) return@transaction false
         StaffTable.insert { 
             it[StaffTable.email] = email
             it[StaffTable.passwordHash] = passwordHash
@@ -42,7 +44,7 @@ class StaffTableAccess {
             it[StaffTable.lastName] = lastName
             it[StaffTable.phoneNumber] = phoneNumber
             it[StaffTable.role] = role
-            it[StaffTable.createdAt] = createdAt
+            it[StaffTable.createdAt] = java.time.Instant.now().toString()
         }
         true
     }

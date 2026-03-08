@@ -15,6 +15,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import java.time.Instant
 
 class BookingTableAccess {
     fun getAll(): List<Booking> = transaction {
@@ -26,34 +27,25 @@ class BookingTableAccess {
         BookingTable.select { attribute eq value } 
             .map { constructBookingRecord(it) } 
     }
-    fun addBooking(
+    fun createBooking(
         userId: Int?, 
         bookingReference: String, 
         paymentId: Int?, 
-        createdAt: String, 
         bookingStatus: String, 
         cancelledAt: String?, 
         amendable: Int
-        ): Booking = transaction { 
-        val id = BookingTable.insert { 
+        ): Boolean = transaction { 
+        BookingTable.insert { 
             it[BookingTable.userId] = userId 
             it[BookingTable.bookingReference] = bookingReference 
             it[BookingTable.paymentId] = paymentId 
-            it[BookingTable.createdAt] = createdAt 
+            it[BookingTable.createdAt] = java.time.Instant.now().toString()
             it[BookingTable.bookingStatus] = bookingStatus 
             it[BookingTable.cancelledAt] = cancelledAt 
             it[BookingTable.amendable] = amendable
-        } get BookingTable.id 
-        Booking( 
-            id = id!!, 
-            userId = userId, 
-            bookingReference = bookingReference, 
-            paymentId = paymentId, 
-            createdAt = createdAt, 
-            bookingStatus = bookingStatus, 
-            cancelledAt = cancelledAt, 
-            amendable = amendable
-        ) }
+        }
+        true
+    }
     fun deleteByID(id: Int) = transaction { 
         BookingTable.deleteWhere { BookingTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 

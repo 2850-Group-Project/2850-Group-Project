@@ -35,26 +35,20 @@ class AirportTableAccess {
             .map { constructAirportRecord(it) } 
     }
 
-    fun addAirport(
+    fun createAirport(
         iataCode: String, 
         name: String?, 
         city: String?, 
         country: String?
-        ): Airport = transaction { 
+        ): Boolean = transaction { 
         // inserts new record into the table and returns the generated id
         val id = AirportTable.insert { 
             it[AirportTable.iataCode] = iataCode 
             it[AirportTable.name] = name 
             it[AirportTable.city] = city 
             it[AirportTable.country] = country 
-        } get AirportTable.id 
-        Airport( 
-            id = id!!, 
-            iataCode = iataCode, 
-            name = name, 
-            city = city, 
-            country = country 
-        ) 
+        }
+        true
     }
 
     fun deleteByID(id: Int) = transaction { 
