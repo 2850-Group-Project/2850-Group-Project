@@ -34,8 +34,8 @@ class StaffTableAccess {
         phoneNumber: String?,
         role: String?,
         createdAt: String
-        ): Staff = transaction { 
-        val id = StaffTable.insert { 
+        ): Boolean = transaction { 
+        StaffTable.insert { 
             it[StaffTable.email] = email
             it[StaffTable.passwordHash] = passwordHash
             it[StaffTable.firstName] = firstName
@@ -43,23 +43,23 @@ class StaffTableAccess {
             it[StaffTable.phoneNumber] = phoneNumber
             it[StaffTable.role] = role
             it[StaffTable.createdAt] = createdAt
-        } get StaffTable.id 
-        Staff( 
-            id = id!!,
-            email = email,
-            passwordHash = passwordHash,
-            firstName = firstName,
-            lastName = lastName,
-            phoneNumber = phoneNumber,
-            role = role,
-            createdAt = createdAt
-        ) }
+        }
+        true
+    }
     fun deleteByID(id: Int) = transaction { 
         StaffTable.deleteWhere { StaffTable.id eq id } }
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 
         val rows = StaffTable.update({ StaffTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
+        
+    fun findByEmail(email: String): Staff? = transaction {
+        StaffTable.select { StaffTable.email eq email }
+            .limit(1)
+            .firstOrNull()
+            ?.let { constructStaffRecord(it) }
+    }
+
     fun constructStaffRecord(it: ResultRow): Staff {
         return Staff (
                         id = it[StaffTable.id],

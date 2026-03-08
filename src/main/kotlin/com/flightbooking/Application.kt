@@ -2,6 +2,12 @@ package com.flightbooking
 
 import com.flightbooking.database.DBFactory
 import com.flightbooking.routes.authRoutes
+import com.flightbooking.routes.staffAuthRoutes
+import com.flightbooking.routes.staffPagesRoutes
+import com.flightbooking.models.StaffSession
+import com.flightbooking.routes.pagesRoutes
+import com.flightbooking.routes.staffBookingsRoutes
+import com.flightbooking.models.UserSession
 import io.pebbletemplates.pebble.loader.ClasspathLoader
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -41,7 +47,11 @@ fun Application.module() {
         cacheActive(false) 
     }
     install(Sessions) {
-        cookie<String>("COMP2850_SESSION") {
+        cookie<UserSession>("USER_SESSION") {
+            cookie.path = "/"
+            cookie.httpOnly = true
+        }
+        cookie<StaffSession>("STAFF_SESSION") {
             cookie.path = "/"
             cookie.httpOnly = true
         }
@@ -61,5 +71,9 @@ fun Application.module() {
             call.respondText("ok")
         }
         authRoutes()
+        staffAuthRoutes()
+        pagesRoutes()
+        staffPagesRoutes()
+        staffBookingsRoutes()
     }
 }

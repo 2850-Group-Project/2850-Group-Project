@@ -16,6 +16,9 @@ import com.flightbooking.tables.StaffTable
 import com.flightbooking.tables.ComplaintTable
 import com.flightbooking.tables.NotificationTable
 
+// data class for storing user session data (ie, if they are logged in)
+data class UserSession(val userEmail: String)
+
 data class User(
     val id: Int,
     val email: String,
@@ -79,7 +82,6 @@ data class FlightFare(
     val saleStart: String?,
     val saleEnd: String?
 )
-
 
 data class Booking(
     val id: Int,
@@ -176,6 +178,13 @@ data class Notification(
     val readAt: String?
 )
 
+data class StaffSession(
+val staffEmail: String
+)
+
+// following functions transform rows returned from Exposed queries
+// into data objects that we can treat as kotlin classes
+// rather than having to parse the sql query return (which can be funky sometimes)
 fun ResultRow.toAirport(): Airport = Airport(
     id = this[AirportTable.id],
     iataCode = this[AirportTable.iataCode],

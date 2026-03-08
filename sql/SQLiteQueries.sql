@@ -3,7 +3,7 @@
 --      RUN WITH CTRL+SHIFT+Q         --
 ----------------------------------------
 
-select * from flight;
+select * from user;
 
 
 

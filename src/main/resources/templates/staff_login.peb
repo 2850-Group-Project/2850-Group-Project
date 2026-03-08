@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login - SkyFlow</title>
+  <title>Staff Login - SkyFlow</title>
   <style>
     :root{
       --bg0:#0b0d12;
@@ -19,7 +19,6 @@
       --shadow:0 20px 60px rgba(0,0,0,.45);
       --radius:18px;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -30,13 +29,7 @@
                   linear-gradient(180deg, var(--bg0), var(--bg1));
       min-height:100vh;
     }
-
-    .shell{
-      min-height:100vh;
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-    }
-
+    .shell{ min-height:100vh; display:grid; grid-template-columns: 1.1fr .9fr; }
     .hero{
       position:relative;
       padding:44px 48px;
@@ -47,15 +40,16 @@
         linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,0));
       border-right:1px solid rgba(255,255,255,.06);
     }
-
     .brand{
       display:flex;
       align-items:center;
+      justify-content:space-between;
       gap:12px;
       font-weight:700;
       letter-spacing:.2px;
       opacity:.95;
     }
+    .brand-left{ display:flex; align-items:center; gap:12px; }
     .brand-badge{
       width:34px;height:34px;
       border-radius:10px;
@@ -65,7 +59,13 @@
       box-shadow: 0 12px 30px rgba(0,0,0,.25);
       font-size:16px;
     }
-
+    .toplink{
+      font-size:13px;
+      color: rgba(125,211,252,.95);
+      text-decoration:none;
+      font-weight:700;
+    }
+    .toplink:hover{ text-decoration:underline; }
     .pill{
       display:inline-flex;
       align-items:center;
@@ -79,7 +79,6 @@
       font-size:13px;
       width:fit-content;
     }
-
     .hero h1{
       margin:18px 0 12px;
       font-size:56px;
@@ -99,13 +98,7 @@
       font-size:16px;
       line-height:1.6;
     }
-
-    .hero-cards{
-      margin-top:30px;
-      display:grid;
-      gap:14px;
-      max-width:520px;
-    }
+    .hero-cards{ margin-top:30px; display:grid; gap:14px; max-width:520px; }
     .hcard{
       padding:16px 16px;
       border-radius:16px;
@@ -113,18 +106,8 @@
       border:1px solid rgba(255,255,255,.10);
       backdrop-filter: blur(10px);
     }
-    .hcard-title{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:650;
-      margin-bottom:6px;
-    }
-    .hcard small{
-      color:var(--muted2);
-      line-height:1.45;
-      display:block;
-    }
+    .hcard-title{ display:flex; align-items:center; gap:10px; font-weight:650; margin-bottom:6px; }
+    .hcard small{ color:var(--muted2); line-height:1.45; display:block; }
     .icon{
       width:30px;height:30px;border-radius:10px;
       display:grid;place-items:center;
@@ -132,7 +115,6 @@
       border:1px solid rgba(255,255,255,.10);
       font-size:14px;
     }
-
     .quote{
       position:absolute;
       left:48px;
@@ -141,14 +123,7 @@
       font-size:13px;
       font-style:italic;
     }
-
-    .panel{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:44px 26px;
-    }
-
+    .panel{ display:flex; justify-content:center; align-items:center; padding:44px 26px; }
     .card{
       width:100%;
       max-width:460px;
@@ -158,26 +133,9 @@
       box-shadow: var(--shadow);
       padding:34px 34px 26px;
     }
-
-    .card h2{
-      margin:0 0 6px;
-      font-size:30px;
-      letter-spacing:-.4px;
-    }
-    .card p.sub{
-      margin:0 0 22px;
-      color:var(--muted);
-      line-height:1.5;
-      font-size:14px;
-    }
-
-    .row{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-      margin-bottom:14px;
-    }
-
+    .card h2{ margin:0 0 6px; font-size:30px; letter-spacing:-.4px; }
+    .card p.sub{ margin:0 0 22px; color:var(--muted); line-height:1.5; font-size:14px; }
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:14px; }
     .btn{
       border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
@@ -195,7 +153,6 @@
     }
     .btn:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); }
     .btn:active{ transform: translateY(0px); }
-
     .divider{
       margin:18px 0 16px;
       display:flex;
@@ -211,7 +168,6 @@
       height:1px;
       background: rgba(255,255,255,.10);
     }
-
     label{
       display:block;
       margin:10px 0 8px;
@@ -219,10 +175,7 @@
       font-size:13px;
       font-weight:600;
     }
-
-    .field{
-      position:relative;
-    }
+    .field{ position:relative; }
     .input{
       width:100%;
       padding:13px 14px;
@@ -238,7 +191,6 @@
       border-color: rgba(63,94,251,.65);
       box-shadow: 0 0 0 4px rgba(63,94,251,.18);
     }
-
     .meta{
       display:flex;
       justify-content:space-between;
@@ -252,7 +204,6 @@
       text-decoration:none;
     }
     .meta a:hover{ text-decoration:underline; }
-
     .primary{
       width:100%;
       padding:13px 14px;
@@ -267,7 +218,6 @@
     }
     .primary:hover{ filter:brightness(1.05); transform: translateY(-1px); }
     .primary:active{ transform: translateY(0px); }
-
     .error{
       margin:0 0 14px;
       padding:12px 12px;
@@ -278,22 +228,6 @@
       font-size:13px;
       line-height:1.35;
     }
-
-    .footer{
-      margin-top:18px;
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-      font-size:12px;
-      color: rgba(255,255,255,.55);
-    }
-    .footer a{
-      color: rgba(255,255,255,.55);
-      text-decoration:none;
-    }
-    .footer a:hover{ text-decoration:underline; }
-
     .cta{
       margin-top:18px;
       display:flex;
@@ -308,7 +242,20 @@
       font-weight:700;
     }
     .cta a:hover{ text-decoration:underline; }
-
+    .footer{
+      margin-top:18px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:12px;
+      color: rgba(255,255,255,.55);
+    }
+    .footer a{
+      color: rgba(255,255,255,.55);
+      text-decoration:none;
+    }
+    .footer a:hover{ text-decoration:underline; }
     @media (max-width: 980px){
       .shell{ grid-template-columns: 1fr; }
       .hero{ display:none; }
@@ -321,53 +268,55 @@
   <div class="shell">
     <section class="hero">
       <div class="brand">
-        <div class="brand-badge">✈</div>
-        <div>SkyFlow</div>
+        <div class="brand-left">
+          <div class="brand-badge">✈</div>
+          <div>SkyFlow Staff</div>
+        </div>
+        <a class="toplink" href="/login">User Login</a >
       </div>
 
-      <div class="pill">New Destination: Santorini</div>
+      <div class="pill">Staff Portal</div>
 
-      <h1>Elevate Your <span class="grad">Journey</span><br/>Above The Ordinary.</h1>
+      <h1>Secure <span class="grad">Staff</span><br/>Access Panel.</h1>
 
       <p>
-        Experience the future of flight booking. Swift, secure, and tailored to your preferences.
-        Your next adventure starts with a single click.
+        Sign in with your staff credentials to manage flights, bookings, and support requests.
       </p >
 
       <div class="hero-cards">
         <div class="hcard">
-          <div class="hcard-title"><span class="icon">🌐</span> Global Network</div>
-          <small>Access 1,200+ destinations across 180 countries with our premium partner airlines.</small>
+          <div class="hcard-title"><span class="icon">🛡️</span> Role-based Access</div>
+          <small>Staff accounts can be assigned roles for admin, support, and operations.</small>
         </div>
         <div class="hcard">
-          <div class="hcard-title"><span class="icon">✨</span> Smart Booking</div>
-          <small>Personalized suggestions and best-value fare options to help you book faster.</small>
+          <div class="hcard-title"><span class="icon">🧾</span> Manage Records</div>
+          <small>View bookings, respond to complaints, and update flight status efficiently.</small>
         </div>
       </div>
 
-      <div class="quote">“The best booking experience I’ve had in years.” — @travel_enthusiast</div>
+      <div class="quote">“Fast and reliable admin tools.” — Ops Team</div>
     </section>
 
     <main class="panel">
       <div class="card">
-        <h2>Welcome Back</h2>
-        <p class="sub">Enter your credentials to access your flights and rewards.</p >
+        <h2>Staff Sign In</h2>
+        <p class="sub">Enter your staff email and password to continue.</p >
 
         {% if error %}
           <div class="error">{{ error }}</div>
         {% endif %}
 
         <div class="row">
-          <button class="btn" type="button">Google</button>
-          <button class="btn" type="button">Apple</button>
+          <button class="btn" type="button" onclick="return false;">SSO</button>
+          <button class="btn" type="button" onclick="return false;">Security Key</button>
         </div>
 
         <div class="divider">OR CONTINUE WITH EMAIL</div>
 
-        <form action="/login" method="post">
-          <label for="email">Email Address</label>
+        <form action="/staff/login" method="post">
+          <label for="email">Staff Email</label>
           <div class="field">
-            <input class="input" id="email" type="email" name="email" placeholder="you@example.com" required />
+            <input class="input" id="email" type="email" name="email" placeholder="staff@company.com" required />
           </div>
 
           <label for="password">Password</label>
@@ -377,30 +326,26 @@
 
           <div class="meta">
             <label style="margin:0; display:flex; align-items:center; gap:8px; font-weight:600;">
-              <input type="checkbox" name="remember" />
+              <input type="checkbox" onclick="return false;" />
               Remember me
             </label>
-            <a href=" " onclick="return false;">Forgot password?</a >
+            <a href="#" onclick="return false;">Forgot password?</a >
           </div>
 
           <button class="primary" type="submit">Sign In →</button>
         </form>
 
         <div class="cta">
-          <span>Don’t have an account?</span>
-          <a href="/register">Create Account</a >
-        </div>
-        <div class="cta" style="margin-top:10px;">
-          <span>Staff?</span>
-          <a href="/staff/login">Login as staff</a >
+          <span>Need a staff account?</span>
+          <a href="/staff/register">Create Staff Account</a >
         </div>
 
         <div class="footer">
           <a href="#" onclick="return false;">Privacy Policy</a >
           <span>•</span>
-          <a href="#" onclick="return false;">Terms of Service</a >
+          <a href="#" onclick="return false;">Terms</a >
           <span>•</span>
-          <a href="#" onclick="return false;">Help Center</a >
+          <a href="#" onclick="return false;">Help</a >
         </div>
       </div>
     </main>
