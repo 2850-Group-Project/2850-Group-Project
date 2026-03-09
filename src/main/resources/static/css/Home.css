@@ -1,3 +1,9 @@
+/** 
+  * Used AI to generate the colours/gradients for the buttons as well as
+  * the backgrounds for the divs/buttons/inputs to maintain even theme
+  * across all pages.
+*/
+
 :root {
   --bg0: #0b0d12;
   --bg1: #101420;
