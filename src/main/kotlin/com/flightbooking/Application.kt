@@ -24,10 +24,17 @@ import io.ktor.server.http.content.*
 import io.ktor.http.HttpStatusCode
 import org.slf4j.event.Level
 
+/**
+ * Entry point for the Ktor application.
+ */
 fun main(args: Array<String>) {
     EngineMain.main(args)
 }
 
+/**
+ * Main application module. Installs all plugins, configures sessions,
+ * initialises the database, and registers all routes.
+ */
 fun Application.module() {
     install(CallLogging) {
         level = Level.INFO
@@ -40,7 +47,7 @@ fun Application.module() {
         }
         // any other 500 error (server error)
         exception<Throwable> { call, cause ->
-            println(cause)
+            call.application.log.error("Unhandled exception", cause)
             call.respond(HttpStatusCode.InternalServerError, cause.message ?: "Unknown error")
         }
     }
@@ -48,6 +55,7 @@ fun Application.module() {
     install(ContentNegotiation)
 
     install(Pebble) {
+        // Sets prefix for pebble templates so we don't need to repeat it
         loader(ClasspathLoader().apply {
             prefix = "templates" 
         })
@@ -55,6 +63,7 @@ fun Application.module() {
     }
 
     install(Sessions) {
+        // Create user/staff session data as cookie to be used later
         cookie<UserSession>("USER_SESSION") {
             cookie.path = "/"
             cookie.httpOnly = true
@@ -64,22 +73,27 @@ fun Application.module() {
             cookie.httpOnly = true
         }
     }
+
+    // Start up DB abstraction instance
     
     try {
         DBFactory.init()
     } catch (e: Throwable) {
-        println(e)
-        throw e
+        log.error("Failed to init DBFactory", e)
+        dispose() // gracefull exit instead of abrupt error thrown
     }
 
+    // Prepare and load the routes
     routing {
+        staticResources("/static", "static") // allows easy stylesheet reference (like pebble "templates" prefix)
+        
+        // TODO: WE NEED TO MOVE THESE AWAY
         get("/") {
             call.respondRedirect("/login")
         }
         get("/__health") {
             call.respondText("ok")
         }
-        staticResources("/static", "static")
         authRoutes()
         staffAuthRoutes()
         pagesRoutes()
