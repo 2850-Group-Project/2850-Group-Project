@@ -19,6 +19,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.sessions.*
 import io.ktor.server.response.*
+import io.ktor.server.http.content.*
 import org.slf4j.event.Level
 
 fun main() {
@@ -70,6 +71,7 @@ fun Application.module() {
         get("/__health") {
             call.respondText("ok")
         }
+        staticResources("/static", "static")
         authRoutes()
         staffAuthRoutes()
         pagesRoutes()

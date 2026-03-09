@@ -29,6 +29,7 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
 
     // implementation("com.h2database:h2:2.2.224")
     
