@@ -6,6 +6,9 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 class AviationStackClient(
     val httpClient: HttpClient
 ) {
@@ -21,20 +24,29 @@ class AviationStackClient(
         return response.body()
     }
 }
-
+@Serializable
 data class AirportApiResponse(
-    val pagination: Pagination,
-    val data: List<ApiAirport>
+    val pagination: Pagination? = null,
+    val data: List<ApiAirport> = emptyList()
 )
+@Serializable
 data class Pagination(
-    val limit: Int,
-    val offset: Int,
-    val count: Int,
-    val total: Int
+    val limit: Int? = null,
+    val offset: Int? = null,
+    val count: Int? = null,
+    val total: Int? = null
 )
+@Serializable
 data class ApiAirport(
-    val iata_Code: String?,
-    val airport_name: String?,
-    val city: String?,
-    val country_name: String?
+    @SerialName("iata_code")
+    val iataCode: String? = null,
+
+    @SerialName("airport_name")
+    val airportName: String? = null,
+
+    @SerialName("city")
+    val city: String? = null,
+
+    @SerialName("country_name")
+    val countryName: String? = null
 )
