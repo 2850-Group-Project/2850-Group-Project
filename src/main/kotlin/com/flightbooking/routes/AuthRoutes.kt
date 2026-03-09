@@ -9,6 +9,8 @@ import io.ktor.server.sessions.*
 import com.flightbooking.service.AuthService
 import com.flightbooking.routes.pagesRoutes
 import com.flightbooking.models.UserSession
+import com.flightbooking.models.User
+import com.flightbooking.access.UserTableAccess
 
 fun Route.authRoutes() {
     get("/register") {
@@ -35,11 +37,28 @@ fun Route.authRoutes() {
         val email = params["email"] ?: ""
         val password = params["password"] ?: ""
         if (AuthService.login(email, password)) {
-            // need to add variable that is set to loggedIn = True when the user logs in
-            call.sessions.set(UserSession(userEmail = email))
+            val userTable = UserTableAccess()
+            val userData = userTable.findByEmail(email)
+
+            print(userData)
+
+            if (userData == null) {
+                call.respondRedirect("/login")
+            }
+
+            call.sessions.set(UserSession(
+                userEmail = email,
+                firstName = userData?.firstName ?: "UNKNOWN"
+            ))
             call.respondRedirect("/home")
         } else {
             call.respond(PebbleContent("login.peb", mapOf("error" to "Invalid credentials")))
         }
+    }
+
+    get("/logout") {
+        call.sessions.clear<UserSession>()
+        println("logged out")
+        call.respondRedirect("/")
     }
 }

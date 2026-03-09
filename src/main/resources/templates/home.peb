@@ -1,12 +1,222 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/static/css/Home.css">
+  <title>SkyBook — Find Your Flight</title>
 </head>
 <body>
-  <h1>Home Page</h1>
-  <p>You are logged in.</p >
-  <a href=" ">Back to Login</a >
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="brand">
+      <div class="brand-badge">✈️</div>
+      <span class="brand-title">SkyFlow</span>
+    </a>
+
+    <div class="nav-right">
+      <a href="/profile/bookings" class="btn-ghost">My Bookings</a>
+      <a href="/profile" class="btn-primary">My Account</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Where we flying to,<br /><span>{{ userSession.firstName }}?</span></h1>
+
+    <!-- SEARCH CARD -->
+    <div class="search-card">
+
+      <!-- Trip type tabs -->
+      <div class="trip-tabs">
+        <button class="trip-tab active" onclick="setTripType('return', this)">⇄ Return</button>
+        <button class="trip-tab" onclick="setTripType('oneway', this)">→ One way</button>
+      </div>
+
+      <!-- Form -->
+      <form action="/flights/search" method="GET" id="searchForm">
+        <input type="hidden" name="trip_type" id="tripType" value="return" />
+
+        <div class="search-row">
+
+          <!-- Origin -->
+          <div class="field">
+            <label>From</label>
+            <div class="field-inner">
+              <input
+                type="text"
+                name="origin"
+                placeholder="City or airport"
+                autocomplete="off"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Swap -->
+          <div class="swap-btn">
+            <button type="button" onclick="swapAirports()" title="Swap airports">⇄</button>
+          </div>
+
+          <!-- Destination -->
+          <div class="field">
+            <label>To</label>
+            <div class="field-inner">
+              <input
+                type="text"
+                name="destination"
+                placeholder="City or airport"
+                autocomplete="off"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Departure date -->
+          <div class="field">
+            <label>Departure</label>
+            <div class="field-inner">
+              <input type="date" name="departure_date" required />
+            </div>
+          </div>
+
+          <!-- Return date -->
+          <div class="field" id="returnField">
+            <label>Return</label>
+            <div class="field-inner">
+              <input type="date" name="return_date" id="returnDate" />
+            </div>
+          </div>
+
+          <!-- Passengers -->
+          <div class="field pax-wrapper">
+            <label>Passengers</label>
+            <div class="pax-display" onclick="togglePax()">
+              <span id="paxLabel">1 Adult</span>
+              <span class="caret">▼</span>
+            </div>
+            <div class="pax-dropdown" id="paxDropdown">
+              <div class="pax-row">
+                <div>
+                  <div class="pax-label">Adults</div>
+                  <div class="pax-sub">16+ years</div>
+                </div>
+                <div class="pax-ctrl">
+                  <button type="button" onclick="changePax('adults', -1)">−</button>
+                  <span class="count" id="adultsCount">1</span>
+                  <button type="button" onclick="changePax('adults', 1)">+</button>
+                </div>
+              </div>
+              <div class="pax-row">
+                <div>
+                  <div class="pax-label">Children</div>
+                  <div class="pax-sub">2-15 years</div>
+                </div>
+                <div class="pax-ctrl">
+                  <button type="button" onclick="changePax('children', -1)">−</button>
+                  <span class="count" id="childrenCount">0</span>
+                  <button type="button" onclick="changePax('children', 1)">+</button>
+                </div>
+              </div>
+              <div class="pax-row">
+                <div>
+                  <div class="pax-label">Infants</div>
+                  <div class="pax-sub">Under 2 years</div>
+                </div>
+                <div class="pax-ctrl">
+                  <button type="button" onclick="changePax('infants', -1)">−</button>
+                  <span class="count" id="infantsCount">0</span>
+                  <button type="button" onclick="changePax('infants', 1)">+</button>
+                </div>
+              </div>
+            </div>
+            <!-- Hidden inputs submitted with form -->
+            <input type="hidden" name="adults" id="adultsInput" value="1" />
+            <input type="hidden" name="children" id="childrenInput" value="0" />
+            <input type="hidden" name="infants" id="infantsInput" value="0" />
+          </div>
+
+          <!-- Search button -->
+          
+        </div>
+        <div>
+          <button type="submit" class="btn-search">Search flights</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 SkyBook. All rights reserved lol</span>
+    <div class="footer-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/help">Help</a>
+      <a href="/complaints">Complaints</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── Trip type toggle ──
+    function setTripType(type, btn) {
+      document.querySelectorAll('.trip-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tripType').value = type;
+      const returnField = document.getElementById('returnField');
+      const returnDate = document.getElementById('returnDate');
+      if (type === 'oneway') {
+        returnField.style.display = 'none';
+        returnDate.removeAttribute('required');
+      } else {
+        returnField.style.display = '';
+        returnDate.setAttribute('required', '');
+      }
+    }
+
+    // ── Swap airports ──
+    function swapAirports() {
+      const inputs = document.querySelectorAll('input[name="origin"], input[name="destination"]');
+      const tmp = inputs[0].value;
+      inputs[0].value = inputs[1].value;
+      inputs[1].value = tmp;
+    }
+
+    // ── Passengers ──
+    const pax = { adults: 1, children: 0, infants: 0 };
+
+    function togglePax() {
+      document.getElementById('paxDropdown').classList.toggle('open');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.pax-wrapper')) {
+        document.getElementById('paxDropdown').classList.remove('open');
+      }
+    });
+
+    function changePax(type, delta) {
+      const min = type === 'adults' ? 1 : 0;
+      pax[type] = Math.max(min, Math.min(9, pax[type] + delta));
+      document.getElementById(type + 'Count').textContent = pax[type];
+      document.getElementById(type + 'Input').value = pax[type];
+      updatePaxLabel();
+    }
+
+    function updatePaxLabel() {
+      const total = pax.adults + pax.children + pax.infants;
+      const parts = [];
+      if (pax.adults) parts.push(`${pax.adults} Adult${pax.adults > 1 ? 's' : ''}`);
+      if (pax.children) parts.push(`${pax.children} Child${pax.children > 1 ? 'ren' : ''}`);
+      if (pax.infants) parts.push(`${pax.infants} Infant${pax.infants > 1 ? 's' : ''}`);
+      document.getElementById('paxLabel').textContent = parts.join(', ');
+    }
+
+    // Set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('input[type="date"]').forEach(i => i.setAttribute('min', today));
+  </script>
+
 </body>
 </html>
