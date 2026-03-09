@@ -1,3 +1,8 @@
+/** 
+  * Used AI to generate the transitions/gradients for text and divs
+  * to maintain constant theme across all pages.
+*/
+
 .error-page {
     display: flex;
     flex-direction: column;
