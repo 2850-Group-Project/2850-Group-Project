@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/static/css/Home.css">
+  <link rel="stylesheet" href="/static/css/404.css">
+  <title>404 - I couldn't find your page</title>
+</head>
+<body>
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="brand">
+      <div class="brand-badge">✈️</div>
+      <span class="brand-title">SkyFlow</span>
+    </a>
+    <div class="nav-right">
+      <a href="/profile/bookings" class="btn-ghost">My Bookings</a>
+      <a href="/profile" class="btn-primary">My Account</a>
+    </div>
+  </nav>
+
+  <div class="error-page">
+    <div class="error-code">404</div>
+    <h1 class="error-title">This page doesn't exist</h1>
+    <p class="error-sub">The page you're looking for couldn't be found 😔</p>
+    <div class="error-actions">
+      <a href="/home" class="btn-primary">Back to home</a>
+      <a href="/profile/bookings" class="btn-ghost">My Bookings</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 SkyBook. All rights reserved lol</span>
+    <div class="footer-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/help">Help</a>
+      <a href="/complaints">Complaints</a>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -20,6 +20,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.sessions.*
 import io.ktor.server.response.*
 import io.ktor.server.http.content.*
+import io.ktor.http.HttpStatusCode
 import org.slf4j.event.Level
 
 fun main() {
@@ -35,8 +36,12 @@ fun Application.module() {
         level = Level.INFO
     }
     install(StatusPages) {
+        // check for 404 error (page not found)
+        status(HttpStatusCode.NotFound) { call, _ ->
+            call.respond(PebbleContent("404.peb", emptyMap()))
+        }
+        // any other 500 error (server error)
         exception<Throwable> { call, cause ->
-            // cause.printStackTrace()
             println(cause)
             call.respond(PebbleContent("404.peb", emptyMap()))
         }
@@ -62,7 +67,6 @@ fun Application.module() {
         DBFactory.init()
     } catch (e: Throwable) {
         println(e)
-        // e.printStackTrace()
         throw e
     }
 

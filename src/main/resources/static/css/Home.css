@@ -33,7 +33,7 @@ body {
   min-height: 100vh;
 }
 
-/* ── NAV ── */
+/* -- NAV -- */
 nav {
   display: flex;
   align-items: center;
@@ -102,7 +102,7 @@ nav {
 }
 .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(63,94,251,.45); }
 
-/* ── HERO ── */
+/* -- HERO -- */
 .hero {
   display: flex;
   flex-direction: column;
@@ -140,7 +140,7 @@ nav {
   margin-bottom: 40px;
 }
 
-/* ── SEARCH CARD ── */
+/* -- SEARCH CARD -- */
 .search-card {
   width: 80%;
   background: rgba(15,19,32,.85);
@@ -260,7 +260,7 @@ nav {
 }
 .btn-search:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(63,94,251,.45); }
 
-/* ── PASSENGERS DROPDOWN ── */
+/* -- PASSENGERS DROPDOWN -- */
 .pax-wrapper {
   position: relative;
 }
@@ -345,7 +345,7 @@ nav {
 .pax-ctrl button:hover { background: rgba(255,255,255,.12); }
 .pax-ctrl .count { font-size: 14px; font-weight: 700; min-width: 18px; text-align: center; }
 
-/* ── FOOTER ── */
+/* -- FOOTER -- */
 footer {
   border-top: 1px solid rgba(255,255,255,.06);
   padding: 20px 40px;
@@ -367,7 +367,17 @@ footer a:hover { text-decoration: underline; }
   nav { padding: 14px 20px; }
 }
 
-/* remove the ugly scroll bar */
+/* -- LOAD ANIMATION -- */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1   { animation: slideUp .4s ease .1s both; }
+.hero p    { animation: slideUp .4s ease .2s both; }
+.search-card { animation: slideUp .4s ease .3s both; }
+
+/* -- REMOVE UGLY SCROLL BAR -- */
 * {
   scrollbar-width: none;
 }
