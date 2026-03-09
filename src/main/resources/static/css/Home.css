@@ -237,7 +237,7 @@ nav {
 
 .search-row {
   display: grid;
-  grid-template-columns: 1fr 34px 1fr 1fr 1fr auto;
+  grid-template-columns: 1fr 34px 1fr 1fr 1fr 1fr;
   gap: 10px;
   align-items: center;
 }
@@ -267,7 +267,7 @@ nav {
 .pax-display {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
   padding: 11px 13px;
   border-radius: var(--radius2);
   border: 1px solid rgba(255,255,255,.10);
@@ -276,9 +276,28 @@ nav {
   transition: .18s ease;
   user-select: none;
 }
-.pax-display:hover { border-color: rgba(63,94,251,.45); background: rgba(63,94,251,.07); }
-.pax-display span { font-size: 13px; color: white; flex: 1; }
-.pax-display .caret { font-size: 10px; opacity: .5; }
+.pax-display:hover { 
+  border-color: rgba(63,94,251,.45); 
+  background: rgba(63,94,251,.07); 
+}
+.pax-display span { 
+  font-size: 13px; 
+  color: white; 
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pax-display .caret { 
+  font-size: 10px; 
+  opacity: .5;
+  flex: 0 0 auto;
+}
+
+#paxLabel {
+  width: fit-content;
+}
 
 .pax-dropdown {
   display: none;
