@@ -42,4 +42,10 @@ fun Route.authRoutes() {
             call.respond(PebbleContent("login.peb", mapOf("error" to "Invalid credentials")))
         }
     }
+
+    get("/logout") {
+        call.sessions.clear<UserSession>()
+        println("logged out")
+        call.respondRedirect("/")
+    }
 }
