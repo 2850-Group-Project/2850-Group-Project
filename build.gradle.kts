@@ -30,8 +30,6 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
-
-    // implementation("com.h2database:h2:2.2.224")
     
     // exposed dependencies (abstraction over sql database)
     implementation("org.jetbrains.exposed:exposed-core:0.43.0")
