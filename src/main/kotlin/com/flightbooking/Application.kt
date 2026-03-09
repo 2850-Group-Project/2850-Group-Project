@@ -11,6 +11,7 @@ import com.flightbooking.models.UserSession
 import io.pebbletemplates.pebble.loader.ClasspathLoader
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.server.netty.EngineMain
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import io.ktor.server.pebble.*
@@ -23,12 +24,8 @@ import io.ktor.server.http.content.*
 import io.ktor.http.HttpStatusCode
 import org.slf4j.event.Level
 
-fun main() {
-    val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
-    val host = "0.0.0.0"
-    embeddedServer(Netty, port = port, host = host) {
-        module()
-    }.start(wait = true)
+fun main(args: Array<String>) {
+    EngineMain.main(args)
 }
 
 fun Application.module() {
