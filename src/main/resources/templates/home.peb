@@ -23,7 +23,7 @@
 
   <!-- HERO -->
   <section class="hero">
-    <h1>Where we flying to,<br /><span>gooner?</span></h1>
+    <h1>Where we flying to,<br /><span>{{ userSession.firstName }}?</span></h1>
 
     <!-- SEARCH CARD -->
     <div class="search-card">
