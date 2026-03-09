@@ -32,6 +32,7 @@ fun Application.module() {
     install(CallLogging) {
         level = Level.INFO
     }
+
     install(StatusPages) {
         // check for 404 error (page not found)
         status(HttpStatusCode.NotFound) { call, _ ->
@@ -43,13 +44,16 @@ fun Application.module() {
             call.respond(HttpStatusCode.InternalServerError, cause.message ?: "Unknown error")
         }
     }
+
     install(ContentNegotiation)
+
     install(Pebble) {
         loader(ClasspathLoader().apply {
             prefix = "templates" 
         })
         cacheActive(false) 
     }
+
     install(Sessions) {
         cookie<UserSession>("USER_SESSION") {
             cookie.path = "/"
@@ -60,6 +64,7 @@ fun Application.module() {
             cookie.httpOnly = true
         }
     }
+    
     try {
         DBFactory.init()
     } catch (e: Throwable) {
