@@ -36,8 +36,9 @@ fun Application.module() {
     }
     install(StatusPages) {
         exception<Throwable> { call, cause ->
-            cause.printStackTrace()
-            call.respondText("Internal Server Error: ${cause::class.simpleName}: ${cause.message}", status = io.ktor.http.HttpStatusCode.InternalServerError)
+            // cause.printStackTrace()
+            println(cause)
+            call.respond(PebbleContent("404.peb", emptyMap()))
         }
     }
     install(ContentNegotiation)
@@ -60,7 +61,8 @@ fun Application.module() {
     try {
         DBFactory.init()
     } catch (e: Throwable) {
-        e.printStackTrace()
+        println(e)
+        // e.printStackTrace()
         throw e
     }
 
