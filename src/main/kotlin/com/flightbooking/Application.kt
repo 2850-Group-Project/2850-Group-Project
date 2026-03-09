@@ -40,7 +40,7 @@ fun Application.module() {
         // any other 500 error (server error)
         exception<Throwable> { call, cause ->
             println(cause)
-            call.respond(PebbleContent("404.peb", emptyMap()))
+            call.respond(HttpStatusCode.InternalServerError, cause.message ?: "Unknown error")
         }
     }
     install(ContentNegotiation)
