@@ -8,6 +8,7 @@ import io.ktor.server.pebble.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.jetbrains.exposed.sql.Op
 import io.ktor.server.sessions.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -23,7 +24,8 @@ fun Route.staffBookingsRoutes() {
             call.respondRedirect("/staff/login")
             return@get
         }
-
+        val q = call.request.queryParameters["q"]?.trim().orEmpty()
+        val qId = q.toIntOrNull()
         val model = transaction {
             val staffRow = StaffTable.select { StaffTable.email eq session.staffEmail }.limit(1).firstOrNull()
             if (staffRow == null) {
@@ -48,7 +50,13 @@ fun Route.staffBookingsRoutes() {
                     origin[AirportTable.iataCode],
                     dest[AirportTable.iataCode]
                 )
-                .selectAll()
+                .select {
+                  if (q.isBlank()) Op.TRUE
+                  else {
+                      val id = q.toIntOrNull()
+                      if (id == null) Op.FALSE else FlightTable.id eq id
+                  }
+                }
                 .orderBy(FlightTable.id, SortOrder.DESC)
                 .map { r ->
                     val fid = r[FlightTable.id]
@@ -94,7 +102,13 @@ fun Route.staffBookingsRoutes() {
                     SeatAssignmentTable.seatId,
                     SeatTable.seatCode
                 )
-                .selectAll()
+                .select {
+                    if (q.isBlank()) Op.TRUE
+                    else {
+                        val id = q.toIntOrNull()
+                        if (id == null) Op.FALSE else BookingTable.id eq id
+                    }
+                }
                 .orderBy(BookingTable.id, SortOrder.DESC)
                 .map { r ->
                     val bookingId = r[BookingTable.id]
@@ -123,6 +137,7 @@ fun Route.staffBookingsRoutes() {
                 "staffName" to staffName,
                 "staffRole" to staffRole,
                 "flights" to flights,
+                "q" to q,
                 "seatsByFlight" to seatsByFlight,
                 "bookings" to bookingsList
             )

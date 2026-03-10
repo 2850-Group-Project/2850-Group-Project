@@ -152,6 +152,25 @@
       border-color: rgba(63,94,251,.65);
       box-shadow: 0 0 0 4px rgba(63,94,251,.18);
     }
+    .navbtn{
+      padding:10px 12px;
+      border-radius:14px; 
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.9);
+      text-decoration:none;
+      font-weight:800;
+      transition:.18s ease;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .navbtn:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); }
+    .navbtn.red{
+      border-color: rgba(255,77,77,.28);
+      background: rgba(255,77,77,.12);
+    }
     .btn{
       border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
@@ -192,9 +211,9 @@
       </div>
       <div class="right">
         <span class="pill">{{ staffName }} • {{ staffRole }}</span>
-        <a class="link" href="/staff/dashboard">Dashboard</a >
+        <a class="navbtn" href="/staff/dashboard">Dashboard</a >
         <span class="muted">•</span>
-        <a class="link" href="/staff/logout">Logout</a >
+        <a class="navbtn red" href="/staff/logout">Logout</a >
       </div>
     </div>
 
@@ -261,6 +280,13 @@
             <h1>Existing Bookings</h1>
             <p class="sub">Update status, flight, and seat. If you change flight, seat will reset and must be re-selected.</p >
           </div>
+          <form action="/staff/bookings" method="get" style="display:flex; gap:10px; align-items:end; margin-left:auto; min-width:340px;">
+            <div style="flex:1;">
+              <label class="muted" style="display:block;margin:0 0 6px;font-weight:800;font-size:12px;letter-spacing:.35px;text-transform:uppercase;">Search Booking ID</label>
+              <input class="input" name="q" value="{{ q }}" placeholder="e.g. 4" />
+            </div>
+            <button class="btn" type="submit" style="width:120px;">Search</button>
+          </form>
         </div>
 
         <table class="table">
