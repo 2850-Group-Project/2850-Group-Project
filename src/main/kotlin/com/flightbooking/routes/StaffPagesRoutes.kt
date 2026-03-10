@@ -9,6 +9,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.request.*
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDate
@@ -117,6 +118,7 @@ fun Route.staffPagesRoutes() {
         }
 
         val editId = call.request.queryParameters["edit"]?.toIntOrNull()
+        val q = call.request.queryParameters["q"]?.trim().orEmpty()
 
         val model = transaction {
             val airports = AirportTable
@@ -148,7 +150,10 @@ fun Route.staffPagesRoutes() {
                     origin[AirportTable.iataCode],
                     dest[AirportTable.iataCode]
                 )
-                .selectAll()
+                .select {
+                    if (q.isBlank()) Op.TRUE
+                    else FlightTable.flightNumber.castTo<String>(VarCharColumnType()).like("%$q%")
+                }
                 .orderBy(FlightTable.id, SortOrder.DESC)
                 .map { row ->
                     mapOf(
@@ -170,6 +175,7 @@ fun Route.staffPagesRoutes() {
             mapOf(
                 "airports" to airports,
                 "flights" to flights,
+                "q" to q,
                 "editId" to (editId ?: 0),
                 "editFlight" to (editFlight ?: mapOf<String, Any>()),
                 "error" to (call.request.queryParameters["error"] ?: ""),

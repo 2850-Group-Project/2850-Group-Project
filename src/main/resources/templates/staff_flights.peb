@@ -358,6 +358,15 @@
 
       <div class="card">
         <h2>Flights</h2>
+        <form action="/staff/flights" method="get" style="margin:10px 0 14px; display:flex; gap:10px; align-items:center;">
+          <input class="input"
+                 type="text"
+                 name="q"
+                 value="{{ q }}"
+                 placeholder="Search by flight number (e.g. 101)" />
+          <button class="a" type="submit" style="white-space:nowrap;">Search</button>
+          <a class="a" href=" " style="white-space:nowrap;">Clear</a >
+        </form>
         <table>
           <thead>
             <tr>
