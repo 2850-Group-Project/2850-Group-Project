@@ -13,16 +13,22 @@ import com.flightbooking.tables.*
  * tables exist, creating any that are missing via tables in Tables.kt
  */
 object DBFactory {
+    private const val DEFAULT_URL = "jdbc:sqlite:data/flight_booking_DB.db"
+    private const val DEFAULT_DRIVER = "org.sqlite.JDBC"
+
     /**
      * Initialised connection to database and checks for/creates missing tables
      * 
      * @throws SQLException/ExposedSQLException if the database connection/table connect fails
      */
 
-    fun init() {
+    fun init(
+        url: String = DEFAULT_URL,
+        driver: String = DEFAULT_DRIVER
+    ) {
         Database.connect(
-            url = "jdbc:sqlite:data/flight_booking_DB.db",
-            driver = "org.sqlite.JDBC"
+            url = url,
+            driver = driver
         )
         println("Checking if all tables exist...")
         transaction {

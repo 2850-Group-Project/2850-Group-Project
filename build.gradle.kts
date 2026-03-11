@@ -45,4 +45,14 @@ dependencies {
 
     // simple logging
     implementation("org.slf4j:slf4j-simple:2.0.7")
+
+    // testing
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation(kotlin("test"))
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
