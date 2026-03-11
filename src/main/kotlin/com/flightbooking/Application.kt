@@ -36,6 +36,22 @@ fun main(args: Array<String>) {
  * initialises the database, and registers all routes.
  */
 fun Application.module() {
+    configureServer()
+    initialiseDatabase()
+    registerRoutes()
+}
+
+/**
+ * Test module for Ktor server testing.
+ * Accepts an override DB url so tests never touch the real DB file.
+ */
+fun Application.testModule(testDbUrl: String) {
+    configureServer()
+    initialiseDatabase(url = testDbUrl)
+    registerRoutes()
+}
+
+private fun Application.configureServer() {
     install(CallLogging) {
         level = Level.INFO
     }
@@ -73,16 +89,23 @@ fun Application.module() {
             cookie.httpOnly = true
         }
     }
+}
 
+private fun Application.initialiseDatabase(url: String? = null) {
     // Start up DB abstraction instance
-    
     try {
-        DBFactory.init()
+        if (url == null) {
+            DBFactory.init()
+        } else {
+            DBFactory.init(url = url)
+        }
     } catch (e: Throwable) {
         log.error("Failed to init DBFactory", e)
         dispose() // gracefull exit instead of abrupt error thrown
     }
+}
 
+private fun Application.registerRoutes() {
     // Prepare and load the routes
     routing {
         staticResources("/static", "static") // allows easy stylesheet reference (like pebble "templates" prefix)
