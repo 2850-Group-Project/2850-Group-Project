@@ -31,11 +31,13 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
 
+    // ktor client dependencies
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
 
     // implementation("com.h2database:h2:2.2.224")
+    implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
     
     // exposed dependencies (abstraction over sql database)
     implementation("org.jetbrains.exposed:exposed-core:0.43.0")
@@ -56,4 +58,14 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
     implementation("io.ktor:ktor-client-json:2.3.7")
     implementation("io.ktor:ktor-client-serialization:2.3.7")
+    
+    // testing
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation(kotlin("test"))
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
