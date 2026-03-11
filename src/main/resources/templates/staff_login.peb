@@ -280,7 +280,6 @@
           <div class="brand-badge">✈</div>
           <div>SkyFlow Staff</div>
         </div>
-        <a class="toplink" href="/login">User Login</a >
       </div>
 
       <div class="pill">Staff Portal</div>
@@ -307,6 +306,7 @@
 
     <main class="panel">
       <div class="card">
+        <a class="toplink" href="/login">Back To User Login</a >
         <h2>Staff Sign In</h2>
         <p class="sub">Enter your staff email and password to continue.</p >
 
