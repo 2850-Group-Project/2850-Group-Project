@@ -44,8 +44,6 @@ fun Route.staffAuthRoutes() {
              call.respond(PebbleContent("staff_register.peb", mapOf("error" to "Invalid invite code"))) 
               return@post 
         } 
-        }
-
         if (StaffAuthService.register(email, password, firstName, lastName, role)) {
             call.respondRedirect("/staff/login")
         } else {
