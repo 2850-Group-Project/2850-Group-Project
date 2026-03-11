@@ -5,6 +5,7 @@ val kotlinVersion = "1.9.22"
 
 plugins {
     kotlin("jvm") version "1.9.22"
+    kotlin("plugin.serialization") version "1.9.0"
     application
 }
 
@@ -50,4 +51,9 @@ dependencies {
 
     // simple logging
     implementation("org.slf4j:slf4j-simple:2.0.7")
+
+    // Client-side ContentNegotiation
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+    implementation("io.ktor:ktor-client-json:2.3.7")
+    implementation("io.ktor:ktor-client-serialization:2.3.7")
 }
