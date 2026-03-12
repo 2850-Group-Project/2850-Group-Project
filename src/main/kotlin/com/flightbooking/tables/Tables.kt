@@ -16,7 +16,7 @@ object AirportTable : Table("airport") {
 
 object FlightTable : Table("flight") {
     val id = integer("flight_id").autoIncrement()
-    val flightNumber = integer("flight_number").nullable()
+    val flightNumber = varchar("flight_number", 20).nullable()
     val originAirport = integer("origin_airport").references(AirportTable.id)
     val destinationAirport = integer("destination_airport").references(AirportTable.id)
     val scheduledDepartureTime = varchar("scheduled_departure_time", 255).nullable()

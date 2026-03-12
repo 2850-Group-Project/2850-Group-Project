@@ -111,3 +111,35 @@ fun importCountryNames() {
         }
     }
 }
+
+-----------------------------------------------------------
+FLIGHT IMPORT
+in Application.kt:
+import com.flightbooking.service.FlightImportService
+import com.flightbooking.access.AirportTableAccess
+import com.flightbooking.access.FlightTableAccess
+import com.flightbooking.api.AviationStackClient
+import kotlinx.coroutines.launch
+import io.ktor.client.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
+
+launch {
+            val httpClient = HttpClient {
+                install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
+                    json(
+                        kotlinx.serialization.json.Json {
+                            ignoreUnknownKeys = true
+                        }
+                    )
+
+                }
+            }
+            val airportAccess = AirportTableAccess()
+            val flightAccess = FlightTableAccess()
+            val client = AviationStackClient(httpClient)
+
+            val importer = FlightImportService(client, airportAccess, flightAccess)
+            importer.importAllFlights()
+        }

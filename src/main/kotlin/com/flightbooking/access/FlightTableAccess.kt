@@ -27,7 +27,7 @@ class FlightTableAccess {
             .map { constructFlightRecord(it) } 
     }
     fun createFlight(
-        flightNumber: Int?, 
+        flightNumber: String?, 
         originAirport: Int, 
         destinationAirport: Int, 
         scheduledDepartureTime: String?, 
