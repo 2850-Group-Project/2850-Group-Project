@@ -1,21 +1,32 @@
 package com.flightbooking.access
 
 import com.flightbooking.models.User
+import com.flightbooking.models.toUser
 import com.flightbooking.tables.UserTable
+
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import java.time.Instant
 
 class UserTableAccess {
-    fun findByEmail(email: String): User? = transaction {
-        UserTable.select { UserTable.email eq email }
-            .limit(1)
-            .firstOrNull()
-            ?.let { toUser(it) }
+    fun getAll(): List<User> = transaction {
+        UserTable.selectAll().map {
+            constructUserRecord(it)
+        }
     }
-
+    fun <T> getByAttribute(attribute: Column<T>, value: T): List<User> = transaction {
+        UserTable.select { attribute eq value } 
+            .map { constructUserRecord(it) } 
+    }
     fun createUser(
         email: String,
         passwordHash: String,
@@ -37,18 +48,29 @@ class UserTableAccess {
         }
         true
     }
-
-    private fun toUser(row: ResultRow): User {
-        return User(
-            id = row[UserTable.id],
-            email = row[UserTable.email],
-            passwordHash = row[UserTable.passwordHash],
-            firstName = row[UserTable.firstName],
-            lastName = row[UserTable.lastName],
-            phoneNumber = row[UserTable.phoneNumber],
-            dateOfBirth = row[UserTable.dateOfBirth],
-            createdAt = row[UserTable.createdAt],
-            accountStatus = row[UserTable.accountStatus]
-        )
+    fun deleteByID(id: Int) = transaction { 
+        UserTable.deleteWhere { UserTable.id eq id } }
+    fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 
+        val rows = UserTable.update({ UserTable.id eq id }) { 
+            stmt -> stmt[column] = value } 
+        rows > 0 }
+    fun findByEmail(email: String): User? = transaction {
+        UserTable.select { UserTable.email eq email }
+            .limit(1)
+            .firstOrNull()
+            ?.let { constructUserRecord(it) }
+    }
+    fun constructUserRecord(it: ResultRow): User {
+        return User (
+                        id = it[UserTable.id],
+                        email = it[UserTable.email],
+                        passwordHash = it[UserTable.passwordHash],
+                        firstName = it[UserTable.firstName],
+                        lastName = it[UserTable.lastName],
+                        phoneNumber = it[UserTable.phoneNumber],
+                        dateOfBirth = it[UserTable.dateOfBirth],
+                        createdAt = it[UserTable.createdAt],
+                        accountStatus = it[UserTable.accountStatus]
+                    )
     }
 }

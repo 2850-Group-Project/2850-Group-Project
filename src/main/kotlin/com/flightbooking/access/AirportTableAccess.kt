@@ -42,7 +42,7 @@ class AirportTableAccess {
         country: String?
         ): Boolean = transaction { 
         // inserts new record into the table and returns the generated id
-        val id = AirportTable.insert { 
+        AirportTable.insert { 
             it[AirportTable.iataCode] = iataCode 
             it[AirportTable.name] = name 
             it[AirportTable.city] = city 
