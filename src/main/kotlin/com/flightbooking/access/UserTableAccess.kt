@@ -20,12 +20,12 @@ import java.time.Instant
 class UserTableAccess {
     fun getAll(): List<User> = transaction {
         UserTable.selectAll().map {
-            constructUserRecord(it)
+            it.toUser()
         }
     }
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<User> = transaction {
         UserTable.select { attribute eq value } 
-            .map { constructUserRecord(it) } 
+            .map { it.toUser() } 
     }
     fun createUser(
         email: String,
@@ -58,19 +58,6 @@ class UserTableAccess {
         UserTable.select { UserTable.email eq email }
             .limit(1)
             .firstOrNull()
-            ?.let { constructUserRecord(it) }
-    }
-    fun constructUserRecord(it: ResultRow): User {
-        return User (
-                        id = it[UserTable.id],
-                        email = it[UserTable.email],
-                        passwordHash = it[UserTable.passwordHash],
-                        firstName = it[UserTable.firstName],
-                        lastName = it[UserTable.lastName],
-                        phoneNumber = it[UserTable.phoneNumber],
-                        dateOfBirth = it[UserTable.dateOfBirth],
-                        createdAt = it[UserTable.createdAt],
-                        accountStatus = it[UserTable.accountStatus]
-                    )
+            ?.let { it.toUser() }
     }
 }

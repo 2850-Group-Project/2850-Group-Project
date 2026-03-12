@@ -21,7 +21,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNull
 class FareClassTableAccess {
     fun getAll(): List<FareClass> = transaction {
         FareClassTable.selectAll().map {
-            constructFareClassRecord(it)
+            it.toFareClass()
         }
     }
     fun <T : Any> getByAttribute(attribute: Column<T?>, value: T?): List<FareClass> = transaction {
@@ -32,7 +32,7 @@ class FareClassTableAccess {
         }
 
         FareClassTable.select { condition }
-            .map { constructFareClassRecord(it) }
+            .map { it.toFareClass() }
     }
 
     fun createFareClass(
@@ -82,27 +82,4 @@ class FareClassTableAccess {
         val rows = FareClassTable.update({ FareClassTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-    fun constructFareClassRecord(it: ResultRow): FareClass {
-        return FareClass (
-                        id = it[FareClassTable.id],
-                        classCode = it[FareClassTable.classCode],
-                        cabinClass = it[FareClassTable.cabinClass],
-                        displayName = it[FareClassTable.displayName],
-                        refundable = it[FareClassTable.refundable],
-                        cancelProtocol = it[FareClassTable.cancelProtocol],
-                        advanceSeatSelection = it[FareClassTable.advanceSeatSelection],
-                        priorityCheckin = it[FareClassTable.priorityCheckin],
-                        priorityBoarding = it[FareClassTable.priorityBoarding],
-                        loungeAccess = it[FareClassTable.loungeAccess],
-                        carryOnAllowed = it[FareClassTable.carryOnAllowed],
-                        carryOnWeightKg = it[FareClassTable.carryOnWeightKg],
-                        checkedBaggagePieces = it[FareClassTable.checkedBaggagePieces],
-                        checkedBaggageWeightKg = it[FareClassTable.checkedBaggageWeightKg],
-                        milesEarnRate = it[FareClassTable.milesEarnRate],
-                        minimumMilesForBooking = it[FareClassTable.minimumMilesForBooking],
-                        description = it[FareClassTable.description],
-                        createdAt = it[FareClassTable.createdAt],
-                        updatedAt = it[FareClassTable.updatedAt]
-                    )
-    }
 }

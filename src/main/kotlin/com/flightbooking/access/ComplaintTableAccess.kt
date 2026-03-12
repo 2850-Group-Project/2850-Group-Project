@@ -19,13 +19,15 @@ import java.time.Instant
 class ComplaintTableAccess {
     fun getAll(): List<Complaint> = transaction {
         ComplaintTable.selectAll().map {
-            constructComplaintRecord(it)
+            it.toComplaint()
         }
     }
+
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<Complaint> = transaction {
         ComplaintTable.select { attribute eq value } 
-            .map { constructComplaintRecord(it) } 
+            .map { it.toComplaint() } 
     }
+
     fun createComplaint(
         userId: Int?, 
         type: String?, 
@@ -43,21 +45,12 @@ class ComplaintTableAccess {
         }
         true
     }
+
     fun deleteByID(id: Int) = transaction { 
         ComplaintTable.deleteWhere { ComplaintTable.id eq id } }
+
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 
         val rows = ComplaintTable.update({ ComplaintTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-    fun constructComplaintRecord(it: ResultRow): Complaint {
-        return Complaint (
-                        id = it[ComplaintTable.id],
-                        userId = it[ComplaintTable.userId],
-                        type = it[ComplaintTable.type],
-                        message = it[ComplaintTable.message],
-                        createdAt = it[ComplaintTable.createdAt],
-                        status = it[ComplaintTable.status],
-                        handledByStaffId = it[ComplaintTable.handledByStaffId]
-                    )
-    }
 }
