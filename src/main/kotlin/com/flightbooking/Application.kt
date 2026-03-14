@@ -24,6 +24,14 @@ import io.ktor.server.http.content.*
 import io.ktor.http.HttpStatusCode
 import org.slf4j.event.Level
 
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
+
+import com.flightbooking.tables.FlightTable
+import com.flightbooking.tables.FareClassTable
+import com.flightbooking.tables.FlightFareTable
+
+
 /**
  * Entry point for the Ktor application.
  */
