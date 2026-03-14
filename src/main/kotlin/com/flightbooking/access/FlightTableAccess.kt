@@ -51,7 +51,7 @@ class FlightTableAccess {
         destinationCode: String, 
         date: LocalDate,
         ): List<FlightWithFares> {
-        val dateFrom = date.minusDays(5).toString()
+        val dateFrom = maxOf(date.minusDays(5), LocalDate.now()).toString() // if booking within 5 days, then don't show unavailable flights (previous days)
         val dateTo = date.plusDays(5).toString()
 
         // aliases for simplicity
