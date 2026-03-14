@@ -95,14 +95,14 @@
                 <span class="flight-time">{{ flight.departureTime }}</span>
                 <span class="flight-airport">{{ flight.originCode }}</span>
               </div>
-              <div class="flight-duration">
+              <!-- <div class="flight-duration">
                 <div class="flight-duration-line">
                   <span class="flight-duration-dot"></span>
                   <span class="flight-duration-bar"></span>
                   <span class="flight-duration-dot"></span>
                 </div>
                 <span class="flight-duration-label">{{ flight.duration }}</span>
-              </div>
+              </div> -->
               <div class="flight-time-block flight-time-block--right">
                 <span class="flight-time">{{ flight.arrivalTime }}</span>
                 <span class="flight-airport">{{ flight.destinationCode }}</span>
@@ -115,7 +115,7 @@
             <div class="flight-card-bottom">
               <div class="flight-price">
                 <span class="flight-price-from">from</span>
-                <span class="flight-price-amount">£{{ flight.price }}</span>
+                <span class="flight-price-amount">£{{ flight.cheapestFare.price }}</span>
               </div>
               <form action="/flights/select" method="POST">
                 <input type="hidden" name="flightId" value="{{ flight.flightId }}" />

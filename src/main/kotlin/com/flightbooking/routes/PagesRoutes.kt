@@ -73,7 +73,7 @@ fun Route.pagesRoutes() {
             "isLoggedIn" to true,
             "search" to search,
             "outboundFlights" to outboundFlights,
-            "inboundFlights" to inboundFlights,
+            "returnFlights" to inboundFlights,
         )))
     }
 }

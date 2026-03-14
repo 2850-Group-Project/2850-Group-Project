@@ -2,8 +2,13 @@ package com.flightbooking.access
 
 import com.flightbooking.models.Flight
 import com.flightbooking.models.toFlight
+import com.flightbooking.models.FlightWithFares
+import com.flightbooking.models.FareOption
+
 import com.flightbooking.tables.FlightTable
 import com.flightbooking.tables.AirportTable
+import com.flightbooking.tables.FlightFareTable
+import com.flightbooking.tables.FareClassTable
 
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.select
@@ -42,7 +47,7 @@ class FlightTableAccess {
         originCode: String, 
         destinationCode: String, 
         date: LocalDate,
-        ): List<ResultRow> {
+        ): List<FlightWithFares> {
         val dateFrom = date.minusDays(5).toString()
         val dateTo = date.plusDays(5).toString()
 
@@ -54,6 +59,8 @@ class FlightTableAccess {
             FlightTable
                 .join(OriginAirport, JoinType.INNER, FlightTable.originAirport, OriginAirport[AirportTable.id])
                 .join(DestinationAirport, JoinType.INNER, FlightTable.destinationAirport, DestinationAirport[AirportTable.id])
+                .join(FlightFareTable, JoinType.LEFT, FlightTable.id, FlightFareTable.flightId)
+                .join(FareClassTable, JoinType.LEFT, FlightFareTable.fareClassId, FareClassTable.id)
                 .select {
                     (OriginAirport[AirportTable.iataCode] eq originCode) and
                     (DestinationAirport[AirportTable.iataCode] eq destinationCode) and
@@ -61,6 +68,32 @@ class FlightTableAccess {
                     (FlightTable.scheduledDepartureTime lessEq dateTo)
                 }
                 .toList()
+                .filter { it[FlightFareTable.id] != null }
+                .groupBy { it[FlightTable.id] }
+                .map { (_, rows) ->
+                    val first = rows.first()
+                    FlightWithFares(
+                        flightId = first[FlightTable.id],
+                        flightNumber = first[FlightTable.flightNumber],
+                        departureTime = first[FlightTable.scheduledDepartureTime],
+                        arrivalTime = first[FlightTable.scheduledArrivalTime],
+                        status = first[FlightTable.status],
+                        capacity = first[FlightTable.capacity],
+                        originCode = first[OriginAirport[AirportTable.iataCode]],
+                        destinationCode = first[DestinationAirport[AirportTable.iataCode]],
+                        fares = rows.map { row ->
+                            FareOption(
+                                fareId = row[FlightFareTable.id],
+                                fareClassId = row[FlightFareTable.fareClassId],
+                                displayName = row[FareClassTable.displayName],
+                                cabinClass = row[FareClassTable.cabinClass],
+                                price = row[FlightFareTable.price],
+                                currency = row[FlightFareTable.currency],
+                                seatsAvailable = row[FlightFareTable.seatsAvailable]
+                            )
+                        }
+                    )
+                }
         }
     }
 

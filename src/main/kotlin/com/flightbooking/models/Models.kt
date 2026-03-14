@@ -34,6 +34,32 @@ data class FlightSearch(
     val infants: String?
 )
 
+// fare option for a specific flight
+data class FareOption(
+    val fareId: Int,
+    val fareClassId: Int,
+    val displayName: String?,
+    val cabinClass: String?,
+    val price: Double,
+    val currency: String,
+    val seatsAvailable: Int
+)
+
+// flight connection to fare options
+data class FlightWithFares(
+    val flightId: Int,
+    val flightNumber: Int?,
+    val departureTime: String?,
+    val arrivalTime: String?,
+    val status: String,
+    val capacity: Int?,
+    val originCode: String,
+    val destinationCode: String,
+    val fares: List<FareOption>
+) {
+    val cheapestFare: FareOption? get() = fares.minByOrNull { it.price }
+}
+
 data class User(
     val id: Int,
     val email: String,
