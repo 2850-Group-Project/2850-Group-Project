@@ -29,6 +29,9 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import org.jetbrains.exposed.sql.JoinType
 
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.Duration
 
 class FlightTableAccess {
     fun getAll(): List<Flight> = transaction {
@@ -68,15 +71,37 @@ class FlightTableAccess {
                     (FlightTable.scheduledDepartureTime lessEq dateTo)
                 }
                 .toList()
-                .filter { it[FlightFareTable.id] != null }
+                .filter { it[FlightFareTable.id] != null } // stupidly necessary for some reason
                 .groupBy { it[FlightTable.id] }
                 .map { (_, rows) ->
+
                     val first = rows.first()
+
+                    val dep = first[FlightTable.scheduledDepartureTime]
+                        ?.let { LocalDateTime.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) }
+                    val arr = first[FlightTable.scheduledArrivalTime]
+                        ?.let { LocalDateTime.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) }
+
+                    val duration = if (dep != null && arr != null) {
+                        val mins = Duration.between(dep, arr).toMinutes()
+                        val hours = mins / 60
+                        val remaining = mins % 60
+                        if (remaining == 0L) "${hours}h" else "${hours}h ${remaining}m"
+                    } else "N/A"
+
                     FlightWithFares(
                         flightId = first[FlightTable.id],
                         flightNumber = first[FlightTable.flightNumber],
-                        departureTime = first[FlightTable.scheduledDepartureTime],
-                        arrivalTime = first[FlightTable.scheduledArrivalTime],
+                        departureDay = first[FlightTable.scheduledDepartureTime]
+                            ?.let { LocalDateTime.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) } // nicer formatting for flight search page, just day and month
+                            ?.format(DateTimeFormatter.ofPattern("d MMMM")),
+                        departureTime = first[FlightTable.scheduledDepartureTime]
+                            ?.let { LocalDateTime.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) } // EVEN nicer formatting for flight time 
+                            ?.format(DateTimeFormatter.ofPattern("HH:mm")),
+                        arrivalTime = first[FlightTable.scheduledArrivalTime]
+                            ?.let { LocalDateTime.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) } // EVEN nicer formatting for flight time 
+                            ?.format(DateTimeFormatter.ofPattern("HH:mm")),
+                        duration = duration,
                         status = first[FlightTable.status],
                         capacity = first[FlightTable.capacity],
                         originCode = first[OriginAirport[AirportTable.iataCode]],

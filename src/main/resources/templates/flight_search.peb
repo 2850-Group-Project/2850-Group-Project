@@ -53,7 +53,6 @@
           <div class="summary-item">
             <span class="summary-label">Passengers</span>
             <span class="summary-value">
-              {% set total = search.adults %}
               {{ search.adults }} adult{% if search.adults != "1" %}s{% endif %}
               {% if search.children != "0" %}, {{ search.children }} child{% if search.children != "1" %}ren{% endif %}{% endif %}
               {% if search.infants != "0" %}, {{ search.infants }} infant{% if search.infants != "1" %}s{% endif %}{% endif %}
@@ -95,41 +94,45 @@
                 <span class="flight-time">{{ flight.departureTime }}</span>
                 <span class="flight-airport">{{ flight.originCode }}</span>
               </div>
-              <!-- <div class="flight-duration">
+              <div class="flight-duration">
+                <span class="flight-duration-label-departure-day">{{ flight.departureDay }}</span>
                 <div class="flight-duration-line">
                   <span class="flight-duration-dot"></span>
                   <span class="flight-duration-bar"></span>
                   <span class="flight-duration-dot"></span>
                 </div>
                 <span class="flight-duration-label">{{ flight.duration }}</span>
-              </div> -->
+              </div>
               <div class="flight-time-block flight-time-block--right">
                 <span class="flight-time">{{ flight.arrivalTime }}</span>
                 <span class="flight-airport">{{ flight.destinationCode }}</span>
               </div>
             </div>
-            <div class="flight-card-mid">
-              <span class="flight-number">Flight #{{ flight.flightNumber }}</span>
-              <span class="flight-status flight-status--{{ flight.status }}">{{ flight.status }}</span>
-            </div>
+            <div class="flight-card-divider"></div>
             <div class="flight-card-bottom">
-              <div class="flight-price">
-                <span class="flight-price-from">from</span>
-                <span class="flight-price-amount">£{{ flight.cheapestFare.price }}</span>
+              <div class="flight-card-meta">
+                <span class="flight-number">Flight #{{ flight.flightNumber }}</span>
+                <span class="flight-status flight-status--{{ flight.status }}">{{ flight.status }}</span>
               </div>
-              <form action="/flights/select" method="POST">
-                <input type="hidden" name="flightId" value="{{ flight.flightId }}" />
-                <input type="hidden" name="leg" value="outbound" />
-                <input type="hidden" name="origin" value="{{ search.origin }}" />
-                <input type="hidden" name="destination" value="{{ search.destination }}" />
-                <input type="hidden" name="departureDate" value="{{ search.departureDate }}" />
-                <input type="hidden" name="returnDate" value="{{ search.returnDate }}" />
-                <input type="hidden" name="tripType" value="{{ search.tripType }}" />
-                <input type="hidden" name="adults" value="{{ search.adults }}" />
-                <input type="hidden" name="children" value="{{ search.children }}" />
-                <input type="hidden" name="infants" value="{{ search.infants }}" />
-                <button type="submit" class="btn-select">Select →</button>
-              </form>
+              <div class="flight-card-right">
+                <div class="flight-price">
+                  <span class="flight-price-from">from</span>
+                  <span class="flight-price-amount">£{{ flight.cheapestFare.price }}</span>
+                </div>
+                <form action="/flights/select" method="POST">
+                  <input type="hidden" name="flightId" value="{{ flight.flightId }}" />
+                  <input type="hidden" name="leg" value="outbound" />
+                  <input type="hidden" name="origin" value="{{ search.origin }}" />
+                  <input type="hidden" name="destination" value="{{ search.destination }}" />
+                  <input type="hidden" name="departureDate" value="{{ search.departureDate }}" />
+                  <input type="hidden" name="returnDate" value="{{ search.returnDate }}" />
+                  <input type="hidden" name="tripType" value="{{ search.tripType }}" />
+                  <input type="hidden" name="adults" value="{{ search.adults }}" />
+                  <input type="hidden" name="children" value="{{ search.children }}" />
+                  <input type="hidden" name="infants" value="{{ search.infants }}" />
+                  <button type="submit" class="btn-select">Select →</button>
+                </form>
+              </div>
             </div>
           </div>
           {% else %}
@@ -167,6 +170,7 @@
             <div class="flight-card-top">
               <div class="flight-time-block">
                 <span class="flight-time">{{ flight.departureTime }}</span>
+                <span class="flight-day">{{ flight.departureDay }}</span>
                 <span class="flight-airport">{{ flight.originCode }}</span>
               </div>
               <div class="flight-duration">
@@ -182,28 +186,31 @@
                 <span class="flight-airport">{{ flight.destinationCode }}</span>
               </div>
             </div>
-            <div class="flight-card-mid">
-              <span class="flight-number">Flight #{{ flight.flightNumber }}</span>
-              <span class="flight-status flight-status--{{ flight.status }}">{{ flight.status }}</span>
-            </div>
+            <div class="flight-card-divider"></div>
             <div class="flight-card-bottom">
-              <div class="flight-price">
-                <span class="flight-price-from">from</span>
-                <span class="flight-price-amount">£{{ flight.price }}</span>
+              <div class="flight-card-meta">
+                <span class="flight-number">Flight #{{ flight.flightNumber }}</span>
+                <span class="flight-status flight-status--{{ flight.status }}">{{ flight.status }}</span>
               </div>
-              <form action="/flights/select" method="POST">
-                <input type="hidden" name="flightId" value="{{ flight.flightId }}" />
-                <input type="hidden" name="leg" value="return" />
-                <input type="hidden" name="origin" value="{{ search.origin }}" />
-                <input type="hidden" name="destination" value="{{ search.destination }}" />
-                <input type="hidden" name="departureDate" value="{{ search.departureDate }}" />
-                <input type="hidden" name="returnDate" value="{{ search.returnDate }}" />
-                <input type="hidden" name="tripType" value="{{ search.tripType }}" />
-                <input type="hidden" name="adults" value="{{ search.adults }}" />
-                <input type="hidden" name="children" value="{{ search.children }}" />
-                <input type="hidden" name="infants" value="{{ search.infants }}" />
-                <button type="submit" class="btn-select">Select →</button>
-              </form>
+              <div class="flight-card-right">
+                <div class="flight-price">
+                  <span class="flight-price-from">from</span>
+                  <span class="flight-price-amount">£{{ flight.cheapestFare.price }}</span>
+                </div>
+                <form action="/flights/select" method="POST">
+                  <input type="hidden" name="flightId" value="{{ flight.flightId }}" />
+                  <input type="hidden" name="leg" value="return" />
+                  <input type="hidden" name="origin" value="{{ search.origin }}" />
+                  <input type="hidden" name="destination" value="{{ search.destination }}" />
+                  <input type="hidden" name="departureDate" value="{{ search.departureDate }}" />
+                  <input type="hidden" name="returnDate" value="{{ search.returnDate }}" />
+                  <input type="hidden" name="tripType" value="{{ search.tripType }}" />
+                  <input type="hidden" name="adults" value="{{ search.adults }}" />
+                  <input type="hidden" name="children" value="{{ search.children }}" />
+                  <input type="hidden" name="infants" value="{{ search.infants }}" />
+                  <button type="submit" class="btn-select">Select →</button>
+                </form>
+              </div>
             </div>
           </div>
           {% else %}

@@ -49,8 +49,10 @@ data class FareOption(
 data class FlightWithFares(
     val flightId: Int,
     val flightNumber: Int?,
+    val departureDay: String?,
     val departureTime: String?,
     val arrivalTime: String?,
+    val duration: String?,
     val status: String,
     val capacity: Int?,
     val originCode: String,
