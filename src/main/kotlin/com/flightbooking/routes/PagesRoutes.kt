@@ -24,4 +24,20 @@ fun Route.pagesRoutes() {
             "userSession" to session
         )))
     }
+
+    get("/flights/search") {
+        // need to add check to make sure user is logged in before loading the flight search page
+        // we also need to check that all the required data is provided
+        val session = call.sessions.get<UserSession>()
+        println(session)
+
+        if (session == null) {
+            call.respondRedirect("/login")
+            return@get
+        }
+
+        call.respond(PebbleContent("flight_search.peb", mapOf(
+            "userSession" to session
+        )))
+    }
 }

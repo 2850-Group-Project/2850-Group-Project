@@ -85,7 +85,7 @@
             <div class="field" id="returnField">
               <label>Return</label>
               <div class="field-inner">
-                <input type="date" name="return_date" id="returnDate" />
+                <input type="date" name="return_date" id="returnDate" required />
               </div>
             </div>
 
