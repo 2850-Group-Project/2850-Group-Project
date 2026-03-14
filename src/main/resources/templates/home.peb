@@ -4,10 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/static/css/Home.css">
-  <title>SkyBook — Find Your Flight</title>
+  <title>SkyBook - Find Your Flight</title>
 </head>
 <body>
-
   <!-- NAV -->
   <nav>
     <a href="/" class="brand">
