@@ -226,9 +226,9 @@
 
 .flight-card--selected,
 .flight-card--selected:hover {
-  border-color: rgba(63,94,251,.60);
-  background: rgba(63,94,251,.15);
-  box-shadow: 0 0 0 2px rgba(63,94,251,.30);
+  border-color: rgba(63,94,251,.60) !important;
+  background: rgba(63,94,251,.15) !important;
+  box-shadow: 0 0 0 2px rgba(63,94,251,.30) !important;
 }
 
 .flight-card:hover {

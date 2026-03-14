@@ -3,11 +3,6 @@
 --      RUN WITH CTRL+SHIFT+Q         --
 ----------------------------------------
 
-select * from flight where destination_airport = 5;
-
-
-select * from flight_fare;
-
 
 
 select * from airport;
