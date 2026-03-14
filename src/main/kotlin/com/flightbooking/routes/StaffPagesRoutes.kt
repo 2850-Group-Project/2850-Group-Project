@@ -196,7 +196,7 @@ fun Route.staffPagesRoutes() {
         val p = call.receiveParameters()
 
         val flightNumberText = p["flightNumber"]?.trim().orEmpty()
-        val flightNumberStringOrNull = flightNumberText.ifBlank { null }
+        val flightNumberIntOrNull = flightNumberText.toIntOrNull()
         val originId = p["originId"]?.toIntOrNull()
         val destId = p["destId"]?.toIntOrNull()
         val dep = p["dep"]?.trim().orEmpty()
@@ -215,7 +215,7 @@ fun Route.staffPagesRoutes() {
 
         transaction {
             val stmt = FlightTable.insert {
-                it[FlightTable.flightNumber] = flightNumberStringOrNull
+                it[FlightTable.flightNumber] = flightNumberIntOrNull
                 it[FlightTable.originAirport] = originId
                 it[FlightTable.destinationAirport] = destId
                 it[FlightTable.scheduledDepartureTime] = if (dep.isBlank()) null else dep
@@ -244,7 +244,7 @@ fun Route.staffPagesRoutes() {
 
         val id = p["id"]?.toIntOrNull()
         val flightNumberText = p["flightNumber"]?.trim().orEmpty()
-        val flightNumberStringOrNull = flightNumberText.ifBlank { null }
+        val flightNumberIntOrNull = flightNumberText.toIntOrNull()
         val originId = p["originId"]?.toIntOrNull()
         val destId = p["destId"]?.toIntOrNull()
         val dep = p["dep"]?.trim().orEmpty()
@@ -267,7 +267,7 @@ fun Route.staffPagesRoutes() {
 
         transaction {
             FlightTable.update({ FlightTable.id eq id }) {
-                it[FlightTable.flightNumber] = flightNumberStringOrNull
+                it[FlightTable.flightNumber] = flightNumberIntOrNull
                 it[FlightTable.originAirport] = originId
                 it[FlightTable.destinationAirport] = destId
                 it[FlightTable.scheduledDepartureTime] = if (dep.isBlank()) null else dep

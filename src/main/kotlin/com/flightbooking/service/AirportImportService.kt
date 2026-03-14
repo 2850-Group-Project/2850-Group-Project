@@ -9,6 +9,7 @@ class AirportImportService(
     private val access: AirportTableAccess
 ) {
     suspend fun importAllAirports() {
+        println("importAllAirports running")
         val limit = 100 //max num you can import at once
         var offset = 0
         var total = Int.MAX_VALUE
@@ -34,5 +35,6 @@ class AirportImportService(
 
             offset += limit
         }
+        println("importAllAirports done")
     }
 }

@@ -44,7 +44,7 @@ data class Airport(
 
 data class Flight(
     val id: Int,
-    val flightNumber: String?,
+    val flightNumber: Int?,
     val originAirport: Int,
     val destinationAirport: Int,
     val scheduledDepartureTime: String?,

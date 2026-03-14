@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 class AviationStackClient(
     val httpClient: HttpClient
 ) {
-    private val accessKey = "42ef9c123660bf3d20b403b05991ebd8"
+    private val accessKey = "c5ca96d3768b0d1ed89df7850a9a69ec"
     private val url = "https://api.aviationstack.com/v1"
 
     suspend fun getAirports(limit: Int, offset: Int): AirportApiResponse {

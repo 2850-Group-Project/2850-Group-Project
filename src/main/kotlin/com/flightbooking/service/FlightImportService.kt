@@ -14,6 +14,7 @@ class FlightImportService(
     private val flightAccess: FlightTableAccess
 ) {
     suspend fun importAllFlights() {
+        println("importAllFlight running")
         val airports = airportAccess.getAll()
         val iataToID = airports.associate { it.iataCode!! to it.id!! }
 
@@ -52,7 +53,7 @@ class FlightImportService(
                     return@forEach
                 }
 
-                val flightNumber = apiFlight.flight.number
+                val flightNumber = apiFlight.flight.number?.toIntOrNull()
                 val departureTime = apiFlight.departure.scheduled
                 val arrivalTime = apiFlight.arrival.scheduled
                 val status = apiFlight.flightStatus ?: "scheduled"
@@ -74,5 +75,6 @@ class FlightImportService(
         println("skipped missing iata: $skippedMissingIata")
         println("skipped unknown airport: $skippedUnknownAirport")
         println("insertedf: $inserted")
+        println("importAllFlights done")
     }
 }
