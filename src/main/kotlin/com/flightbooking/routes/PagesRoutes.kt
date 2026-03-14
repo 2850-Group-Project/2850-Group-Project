@@ -30,6 +30,7 @@ fun Route.pagesRoutes() {
         // we also need to check that all the required data is provided
         val session = call.sessions.get<UserSession>()
         println(session)
+        println("hit the flight search page digga")
 
         if (session == null) {
             call.respondRedirect("/login")
@@ -37,7 +38,8 @@ fun Route.pagesRoutes() {
         }
 
         call.respond(PebbleContent("flight_search.peb", mapOf(
-            "userSession" to session
+            "userSession" to session,
+            "isLoggedIn" to true
         )))
     }
 }

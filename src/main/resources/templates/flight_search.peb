@@ -11,9 +11,12 @@
     <!-- NAV -->
   <nav>
 
-    
-
-    <a href="/" class="brand">
+    <!-- take user back to flight search, not login page, when logged in -->
+    {% if isLoggedIn %}
+        <a href="/home" class="brand">
+    {% else %}
+        <a href="/" class="brand">
+    {% endif %}
       <div class="brand-badge">✈️</div>
       <span class="brand-title">SkyFlow</span>
     </a>
