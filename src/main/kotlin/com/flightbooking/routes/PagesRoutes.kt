@@ -47,14 +47,18 @@ fun Route.pagesRoutes() {
             returnDate = call.request.queryParameters["return_date"],
             adults = call.request.queryParameters["adults"],
             children = call.request.queryParameters["children"],
-            infants = call.request.queryParameters["infants"]
+            infants = call.request.queryParameters["infants"],
         )
         println(search)
+
+        // need to add function that returns outbound/inbound flights (maybe better in table access)
+        // function return then mapped to outboundFlights/inboundFlights
+        // then pass both to pebble content
 
         call.respond(PebbleContent("flight_search.peb", mapOf(
             "userSession" to session,
             "isLoggedIn" to true,
-            "search" to search
+            "search" to search,
         )))
     }
 }
