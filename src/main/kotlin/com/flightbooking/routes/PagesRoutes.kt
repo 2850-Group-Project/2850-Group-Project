@@ -65,16 +65,20 @@ fun Route.pagesRoutes() {
             infants = call.request.queryParameters["infants"],
         )
 
+        if (search.origin == null || search.destination == null) {
+            return@get
+        }
+
         println("FLIGHT SEARCH DATA VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
         println(search)
         println("FLIGHT SEARCH DATA ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
         // get outbound flight data
         val flightTable = FlightTableAccess()
-        val outboundFlights = flightTable.getFlightsAroundDate("LHR", "DXB", LocalDate.parse(search.departureDate))
+        val outboundFlights = flightTable.getFlightsAroundDate(search.origin, search.destination, LocalDate.parse(search.departureDate))
 
         // get inbound flight data (for trip type = return)
-        val inboundFlights = flightTable.getFlightsAroundDate("DXB", "LHR", LocalDate.parse(search.returnDate))
+        val inboundFlights = flightTable.getFlightsAroundDate(search.destination, search.origin, LocalDate.parse(search.returnDate))
 
         call.respond(PebbleContent("flight_search.peb", mapOf(
             "userSession" to session,
