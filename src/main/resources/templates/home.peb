@@ -131,15 +131,15 @@
                   </div>
                 </div>
               </div>
+              
               <!-- Hidden inputs submitted with form -->
               <input type="hidden" name="adults" id="adultsInput" value="1" />
               <input type="hidden" name="children" id="childrenInput" value="0" />
               <input type="hidden" name="infants" id="infantsInput" value="0" />
             </div>
-
-            <!-- Search button -->
-            
           </div>
+
+          <!-- Search button -->
           <div>
             <button type="submit" class="btn-search">Search flights</button>
           </div>
