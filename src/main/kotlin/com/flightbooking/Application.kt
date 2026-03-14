@@ -27,9 +27,7 @@ import org.slf4j.event.Level
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
-import com.flightbooking.tables.FlightTable
-import com.flightbooking.tables.FareClassTable
-import com.flightbooking.tables.FlightFareTable
+import com.flightbooking.access.FlightFareTableAccess
 
 
 /**
@@ -46,6 +44,9 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureServer()
     initialiseDatabase()
+
+    FlightFareTableAccess().generateUKDomesticFares()
+
     registerRoutes()
 }
 
