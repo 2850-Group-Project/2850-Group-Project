@@ -6,10 +6,17 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.pebble.*
 import io.ktor.server.sessions.*
+
+import com.flightbooking.access.FlightTableAccess
+
 import com.flightbooking.models.UserSession
 import com.flightbooking.models.FlightSearch
+
 import com.flightbooking.routes.authRoutes
+
 import io.ktor.http.HttpStatusCode
+
+import java.time.LocalDate
 
 fun Route.pagesRoutes() {
     get("/home") {
@@ -54,6 +61,9 @@ fun Route.pagesRoutes() {
         // need to add function that returns outbound/inbound flights (maybe better in table access)
         // function return then mapped to outboundFlights/inboundFlights
         // then pass both to pebble content
+        val flightTable = FlightTableAccess()
+        val outboundFlights = flightTable.getFlightsAroundDate("LHR", "DXB", LocalDate.parse(search.departureDate))
+        println(outboundFlights)
 
         call.respond(PebbleContent("flight_search.peb", mapOf(
             "userSession" to session,

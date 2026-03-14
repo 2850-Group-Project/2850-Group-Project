@@ -3,7 +3,7 @@
 --      RUN WITH CTRL+SHIFT+Q         --
 ----------------------------------------
 
-select * from flight;
+select * from flight WHERE origin_airport = 1;
 
 select * from airport;
 
