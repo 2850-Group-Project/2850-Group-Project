@@ -19,12 +19,12 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder
 class FlightFareTableAccess {
     fun getAll(): List<FlightFare> = transaction {
         FlightFareTable.selectAll().map {
-            constructFlightFareRecord(it)
+            it.toFlightFare()
         }
     }
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<FlightFare> = transaction {
         FlightFareTable.select { attribute eq value } 
-            .map { constructFlightFareRecord(it) } 
+            .map { it.toFlightFare() } 
     }
     fun createFlightFare(
         flightId: Int, 
@@ -52,16 +52,4 @@ class FlightFareTableAccess {
         val rows = FlightFareTable.update({ FlightFareTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-    fun constructFlightFareRecord(it: ResultRow): FlightFare {
-        return FlightFare (
-                        id = it[FlightFareTable.id],
-                        flightId = it[FlightFareTable.flightId],
-                        fareClassId = it[FlightFareTable.fareClassId],
-                        price = it[FlightFareTable.price],
-                        currency = it[FlightFareTable.currency],
-                        seatsAvailable = it[FlightFareTable.seatsAvailable],
-                        saleStart = it[FlightFareTable.saleStart],
-                        saleEnd = it[FlightFareTable.saleEnd]
-                    )
-    }
 }

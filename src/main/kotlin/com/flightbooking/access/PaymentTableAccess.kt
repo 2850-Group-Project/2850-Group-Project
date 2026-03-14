@@ -19,12 +19,12 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder
 class PaymentTableAccess {
     fun getAll(): List<Payment> = transaction {
         PaymentTable.selectAll().map {
-            constructPaymentRecord(it)
+            it.toPayment()
         }
     }
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<Payment> = transaction {
         PaymentTable.select { attribute eq value } 
-            .map { constructPaymentRecord(it) } 
+            .map { it.toPayment() } 
     }
     fun createPayment(
         bookingId: Int, 
@@ -52,16 +52,4 @@ class PaymentTableAccess {
         val rows = PaymentTable.update({ PaymentTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-    fun constructPaymentRecord(it: ResultRow): Payment {
-        return Payment (
-                        id = it[PaymentTable.id],
-                        bookingId = it[PaymentTable.bookingId],
-                        amount = it[PaymentTable.amount],
-                        paymentMethod = it[PaymentTable.paymentMethod],
-                        paymentStatus = it[PaymentTable.paymentStatus],
-                        paidAt = it[PaymentTable.paidAt],
-                        providerReference = it[PaymentTable.providerReference],
-                        currency = it[PaymentTable.currency]
-                    )
-    }
 }

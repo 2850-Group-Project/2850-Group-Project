@@ -25,14 +25,14 @@ class AirportTableAccess {
     // specific search functions for each table (pretty much copy and pasted for most)
     fun getAll(): List<Airport> = transaction {
         AirportTable.selectAll().map {
-            constructAirportRecord(it)
+            it.toAirport()
         }
     }
     
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<Airport> = transaction {
         //accepts attribute you're searching by and the value you want it to be
         AirportTable.select { attribute eq value } 
-            .map { constructAirportRecord(it) } 
+            .map { it.toAirport() } 
     }
 
     fun createAirport(

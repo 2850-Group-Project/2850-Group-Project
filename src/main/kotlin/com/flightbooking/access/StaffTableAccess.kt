@@ -20,12 +20,12 @@ import java.time.Instant
 class StaffTableAccess {
     fun getAll(): List<Staff> = transaction {
         StaffTable.selectAll().map {
-            constructStaffRecord(it)
+            it.toStaff()
         }
     }
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<Staff> = transaction {
         StaffTable.select { attribute eq value } 
-            .map { constructStaffRecord(it) } 
+            .map { it.toStaff() } 
     }
     fun createStaff(
         email: String,
@@ -58,18 +58,6 @@ class StaffTableAccess {
         StaffTable.select { StaffTable.email eq email }
             .limit(1)
             .firstOrNull()
-            ?.let { constructStaffRecord(it) }
-    }
-    fun constructStaffRecord(it: ResultRow): Staff {
-        return Staff (
-                        id = it[StaffTable.id],
-                        email = it[StaffTable.email],
-                        passwordHash = it[StaffTable.passwordHash],
-                        firstName = it[StaffTable.firstName],
-                        lastName = it[StaffTable.lastName],
-                        phoneNumber = it[StaffTable.phoneNumber],
-                        role = it[StaffTable.role],
-                        createdAt = it[StaffTable.createdAt],
-                    )
+            ?.let { it.toStaff() }
     }
 }

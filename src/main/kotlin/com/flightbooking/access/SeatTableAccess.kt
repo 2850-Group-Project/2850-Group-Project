@@ -19,12 +19,12 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder
 class SeatTableAccess {
     fun getAll(): List<Seat> = transaction {
         SeatTable.selectAll().map {
-            constructSeatRecord(it)
+            it.toSeat()
         }
     }
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<Seat> = transaction {
         SeatTable.select { attribute eq value } 
-            .map { constructSeatRecord(it) } 
+            .map { it.toSeat() } 
     }
     fun createSeat(
         flightId: Int,
@@ -54,17 +54,4 @@ class SeatTableAccess {
         val rows = SeatTable.update({ SeatTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-    fun constructSeatRecord(it: ResultRow): Seat {
-        return Seat (
-                        id = it[SeatTable.id],
-                        flightId = it[SeatTable.flightId],
-                        seatCode = it[SeatTable.seatCode],
-                        cabinClass = it[SeatTable.cabinClass],
-                        position = it[SeatTable.position],
-                        extraLegroom = it[SeatTable.extraLegroom],
-                        exitRow = it[SeatTable.exitRow],
-                        reducedMobility = it[SeatTable.reducedMobility],
-                        status = it[SeatTable.status]
-                    )
-    }
 }
