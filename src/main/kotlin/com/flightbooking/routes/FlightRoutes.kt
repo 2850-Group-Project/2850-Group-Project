@@ -15,7 +15,12 @@ import com.flightbooking.models.BookingSession
 
 fun Route.flightRoutes() {
     post("/flights/select") {
-        val session = call.sessions.get<UserSession>() ?: call.respondRedirect("/login") // TODO implement security check
+        val session = call.sessions.get<UserSession>()
+
+        if (session == null) {
+            call.respondRedirect("/login")
+            return@post
+        }
 
         val params = call.receiveParameters()
         val flightId = params["flightId"]?.toIntOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing flightId")
