@@ -8,6 +8,7 @@ import io.ktor.server.pebble.*
 import io.ktor.server.sessions.*
 
 import com.flightbooking.access.FlightTableAccess
+import com.flightbooking.access.AirportTableAccess
 
 import com.flightbooking.models.UserSession
 import com.flightbooking.models.FlightSearch
@@ -30,8 +31,11 @@ fun Route.pagesRoutes() {
             return@get
         }
 
+        val airports = AirportTableAccess().getAll()
+
         call.respond(PebbleContent("home.peb", mapOf(
-            "userSession" to session
+            "userSession" to session,
+            "airports" to airports,
         )))
     }
 
