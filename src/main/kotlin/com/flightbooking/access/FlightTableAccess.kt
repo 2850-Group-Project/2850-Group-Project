@@ -71,7 +71,7 @@ class FlightTableAccess {
                     (FlightTable.scheduledDepartureTime lessEq dateTo)
                 }
                 .toList()
-                .filter { it[FlightFareTable.id] != null } // stupidly necessary for some reason
+                .filter { row -> row.getOrNull(FlightFareTable.id) != null } // stupidly necessary for some reason
                 .groupBy { it[FlightTable.id] }
                 .map { (_, rows) ->
 
