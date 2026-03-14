@@ -3,37 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/static/css/Home.css"> <!-- CHANGE THIS TO ANOTHER ?? -->
+  <link rel="stylesheet" href="/static/css/Home.css">
+  <link rel="stylesheet" href="/static/css/Flight_Search.css">
   <title>SkyBook - Choose Your Flight</title>
 </head>
 <body>
 
-    <!-- NAV -->
+  <!-- NAV -->
   <nav>
-    <!-- take user back to flight search, or login page, when logged in -->
     {% if isLoggedIn %}
-        <a href="/home" class="brand">
+      <a href="/home" class="brand">
     {% else %}
-        <a href="/" class="brand">
+      <a href="/" class="brand">
     {% endif %}
       <div class="brand-badge">✈️</div>
       <span class="brand-title">SkyFlow</span>
     </a>
-
     <div class="nav-right">
       <a href="/profile/bookings" class="btn-ghost">My Bookings</a>
       <a href="/profile" class="btn-primary">My Account</a>
     </div>
   </nav>
 
-  <!-- FLIGHT SELECTION -->
   <main>
-    <!-- START to DESTINATION (one way) -->
+    <!-- ROW 1: SEARCH SUMMARY -->
+    <section class="search-summary">
+      <div class="summary-inner">
+        <div class="summary-route">
+          <span class="summary-airport">{{ search.origin }}</span>
+          {% if search.tripType == "return" %}
+            <span class="summary-arrow">⇄</span>
+          {% else %}
+            <span class="summary-arrow">→</span>
+          {% endif %}
+          <span class="summary-airport">{{ search.destination }}</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-meta">
+          <div class="summary-item">
+            <span class="summary-label">Departure</span>
+            <span class="summary-value">{{ search.departureDate }}</span>
+          </div>
+          {% if search.tripType == "return" %}
+          <div class="summary-item">
+            <span class="summary-label">Return</span>
+            <span class="summary-value">{{ search.returnDate }}</span>
+          </div>
+          {% endif %}
+          <div class="summary-item">
+            <span class="summary-label">Passengers</span>
+            <span class="summary-value">
+              {% set total = search.adults %}
+              {{ search.adults }} adult{% if search.adults != "1" %}s{% endif %}
+              {% if search.children != "0" %}, {{ search.children }} child{% if search.children != "1" %}ren{% endif %}{% endif %}
+              {% if search.infants != "0" %}, {{ search.infants }} infant{% if search.infants != "1" %}s{% endif %}{% endif %}
+            </span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Trip type</span>
+            <span class="summary-value summary-badge">
+              {% if search.tripType == "return" %}⇄ Return{% else %}→ One way{% endif %}
+            </span>
+          </div>
+        </div>
+        <a href="/home" class="btn-ghost summary-edit">Edit search</a>
+      </div>
+    </section>
 
+    <!-- ROW 2: OUTBOUND FLIGHTS -->
+    <section class="flights-section">
+      <div class="flights-header">
+        <div>
+          <h2 class="flights-title">
+            <span class="flights-leg-badge outbound">Outbound</span>
+            {{ search.origin }} → {{ search.destination }}
+          </h2>
+          <p class="flights-subtitle">Flights around {{ search.departureDate }}</p>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" onclick="scrollCarousel('outbound', -1)">‹</button>
+          <button class="carousel-btn" onclick="scrollCarousel('outbound', 1)">›</button>
+        </div>
+      </div>
 
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track" id="outbound-track">
+          {% for flight in outboundFlights %}
+          <div class="flight-card">
+            <div class="flight-card-top">
+              <div class="flight-time-block">
+                <span class="flight-time">{{ flight.departureTime }}</span>
+                <span class="flight-airport">{{ flight.originCode }}</span>
+              </div>
+              <div class="flight-duration">
+                <div class="flight-duration-line">
+                  <span class="flight-duration-dot"></span>
+                  <span class="flight-duration-bar"></span>
+                  <span class="flight-duration-dot"></span>
+                </div>
+                <span class="flight-duration-label">{{ flight.duration }}</span>
+              </div>
+              <div class="flight-time-block flight-time-block--right">
+                <span class="flight-time">{{ flight.arrivalTime }}</span>
+                <span class="flight-airport">{{ flight.destinationCode }}</span>
+              </div>
+            </div>
+            <div class="flight-card-mid">
+              <span class="flight-number">Flight #{{ flight.flightNumber }}</span>
+              <span class="flight-status flight-status--{{ flight.status }}">{{ flight.status }}</span>
+            </div>
+            <div class="flight-card-bottom">
+              <div class="flight-price">
+                <span class="flight-price-from">from</span>
+                <span class="flight-price-amount">£{{ flight.price }}</span>
+              </div>
+              <form action="/flights/select" method="POST">
+                <input type="hidden" name="flightId" value="{{ flight.flightId }}" />
+                <input type="hidden" name="leg" value="outbound" />
+                <input type="hidden" name="origin" value="{{ search.origin }}" />
+                <input type="hidden" name="destination" value="{{ search.destination }}" />
+                <input type="hidden" name="departureDate" value="{{ search.departureDate }}" />
+                <input type="hidden" name="returnDate" value="{{ search.returnDate }}" />
+                <input type="hidden" name="tripType" value="{{ search.tripType }}" />
+                <input type="hidden" name="adults" value="{{ search.adults }}" />
+                <input type="hidden" name="children" value="{{ search.children }}" />
+                <input type="hidden" name="infants" value="{{ search.infants }}" />
+                <button type="submit" class="btn-select">Select →</button>
+              </form>
+            </div>
+          </div>
+          {% else %}
+          <div class="flights-empty">
+            <span class="flights-empty-icon">✈️</span>
+            <p>No flights found around this date.</p>
+            <a href="/home" class="btn-ghost">Search again</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
 
-    <!-- DESTINATION to START (return) -->
-     
+    <!-- ROW 3: RETURN FLIGHTS (only shown for return trips) -->
+    {% if search.tripType == "return" %}
+    <section class="flights-section">
+      <div class="flights-header">
+        <div>
+          <h2 class="flights-title">
+            <span class="flights-leg-badge return">Return</span>
+            {{ search.destination }} → {{ search.origin }}
+          </h2>
+          <p class="flights-subtitle">Flights around {{ search.returnDate }}</p>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" onclick="scrollCarousel('return', -1)">‹</button>
+          <button class="carousel-btn" onclick="scrollCarousel('return', 1)">›</button>
+        </div>
+      </div>
+
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track" id="return-track">
+          {% for flight in returnFlights %}
+          <div class="flight-card">
+            <div class="flight-card-top">
+              <div class="flight-time-block">
+                <span class="flight-time">{{ flight.departureTime }}</span>
+                <span class="flight-airport">{{ flight.originCode }}</span>
+              </div>
+              <div class="flight-duration">
+                <div class="flight-duration-line">
+                  <span class="flight-duration-dot"></span>
+                  <span class="flight-duration-bar"></span>
+                  <span class="flight-duration-dot"></span>
+                </div>
+                <span class="flight-duration-label">{{ flight.duration }}</span>
+              </div>
+              <div class="flight-time-block flight-time-block--right">
+                <span class="flight-time">{{ flight.arrivalTime }}</span>
+                <span class="flight-airport">{{ flight.destinationCode }}</span>
+              </div>
+            </div>
+            <div class="flight-card-mid">
+              <span class="flight-number">Flight #{{ flight.flightNumber }}</span>
+              <span class="flight-status flight-status--{{ flight.status }}">{{ flight.status }}</span>
+            </div>
+            <div class="flight-card-bottom">
+              <div class="flight-price">
+                <span class="flight-price-from">from</span>
+                <span class="flight-price-amount">£{{ flight.price }}</span>
+              </div>
+              <form action="/flights/select" method="POST">
+                <input type="hidden" name="flightId" value="{{ flight.flightId }}" />
+                <input type="hidden" name="leg" value="return" />
+                <input type="hidden" name="origin" value="{{ search.origin }}" />
+                <input type="hidden" name="destination" value="{{ search.destination }}" />
+                <input type="hidden" name="departureDate" value="{{ search.departureDate }}" />
+                <input type="hidden" name="returnDate" value="{{ search.returnDate }}" />
+                <input type="hidden" name="tripType" value="{{ search.tripType }}" />
+                <input type="hidden" name="adults" value="{{ search.adults }}" />
+                <input type="hidden" name="children" value="{{ search.children }}" />
+                <input type="hidden" name="infants" value="{{ search.infants }}" />
+                <button type="submit" class="btn-select">Select →</button>
+              </form>
+            </div>
+          </div>
+          {% else %}
+          <div class="flights-empty">
+            <span class="flights-empty-icon">✈️</span>
+            <p>No return flights found around this date.</p>
+            <a href="/home" class="btn-ghost">Search again</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
   </main>
 
   <!-- FOOTER -->
@@ -46,6 +230,13 @@
       <a href="/complaints">Complaints</a>
     </div>
   </footer>
+
+  <script>
+    function scrollCarousel(trackId, direction) {
+      const track = document.getElementById(trackId + '-track');
+      track.scrollBy({ left: direction * 584, behavior: 'smooth' });
+    }
+  </script>
 
 </body>
 </html>
