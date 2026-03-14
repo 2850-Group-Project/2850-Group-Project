@@ -36,7 +36,7 @@
 }
 
 html, body {
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
 }
 
@@ -48,6 +48,13 @@ body {
     radial-gradient(900px 650px at 85% 10%, rgba(56,189,248,.10), transparent 55%),
     linear-gradient(180deg, var(--bg0), var(--bg1));
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
 }
 
 /* -- NAV -- */
@@ -424,7 +431,7 @@ footer {
   color: rgba(255,255,255,.40);
   font-size: 12px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 6px;
 }
 footer a { 
   color: rgba(255,255,255,.50); 

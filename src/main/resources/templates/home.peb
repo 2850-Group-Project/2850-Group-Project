@@ -22,130 +22,132 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero">
-    <h1>Where we flying to,<br /><span>{{ userSession.firstName }}?</span></h1>
+  <main>
+    <section class="hero">
+      <h1>Where we flying to,<br /><span>{{ userSession.firstName }}?</span></h1>
 
-    <!-- SEARCH CARD -->
-    <div class="search-card">
+      <!-- SEARCH CARD -->
+      <div class="search-card">
 
-      <!-- Trip type tabs -->
-      <div class="trip-tabs">
-        <button class="trip-tab active" onclick="setTripType('return', this)">⇄ Return</button>
-        <button class="trip-tab" onclick="setTripType('oneway', this)">→ One way</button>
+        <!-- Trip type tabs -->
+        <div class="trip-tabs">
+          <button class="trip-tab active" onclick="setTripType('return', this)">⇄ Return</button>
+          <button class="trip-tab" onclick="setTripType('oneway', this)">→ One way</button>
+        </div>
+
+        <!-- Form -->
+        <form action="/flights/search" method="GET" id="searchForm">
+          <input type="hidden" name="trip_type" id="tripType" value="return" />
+
+          <div class="search-row">
+
+            <!-- Origin -->
+            <div class="field">
+              <label>From</label>
+              <div class="field-inner">
+                <input
+                  type="text"
+                  name="origin"
+                  placeholder="City or airport"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Swap -->
+            <div class="swap-btn">
+              <button type="button" onclick="swapAirports()" title="Swap airports">⇄</button>
+            </div>
+
+            <!-- Destination -->
+            <div class="field">
+              <label>To</label>
+              <div class="field-inner">
+                <input
+                  type="text"
+                  name="destination"
+                  placeholder="City or airport"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Departure date -->
+            <div class="field">
+              <label>Departure</label>
+              <div class="field-inner">
+                <input type="date" name="departure_date" required />
+              </div>
+            </div>
+
+            <!-- Return date -->
+            <div class="field" id="returnField">
+              <label>Return</label>
+              <div class="field-inner">
+                <input type="date" name="return_date" id="returnDate" />
+              </div>
+            </div>
+
+            <!-- Passengers -->
+            <div class="field pax-wrapper">
+              <label>Passengers</label>
+              <div class="pax-display" onclick="togglePax()">
+                <span id="paxLabel">1 Adult</span>
+                <span class="caret">▼</span>
+              </div>
+              <div class="pax-dropdown" id="paxDropdown">
+                <div class="pax-row">
+                  <div>
+                    <div class="pax-label">Adults</div>
+                    <div class="pax-sub">16+ years</div>
+                  </div>
+                  <div class="pax-ctrl">
+                    <button type="button" onclick="changePax('adults', -1)">−</button>
+                    <span class="count" id="adultsCount">1</span>
+                    <button type="button" onclick="changePax('adults', 1)">+</button>
+                  </div>
+                </div>
+                <div class="pax-row">
+                  <div>
+                    <div class="pax-label">Children</div>
+                    <div class="pax-sub">2-15 years</div>
+                  </div>
+                  <div class="pax-ctrl">
+                    <button type="button" onclick="changePax('children', -1)">−</button>
+                    <span class="count" id="childrenCount">0</span>
+                    <button type="button" onclick="changePax('children', 1)">+</button>
+                  </div>
+                </div>
+                <div class="pax-row">
+                  <div>
+                    <div class="pax-label">Infants</div>
+                    <div class="pax-sub">Under 2 years</div>
+                  </div>
+                  <div class="pax-ctrl">
+                    <button type="button" onclick="changePax('infants', -1)">−</button>
+                    <span class="count" id="infantsCount">0</span>
+                    <button type="button" onclick="changePax('infants', 1)">+</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Hidden inputs submitted with form -->
+              <input type="hidden" name="adults" id="adultsInput" value="1" />
+              <input type="hidden" name="children" id="childrenInput" value="0" />
+              <input type="hidden" name="infants" id="infantsInput" value="0" />
+            </div>
+
+            <!-- Search button -->
+            
+          </div>
+          <div>
+            <button type="submit" class="btn-search">Search flights</button>
+          </div>
+        </form>
       </div>
-
-      <!-- Form -->
-      <form action="/flights/search" method="GET" id="searchForm">
-        <input type="hidden" name="trip_type" id="tripType" value="return" />
-
-        <div class="search-row">
-
-          <!-- Origin -->
-          <div class="field">
-            <label>From</label>
-            <div class="field-inner">
-              <input
-                type="text"
-                name="origin"
-                placeholder="City or airport"
-                autocomplete="off"
-                required
-              />
-            </div>
-          </div>
-
-          <!-- Swap -->
-          <div class="swap-btn">
-            <button type="button" onclick="swapAirports()" title="Swap airports">⇄</button>
-          </div>
-
-          <!-- Destination -->
-          <div class="field">
-            <label>To</label>
-            <div class="field-inner">
-              <input
-                type="text"
-                name="destination"
-                placeholder="City or airport"
-                autocomplete="off"
-                required
-              />
-            </div>
-          </div>
-
-          <!-- Departure date -->
-          <div class="field">
-            <label>Departure</label>
-            <div class="field-inner">
-              <input type="date" name="departure_date" required />
-            </div>
-          </div>
-
-          <!-- Return date -->
-          <div class="field" id="returnField">
-            <label>Return</label>
-            <div class="field-inner">
-              <input type="date" name="return_date" id="returnDate" />
-            </div>
-          </div>
-
-          <!-- Passengers -->
-          <div class="field pax-wrapper">
-            <label>Passengers</label>
-            <div class="pax-display" onclick="togglePax()">
-              <span id="paxLabel">1 Adult</span>
-              <span class="caret">▼</span>
-            </div>
-            <div class="pax-dropdown" id="paxDropdown">
-              <div class="pax-row">
-                <div>
-                  <div class="pax-label">Adults</div>
-                  <div class="pax-sub">16+ years</div>
-                </div>
-                <div class="pax-ctrl">
-                  <button type="button" onclick="changePax('adults', -1)">−</button>
-                  <span class="count" id="adultsCount">1</span>
-                  <button type="button" onclick="changePax('adults', 1)">+</button>
-                </div>
-              </div>
-              <div class="pax-row">
-                <div>
-                  <div class="pax-label">Children</div>
-                  <div class="pax-sub">2-15 years</div>
-                </div>
-                <div class="pax-ctrl">
-                  <button type="button" onclick="changePax('children', -1)">−</button>
-                  <span class="count" id="childrenCount">0</span>
-                  <button type="button" onclick="changePax('children', 1)">+</button>
-                </div>
-              </div>
-              <div class="pax-row">
-                <div>
-                  <div class="pax-label">Infants</div>
-                  <div class="pax-sub">Under 2 years</div>
-                </div>
-                <div class="pax-ctrl">
-                  <button type="button" onclick="changePax('infants', -1)">−</button>
-                  <span class="count" id="infantsCount">0</span>
-                  <button type="button" onclick="changePax('infants', 1)">+</button>
-                </div>
-              </div>
-            </div>
-            <!-- Hidden inputs submitted with form -->
-            <input type="hidden" name="adults" id="adultsInput" value="1" />
-            <input type="hidden" name="children" id="childrenInput" value="0" />
-            <input type="hidden" name="infants" id="infantsInput" value="0" />
-          </div>
-
-          <!-- Search button -->
-          
-        </div>
-        <div>
-          <button type="submit" class="btn-search">Search flights</button>
-        </div>
-      </form>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- FOOTER -->
   <footer>
