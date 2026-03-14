@@ -7,7 +7,9 @@ import io.ktor.server.response.*
 import io.ktor.server.pebble.*
 import io.ktor.server.sessions.*
 import com.flightbooking.models.UserSession
+import com.flightbooking.models.FlightSearch
 import com.flightbooking.routes.authRoutes
+import io.ktor.http.HttpStatusCode
 
 fun Route.pagesRoutes() {
     get("/home") {
@@ -30,16 +32,29 @@ fun Route.pagesRoutes() {
         // we also need to check that all the required data is provided
         val session = call.sessions.get<UserSession>()
         println(session)
-        println("hit the flight search page digga")
-
+        
         if (session == null) {
             call.respondRedirect("/login")
             return@get
         }
+        
+        // packaging all search data into one class
+        val search = FlightSearch(
+            tripType = call.request.queryParameters["trip_type"],
+            origin = call.request.queryParameters["origin"],
+            destination = call.request.queryParameters["destination"],
+            departureDate = call.request.queryParameters["departure_date"],
+            returnDate = call.request.queryParameters["return_date"],
+            adults = call.request.queryParameters["adults"],
+            children = call.request.queryParameters["children"],
+            infants = call.request.queryParameters["infants"]
+        )
+        println(search)
 
         call.respond(PebbleContent("flight_search.peb", mapOf(
             "userSession" to session,
-            "isLoggedIn" to true
+            "isLoggedIn" to true,
+            "search" to search
         )))
     }
 }

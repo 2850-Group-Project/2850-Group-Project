@@ -10,8 +10,7 @@
 
     <!-- NAV -->
   <nav>
-
-    <!-- take user back to flight search, not login page, when logged in -->
+    <!-- take user back to flight search, or login page, when logged in -->
     {% if isLoggedIn %}
         <a href="/home" class="brand">
     {% else %}
@@ -28,7 +27,14 @@
   </nav>
 
   <!-- FLIGHT SELECTION -->
+  <main>
+    <!-- START to DESTINATION (one way) -->
 
+
+
+    <!-- DESTINATION to START (return) -->
+     
+  </main>
 
   <!-- FOOTER -->
   <footer>

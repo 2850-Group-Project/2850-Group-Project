@@ -22,6 +22,18 @@ data class UserSession(
     val firstName: String?
 )
 
+// data class for flight searches, contains data about the flight search (from home page)
+data class FlightSearch(
+    val tripType: String?,
+    val origin: String?,
+    val destination: String?,
+    val departureDate: String?,
+    val returnDate: String?,
+    val adults: String?,
+    val children: String?,
+    val infants: String?
+)
+
 data class User(
     val id: Int,
     val email: String,
