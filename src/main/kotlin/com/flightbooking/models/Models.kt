@@ -62,6 +62,15 @@ data class FlightWithFares(
     val cheapestFare: FareOption? get() = fares.minByOrNull { it.price }
 }
 
+// booking session data class that is used to keep track of all data about a booking in progress
+data class BookingSession(
+    val outboundFlightId: Int? = null,
+    val outboundFareId: Int? = null,
+    val returnFlightId: Int? = null,
+    val returnFareId: Int? = null,
+    val search: FlightSearch? = null
+)
+
 data class User(
     val id: Int,
     val email: String,
