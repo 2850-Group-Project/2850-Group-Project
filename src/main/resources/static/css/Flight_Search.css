@@ -1,4 +1,4 @@
-/* ── SEARCH SUMMARY ROW ── */
+/* -- SEARCH SUMMARY ROW -- */
 .search-summary {
   padding: 16px 40px;
   border-bottom: 1px solid rgba(255,255,255,.06);
@@ -92,9 +92,19 @@
   font-size: 12px;
 }
 
-/* ── FLIGHTS SECTION ── */
+/* -- FLIGHTS SECTION CONTAINER -- */
+.flights-section-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 130px - 60px);
+}
+
+/* -- FLIGHTS SECTION -- */
 .flights-section {
   max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
   padding: 35px 40px;
   animation: fadeUp .4s ease both;
@@ -152,7 +162,7 @@
   margin-top: 4px;
 }
 
-/* ── CAROUSEL CONTROLS ── */
+/* -- CAROUSEL CONTROLS -- */
 .carousel-controls {
   display: flex;
   gap: 6px;
@@ -179,7 +189,7 @@
   border-color: rgba(255,255,255,.20);
 }
 
-/* ── CAROUSEL TRACK ── */
+/* -- CAROUSEL TRACK -- */
 .carousel-track-wrapper {
   overflow: hidden;
   border-radius: var(--radius);
@@ -199,7 +209,7 @@
   display: none;
 }
 
-/* ── FLIGHT CARD ── */
+/* -- FLIGHT CARD -- */
 .flight-card {
   flex: 0 0 380px;
   scroll-snap-align: start;
@@ -415,7 +425,7 @@
   box-shadow: 0 6px 20px rgba(63,94,251,.45);
 }
 
-/* ── EMPTY STATE ── */
+/* -- EMPTY STATE -- */
 .flights-empty {
   flex: 0 0 100%;
   display: flex;
