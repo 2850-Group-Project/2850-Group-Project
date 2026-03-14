@@ -17,6 +17,7 @@ import com.flightbooking.routes.authRoutes
 import io.ktor.http.HttpStatusCode
 
 import java.time.LocalDate
+import org.jetbrains.exposed.sql.compoundAnd
 
 fun Route.pagesRoutes() {
     get("/home") {
@@ -58,17 +59,21 @@ fun Route.pagesRoutes() {
         )
         println(search)
 
-        // need to add function that returns outbound/inbound flights (maybe better in table access)
-        // function return then mapped to outboundFlights/inboundFlights
-        // then pass both to pebble content
+        // get outbound flight data
         val flightTable = FlightTableAccess()
         val outboundFlights = flightTable.getFlightsAroundDate("LHR", "DXB", LocalDate.parse(search.departureDate))
         println(outboundFlights)
+
+        // get inbound flight data (for trip type = return)
+        val inboundFlights = flightTable.getFlightsAroundDate("DXB", "LHR", LocalDate.parse(search.returnDate))
+        println(inboundFlights)
 
         call.respond(PebbleContent("flight_search.peb", mapOf(
             "userSession" to session,
             "isLoggedIn" to true,
             "search" to search,
+            "outboundFlights" to outboundFlights,
+            "inboundFlights" to inboundFlights,
         )))
     }
 }

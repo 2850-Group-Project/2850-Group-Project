@@ -38,10 +38,15 @@ class FlightTableAccess {
 
     // gets flights 10 days around the selected date, necessary for the flight search page 
     // (users should be able to choose from a range of dates around their selected date in case they see something cheaper)
-    fun getFlightsAroundDate(originCode: String, destinationCode: String, date: LocalDate): List<ResultRow> {
+    fun getFlightsAroundDate(
+        originCode: String, 
+        destinationCode: String, 
+        date: LocalDate,
+        ): List<ResultRow> {
         val dateFrom = date.minusDays(5).toString()
         val dateTo = date.plusDays(5).toString()
 
+        // aliases for simplicity
         val OriginAirport = AirportTable.alias("origin")
         val DestinationAirport = AirportTable.alias("destination")
 
