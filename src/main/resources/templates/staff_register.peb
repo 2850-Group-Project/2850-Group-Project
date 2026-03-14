@@ -247,6 +247,9 @@
           <label for="password">Password</label>
           <input class="input" id="password" name="password" type="password" placeholder="••••••••" required />
 
+          <label for="inviteCode">Invite Code</label> 
+          <input class="input" id="inviteCode" name="inviteCode" type="password" placeholder="Staff invite code" required />
+
           <label for="role">Role</label>
           <input class="input" id="role" name="role" type="text" placeholder="customer_service" />
 

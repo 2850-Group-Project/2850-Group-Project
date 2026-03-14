@@ -20,12 +20,12 @@ import java.time.Instant
 class NotificationTableAccess {
     fun getAll(): List<Notification> = transaction {
         NotificationTable.selectAll().map {
-            constructNotificationRecord(it)
+            it.toNotification()
         }
     }
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<Notification> = transaction {
         NotificationTable.select { attribute eq value } 
-            .map { constructNotificationRecord(it) } 
+            .map { it.toNotification() } 
     }
     fun createNotification(
         userId: Int?, 
@@ -48,14 +48,4 @@ class NotificationTableAccess {
         val rows = NotificationTable.update({ NotificationTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-    fun constructNotificationRecord(it: ResultRow): Notification {
-        return Notification (
-                        id = it[NotificationTable.id],
-                        userId = it[NotificationTable.userId],
-                        type = it[NotificationTable.type],
-                        message = it[NotificationTable.message],
-                        createdAt = it[NotificationTable.createdAt],
-                        readAt = it[NotificationTable.readAt]
-                    )
-    }
 }

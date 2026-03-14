@@ -38,7 +38,12 @@ fun Route.staffAuthRoutes() {
         val email = params["email"]?.trim().orEmpty()
         val password = params["password"].orEmpty()
         val role = params["role"]?.trim()
-
+        val inviteCode = params["inviteCode"]?.trim().orEmpty() 
+        val expectedInvite = "STAFF-CHECK" 
+        if (inviteCode != expectedInvite) { 
+             call.respond(PebbleContent("staff_register.peb", mapOf("error" to "Invalid invite code"))) 
+              return@post 
+        } 
         if (StaffAuthService.register(email, password, firstName, lastName, role)) {
             call.respondRedirect("/staff/login")
         } else {

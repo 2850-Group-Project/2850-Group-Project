@@ -20,6 +20,8 @@ fun Route.pagesRoutes() {
             return@get
         }
 
-        call.respond(PebbleContent("home.peb", mapOf()))
+        call.respond(PebbleContent("home.peb", mapOf(
+            "userSession" to session
+        )))
     }
 }

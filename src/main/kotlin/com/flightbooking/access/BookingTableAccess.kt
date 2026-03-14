@@ -20,12 +20,12 @@ import java.time.Instant
 class BookingTableAccess {
     fun getAll(): List<Booking> = transaction {
         BookingTable.selectAll().map {
-            constructBookingRecord(it)
+            it.toBooking()
         }
     }
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<Booking> = transaction {
         BookingTable.select { attribute eq value } 
-            .map { constructBookingRecord(it) } 
+            .map { it.toBooking() } 
     }
     fun createBooking(
         userId: Int?, 
@@ -52,16 +52,4 @@ class BookingTableAccess {
         val rows = BookingTable.update({ BookingTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-    fun constructBookingRecord(it: ResultRow): Booking {
-        return Booking (
-                        id = it[BookingTable.id],
-                        userId = it[BookingTable.userId],
-                        bookingReference = it[BookingTable.bookingReference],
-                        paymentId = it[BookingTable.paymentId],
-                        createdAt = it[BookingTable.createdAt],
-                        bookingStatus = it[BookingTable.bookingStatus],
-                        cancelledAt = it[BookingTable.cancelledAt],
-                        amendable = it[BookingTable.amendable]
-                    )
-    }
 }

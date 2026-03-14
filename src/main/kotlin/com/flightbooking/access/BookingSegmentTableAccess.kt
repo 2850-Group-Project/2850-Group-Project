@@ -18,11 +18,11 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder
 class BookingSegmentTableAccess {
     fun getAll(): List<BookingSegment> = transaction {
         BookingSegmentTable.selectAll().map {
-            constructBookingSegmentRecord(it)
+            it.toBookingSegment()
         }}
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<BookingSegment> = transaction {
         BookingSegmentTable.select { attribute eq value } 
-            .map { constructBookingSegmentRecord(it) } }
+            .map { it.toBookingSegment() } }
     fun createBookingSegment(
         bookingId: Int, 
         flightId: Int, 
@@ -41,12 +41,4 @@ class BookingSegmentTableAccess {
         val rows = BookingSegmentTable.update({ BookingSegmentTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-    fun constructBookingSegmentRecord(it: ResultRow): BookingSegment {
-        return BookingSegment (
-                        id = it[BookingSegmentTable.id],
-                        bookingId = it[BookingSegmentTable.bookingId],
-                        flightId = it[BookingSegmentTable.flightId],
-                        flightFareId = it[BookingSegmentTable.flightFareId],
-                    )
-    }
 }

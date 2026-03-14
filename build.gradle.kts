@@ -29,8 +29,7 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-
-    // implementation("com.h2database:h2:2.2.224")
+    implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
     
     // exposed dependencies (abstraction over sql database)
     implementation("org.jetbrains.exposed:exposed-core:0.43.0")
@@ -46,4 +45,14 @@ dependencies {
 
     // simple logging
     implementation("org.slf4j:slf4j-simple:2.0.7")
+
+    // testing
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation(kotlin("test"))
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

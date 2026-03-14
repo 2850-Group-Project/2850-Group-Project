@@ -25,14 +25,14 @@ class AirportTableAccess {
     // specific search functions for each table (pretty much copy and pasted for most)
     fun getAll(): List<Airport> = transaction {
         AirportTable.selectAll().map {
-            constructAirportRecord(it)
+            it.toAirport()
         }
     }
     
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<Airport> = transaction {
         //accepts attribute you're searching by and the value you want it to be
         AirportTable.select { attribute eq value } 
-            .map { constructAirportRecord(it) } 
+            .map { it.toAirport() } 
     }
 
     fun createAirport(
@@ -42,7 +42,7 @@ class AirportTableAccess {
         country: String?
         ): Boolean = transaction { 
         // inserts new record into the table and returns the generated id
-        val id = AirportTable.insert { 
+        AirportTable.insert { 
             it[AirportTable.iataCode] = iataCode 
             it[AirportTable.name] = name 
             it[AirportTable.city] = city 
@@ -62,16 +62,5 @@ class AirportTableAccess {
             stmt -> stmt[column] = value 
         } 
         rows > 0 
-    }
-
-    // take record (row) and transforms into airport object which we can use like a normal object
-    fun constructAirportRecord(it: ResultRow): Airport {
-        return Airport (
-            id = it[AirportTable.id],
-            iataCode = it[AirportTable.iataCode],
-            name = it[AirportTable.name],
-            city = it[AirportTable.city],
-            country = it[AirportTable.country]
-        )
     }
 }

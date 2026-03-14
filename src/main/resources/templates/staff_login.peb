@@ -60,12 +60,20 @@
       font-size:16px;
     }
     .toplink{
-      font-size:13px;
-      color: rgba(125,211,252,.95);
+      padding:10px 12px;
+      border-radius:14px; 
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.9);
       text-decoration:none;
-      font-weight:700;
+      font-weight:800;
+      transition:.18s ease;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
-    .toplink:hover{ text-decoration:underline; }
+    .toplink:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); }
     .pill{
       display:inline-flex;
       align-items:center;
@@ -272,7 +280,6 @@
           <div class="brand-badge">✈</div>
           <div>SkyFlow Staff</div>
         </div>
-        <a class="toplink" href="/login">User Login</a >
       </div>
 
       <div class="pill">Staff Portal</div>
@@ -299,6 +306,7 @@
 
     <main class="panel">
       <div class="card">
+        <a class="toplink" href="/login">Back To User Login</a >
         <h2>Staff Sign In</h2>
         <p class="sub">Enter your staff email and password to continue.</p >
 

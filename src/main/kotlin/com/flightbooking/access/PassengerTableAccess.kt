@@ -19,12 +19,12 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder
 class PassengerTableAccess {
     fun getAll(): List<Passenger> = transaction {
         PassengerTable.selectAll().map {
-            constructPassengerRecord(it)
+            it.toPassenger()
         }
     }
     fun <T> getByAttribute(attribute: Column<T>, value: T): List<Passenger> = transaction {
         PassengerTable.select { attribute eq value } 
-            .map { constructPassengerRecord(it) } 
+            .map { it.toPassenger() } 
     }
     fun createPassenger(
         bookingId: Int?,
@@ -64,22 +64,4 @@ class PassengerTableAccess {
         val rows = PassengerTable.update({ PassengerTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
-    fun constructPassengerRecord(it: ResultRow): Passenger {
-        return Passenger (
-                        id = it[PassengerTable.id],
-                        bookingId = it[PassengerTable.bookingId],
-                        email = it[PassengerTable.email],
-                        checkedIn = it[PassengerTable.checkedIn],
-                        title = it[PassengerTable.title],
-                        firstName = it[PassengerTable.firstName],
-                        lastName = it[PassengerTable.lastName],
-                        dateOfBirth = it[PassengerTable.dateOfBirth],
-                        gender = it[PassengerTable.gender],
-                        nationality = it[PassengerTable.nationality],
-                        documentType = it[PassengerTable.documentType],
-                        documentNumber = it[PassengerTable.documentNumber],
-                        documentCountry = it[PassengerTable.documentCountry],
-                        documentExpiry = it[PassengerTable.documentExpiry]
-                    )
-    }
 }
