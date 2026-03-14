@@ -1,14 +1,20 @@
 package com.flightbooking
 
 import com.flightbooking.database.DBFactory
+
 import com.flightbooking.routes.authRoutes
 import com.flightbooking.routes.staffAuthRoutes
 import com.flightbooking.routes.staffPagesRoutes
-import com.flightbooking.models.StaffSession
 import com.flightbooking.routes.pagesRoutes
 import com.flightbooking.routes.staffBookingsRoutes
+import com.flightbooking.routes.flightRoutes
+
 import com.flightbooking.models.UserSession
+import com.flightbooking.models.StaffSession
+import com.flightbooking.models.BookingSession
+
 import io.pebbletemplates.pebble.loader.ClasspathLoader
+
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.EngineMain
@@ -21,7 +27,9 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.sessions.*
 import io.ktor.server.response.*
 import io.ktor.server.http.content.*
+
 import io.ktor.http.HttpStatusCode
+
 import org.slf4j.event.Level
 
 /**
@@ -88,6 +96,10 @@ private fun Application.configureServer() {
             cookie.path = "/"
             cookie.httpOnly = true
         }
+        cookie<BookingSession>("BOOKING_SESSION") {
+            cookie.path = "/"
+            cookie.httpOnly = true
+        }
     }
 }
 
@@ -122,5 +134,6 @@ private fun Application.registerRoutes() {
         pagesRoutes()
         staffPagesRoutes()
         staffBookingsRoutes()
+        flightRoutes()
     }
 }

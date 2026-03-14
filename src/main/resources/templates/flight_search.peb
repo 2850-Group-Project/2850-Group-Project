@@ -120,8 +120,9 @@
                     <span class="flight-price-from">from</span>
                     <span class="flight-price-amount">£{{ flight.cheapestFare.price }}</span>
                   </div>
-                  <form action="/flights/select" method="POST">
+                  <form onsubmit="selectFlight(event, this)" method="POST">
                     <input type="hidden" name="flightId" value="{{ flight.flightId }}" />
+                    <input type="hidden" name="fareId" value="{{ flight.cheapestFare.fareId }}" />
                     <input type="hidden" name="leg" value="outbound" />
                     <input type="hidden" name="origin" value="{{ search.origin }}" />
                     <input type="hidden" name="destination" value="{{ search.destination }}" />
@@ -245,6 +246,23 @@
     function scrollCarousel(trackId, direction) {
       const track = document.getElementById(trackId + '-track');
       track.scrollBy({ left: direction * 584, behavior: 'smooth' });
+    }
+
+    async function selectFlight(event, form) {
+      event.preventDefault();
+
+      // remove selected state from all cards in the same carousel
+      const track = form.closest('.carousel-track');
+      track.querySelectorAll('.flight-card').forEach(card => {
+        card.classList.remove('flight-card--selected');
+      });
+
+      // mark this card as selected
+      form.closest('.flight-card').classList.add('flight-card--selected');
+
+      const data = new FormData(form);
+      await fetch('/flights/select', { method: 'POST', body: data });
+      
     }
   </script>
 

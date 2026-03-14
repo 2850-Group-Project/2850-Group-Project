@@ -224,6 +224,13 @@
   backdrop-filter: blur(8px);
 }
 
+.flight-card--selected,
+.flight-card--selected:hover {
+  border-color: rgba(63,94,251,.60);
+  background: rgba(63,94,251,.15);
+  box-shadow: 0 0 0 2px rgba(63,94,251,.30);
+}
+
 .flight-card:hover {
   border-color: rgba(63,94,251,.35);
   background: rgba(63,94,251,.07);
@@ -423,6 +430,13 @@
 .btn-select:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(63,94,251,.45);
+}
+
+.btn-select:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(63,94,251,.30);
+  background: linear-gradient(135deg, #3550e0, #4f6ef0);
+  transition: .05s ease;
 }
 
 /* -- EMPTY STATE -- */

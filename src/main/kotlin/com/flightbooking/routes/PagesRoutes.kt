@@ -39,7 +39,10 @@ fun Route.pagesRoutes() {
         // need to add check to make sure user is logged in before loading the flight search page
         // we also need to check that all the required data is provided
         val session = call.sessions.get<UserSession>()
+        
+        println("SESSION DATA VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
         println(session)
+        println("SESSION DATA ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
         
         if (session == null) {
             call.respondRedirect("/login")
@@ -57,16 +60,17 @@ fun Route.pagesRoutes() {
             children = call.request.queryParameters["children"],
             infants = call.request.queryParameters["infants"],
         )
+
+        println("FLIGHT SEARCH DATA VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
         println(search)
+        println("FLIGHT SEARCH DATA ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
         // get outbound flight data
         val flightTable = FlightTableAccess()
         val outboundFlights = flightTable.getFlightsAroundDate("LHR", "DXB", LocalDate.parse(search.departureDate))
-        println(outboundFlights)
 
         // get inbound flight data (for trip type = return)
         val inboundFlights = flightTable.getFlightsAroundDate("DXB", "LHR", LocalDate.parse(search.returnDate))
-        println(inboundFlights)
 
         call.respond(PebbleContent("flight_search.peb", mapOf(
             "userSession" to session,
