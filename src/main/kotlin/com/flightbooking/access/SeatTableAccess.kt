@@ -16,6 +16,9 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 
+import com.flightbooking.access.AirportTableAccess
+import com.flightbooking.access.FlightTableAccess
+
 class SeatTableAccess {
     fun getAll(): List<Seat> = transaction {
         SeatTable.selectAll().map {
@@ -54,4 +57,54 @@ class SeatTableAccess {
         val rows = SeatTable.update({ SeatTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
+    fun generateUKDomesticSeats(
+        airportAccess: AirportTableAccess = AirportTableAccess(),
+        flightAccess: FlightTableAccess = FlightTableAccess()
+    ) = transaction {
+        println("generating UK domestic seats")
+        val ukAirports = airportAccess.getByAttribute(com.flightbooking.tables.AirportTable.country,"United Kingdom")
+        val ukIDs = ukAirports.map { it.id }
+        val ukDomesticFlights = flightAccess.getDomesticUKFlights(ukIDs)
+        val seatLetters = listOf("A","B","C","D","E","F")
+
+        for (flight in ukDomesticFlights) {
+            val capacity = flight.capacity ?: 100
+            val seatsPerRow = 6
+            val totalRows = (capacity + seatsPerRow - 1) / seatsPerRow
+
+            for (row in 1..totalRows) {
+                for (letter in seatLetters) {
+                    val seatCode = "$row$letter"
+                    val existing = getByAttribute( SeatTable.flightId, flight.id).any { it.seatCode == seatCode}
+                    if (existing) continue
+
+                    val cabinClass = when (row) {
+                        in 1..3 -> "Business"
+                        in 4..7 -> "Premium Economy"
+                        else -> "Economy"
+                    }
+                    val position = when (letter) {
+                        "A", "F" -> "window"
+                        "C", "D" -> "aisle"
+                        else -> "middle"
+                    }
+                    val exitRow = (row == 12 || row == 14)
+                    val extraLegroom = exitRow || row == 4 || row == 8
+                    val reducedMobility = (row == 1 && (letter == "C" || letter == "D"))
+
+                    createSeat(
+                        flightId = flight.id,
+                        seatCode = seatCode,
+                        cabinClass = cabinClass,
+                        position = position,
+                        extraLegroom = if (extraLegroom) 1 else 0,
+                        exitRow = if (exitRow) 1 else 0,
+                        reducedMobility = if (reducedMobility) 1 else 0,
+                        status = "available"
+                    )
+                }
+            }
+        }
+        println("done generating")
+    }
 }
