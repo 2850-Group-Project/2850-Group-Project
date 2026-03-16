@@ -4,10 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/static/css/Home.css">
-  <title>SkyBook — Find Your Flight</title>
+  <title>SkyBook - Find Your Flight</title>
 </head>
 <body>
-
   <!-- NAV -->
   <nav>
     <a href="/" class="brand">
@@ -86,7 +85,7 @@
             <div class="field" id="returnField">
               <label>Return</label>
               <div class="field-inner">
-                <input type="date" name="return_date" id="returnDate" />
+                <input type="date" name="return_date" id="returnDate" required />
               </div>
             </div>
 
@@ -132,15 +131,15 @@
                   </div>
                 </div>
               </div>
+              
               <!-- Hidden inputs submitted with form -->
               <input type="hidden" name="adults" id="adultsInput" value="1" />
               <input type="hidden" name="children" id="childrenInput" value="0" />
               <input type="hidden" name="infants" id="infantsInput" value="0" />
             </div>
-
-            <!-- Search button -->
-            
           </div>
+
+          <!-- Search button -->
           <div>
             <button type="submit" class="btn-search">Search flights</button>
           </div>
@@ -160,65 +159,6 @@
     </div>
   </footer>
 
-  <script>
-    // ── Trip type toggle ──
-    function setTripType(type, btn) {
-      document.querySelectorAll('.trip-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tripType').value = type;
-      const returnField = document.getElementById('returnField');
-      const returnDate = document.getElementById('returnDate');
-      if (type === 'oneway') {
-        returnField.style.display = 'none';
-        returnDate.removeAttribute('required');
-      } else {
-        returnField.style.display = '';
-        returnDate.setAttribute('required', '');
-      }
-    }
-
-    // ── Swap airports ──
-    function swapAirports() {
-      const inputs = document.querySelectorAll('input[name="origin"], input[name="destination"]');
-      const tmp = inputs[0].value;
-      inputs[0].value = inputs[1].value;
-      inputs[1].value = tmp;
-    }
-
-    // ── Passengers ──
-    const pax = { adults: 1, children: 0, infants: 0 };
-
-    function togglePax() {
-      document.getElementById('paxDropdown').classList.toggle('open');
-    }
-
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.pax-wrapper')) {
-        document.getElementById('paxDropdown').classList.remove('open');
-      }
-    });
-
-    function changePax(type, delta) {
-      const min = type === 'adults' ? 1 : 0;
-      pax[type] = Math.max(min, Math.min(9, pax[type] + delta));
-      document.getElementById(type + 'Count').textContent = pax[type];
-      document.getElementById(type + 'Input').value = pax[type];
-      updatePaxLabel();
-    }
-
-    function updatePaxLabel() {
-      const total = pax.adults + pax.children + pax.infants;
-      const parts = [];
-      if (pax.adults) parts.push(`${pax.adults} Adult${pax.adults > 1 ? 's' : ''}`);
-      if (pax.children) parts.push(`${pax.children} Child${pax.children > 1 ? 'ren' : ''}`);
-      if (pax.infants) parts.push(`${pax.infants} Infant${pax.infants > 1 ? 's' : ''}`);
-      document.getElementById('paxLabel').textContent = parts.join(', ');
-    }
-
-    // Set min date to today
-    const today = new Date().toISOString().split('T')[0];
-    document.querySelectorAll('input[type="date"]').forEach(i => i.setAttribute('min', today));
-  </script>
-
+  <script src="/static/javascript/Home.js"></script>
 </body>
 </html>
