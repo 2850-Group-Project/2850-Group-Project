@@ -15,6 +15,10 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import com.flightbooking.models.UserSession
 import com.flightbooking.routes.authRoutes
 
+/**
+ * Page routes for user-facing pages (home, profile, profile sub-pages, bookings) and a shared 404 page.
+ * Pages that are not implemented yet redirect to `/404`.
+ */
 fun Route.pagesRoutes() {
     get("/home") {
         // need to add check to make sure user is logged in before loading the home page
@@ -86,7 +90,7 @@ fun Route.pagesRoutes() {
             PebbleContent("404.peb", mapOf<String, Any>())
         )
     }
-    /**
+   /**
     * Renders the "My Bookings" page for the logged-in user.
     *
     * GET "/profile/bookings"
@@ -243,7 +247,7 @@ fun Route.pagesRoutes() {
         call.respond(PebbleContent("my_bookings.peb", model))
     }
 
-    /**
+   /**
     * Cancels a booking for the logged-in user.
     *
     * POST "/profile/bookings/cancel"
