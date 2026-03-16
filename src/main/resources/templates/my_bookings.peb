@@ -362,7 +362,7 @@
 
     <div class="nav-right">
       <a href="/home" class="btn-ghost">Search</a >
-      <a href="/profile/bookings" class="btn-primary">My Bookings</a >
+      <a href="/profile" class="btn-primary">My Profile</a >
       <a href="/logout" class="btn-danger">Logout</a >
     </div>
   </nav>
