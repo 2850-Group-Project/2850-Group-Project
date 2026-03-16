@@ -199,8 +199,9 @@
                     <span class="flight-price-from">from</span>
                     <span class="flight-price-amount">£{{ flight.cheapestFare.price }}</span>
                   </div>
-                  <form action="/flights/select" method="POST">
+                  <form onsubmit="selectFlight(event, this)" method="POST">
                     <input type="hidden" name="flightId" value="{{ flight.flightId }}" />
+                    <input type="hidden" name="fareId" value="{{ flight.cheapestFare.fareId }}" />
                     <input type="hidden" name="leg" value="return" />
                     <input type="hidden" name="origin" value="{{ search.origin }}" />
                     <input type="hidden" name="destination" value="{{ search.destination }}" />

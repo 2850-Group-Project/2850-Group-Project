@@ -40,6 +40,9 @@ fun Route.flightRoutes() {
 
         val booking = call.sessions.get<BookingSession>() ?: BookingSession()
 
+        println("====================================")
+        println(flightId)
+
         val updated = when (leg) {
             "outbound" -> booking.copy(outboundFlightId = flightId, outboundFareId = fareId, search = search)
             "return"   -> booking.copy(returnFlightId = flightId, returnFareId = fareId, search = search)
@@ -50,6 +53,8 @@ fun Route.flightRoutes() {
         }
 
         call.sessions.set(updated)
+
+        println(updated)
 
         call.respond(HttpStatusCode.OK, "ok") // stops ktor from hanging
     }
