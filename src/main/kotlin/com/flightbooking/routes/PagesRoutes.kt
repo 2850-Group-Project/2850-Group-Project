@@ -8,34 +8,26 @@ import io.ktor.server.response.*
 import io.ktor.server.pebble.*
 import io.ktor.server.pebble.PebbleContent
 import io.ktor.server.sessions.*
-<<<<<<< HEAD
 
 import com.flightbooking.access.FlightTableAccess
 import com.flightbooking.access.AirportTableAccess
 
-=======
 import com.flightbooking.tables.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
->>>>>>> ec7e3ba0e267e6546a87051c170d95f8f8f17ed4
 import com.flightbooking.models.UserSession
 import com.flightbooking.models.FlightSearch
 
 import com.flightbooking.routes.authRoutes
 
-<<<<<<< HEAD
-import io.ktor.http.HttpStatusCode
-
 import java.time.LocalDate
 import org.jetbrains.exposed.sql.compoundAnd
 
-=======
 /**
  * Page routes for user-facing pages (home, profile, profile sub-pages, bookings) and a shared 404 page.
  * Pages that are not implemented yet redirect to `/404`.
  */
->>>>>>> ec7e3ba0e267e6546a87051c170d95f8f8f17ed4
 fun Route.pagesRoutes() {
     get("/home") {
         // need to add check to make sure user is logged in before loading the home page
