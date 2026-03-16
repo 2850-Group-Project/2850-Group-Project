@@ -14,6 +14,20 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDate
 
+/**
+ * Registers the staff page routes (dashboard + flight management UI).
+ *
+ * Routes included:
+ * - **GET `/staff/dashboard`**: Requires [StaffSession]. Loads staff info + flight/complaint metrics and renders `staff_dashboard.peb`.
+ * - **GET `/staff/flights`**: Requires [StaffSession]. Supports optional query params:
+ *   - `edit` (Int): loads a flight into the edit form
+ *   - `q` (String): filters flights by flight number
+ *   Renders `staff_flights.peb`.
+ * - **POST `/staff/flights/create`**: Requires [StaffSession]. Creates a new flight and initialises seats for that flight, then redirects back to `/staff/flights`.
+ * - **POST `/staff/flights/update`**: Requires [StaffSession]. Updates an existing flight and ensures seats exist, then redirects back to `/staff/flights`.
+ * - **POST `/staff/flights/delete`**: Requires [StaffSession]. Deletes a flight, then redirects back to `/staff/flights`.
+ * - **GET `/staff/logout`**: Clears [StaffSession] and redirects to `/staff/login`.
+ */
 fun Route.staffPagesRoutes() {
 
     get("/staff/dashboard") {
