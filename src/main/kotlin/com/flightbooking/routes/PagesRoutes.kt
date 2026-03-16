@@ -18,6 +18,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import com.flightbooking.models.UserSession
 import com.flightbooking.models.FlightSearch
+import com.flightbooking.models.FlightWithFares
 
 import com.flightbooking.routes.authRoutes
 
@@ -99,9 +100,12 @@ fun Route.pagesRoutes() {
         val outboundFlights = flightTable.getFlightsAroundDate(originAirportCode, destinationAirportCode, LocalDate.parse(search.departureDate))
 
         // get inbound flight data (for trip type = return)
-        val inboundFlights = flightTable.getFlightsAroundDate(destinationAirportCode, originAirportCode, LocalDate.parse(search.returnDate))
-        println("INBOUND FLIGHT DATA VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
-        println(inboundFlights)
+        var inboundFlights: List<FlightWithFares> = emptyList()
+        if (search.tripType == "return") {
+            inboundFlights = flightTable.getFlightsAroundDate(destinationAirportCode, originAirportCode, LocalDate.parse(search.returnDate))
+            println("INBOUND FLIGHT DATA VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+            println(inboundFlights)
+        }
 
         call.respond(PebbleContent("flight_search.peb", mapOf(
             "userSession" to session,
