@@ -250,8 +250,19 @@ fun Route.staffBookingsRoutes() {
             call.respondRedirect("/staff/bookings")
             return@post
         }
+        var errMsg: String? = null
 
         transaction {
+            val userRow = UserTable
+                .select { UserTable.email eq passengerEmail }
+                .limit(1)
+                .firstOrNull()
+            if (userRow == null) {
+                errMsg="No user found for this email"
+                return@transaction
+            }
+
+            val userIdOrNull = userRow[UserTable.id]
             val bookingRef = "BK-" + UUID.randomUUID().toString().replace("-", "").take(10).uppercase()
             val createdAtStr = Instant.now().toString()
 
@@ -262,7 +273,7 @@ fun Route.staffBookingsRoutes() {
                 it[BookingTable.bookingStatus] = bookingStatus
                 it[BookingTable.cancelledAt] = null
                 it[BookingTable.amendable] = 1
-                it[BookingTable.userId] = null
+                it[BookingTable.userId] = userIdOrNull
             } get BookingTable.id
 
             val passengerId = PassengerTable.insert {
@@ -304,6 +315,10 @@ fun Route.staffBookingsRoutes() {
                     SeatAssignmentTable.update({ SeatAssignmentTable.id eq seatAssignmentId }) { it[SeatAssignmentTable.seatId] = seatId }
                 }
             }
+        }
+        if (errMsg != null) {
+            call.respondRedirect("/staff/bookings?error=$errMsg")
+            return@post
         }
         call.respondRedirect("/staff/bookings")
     }
