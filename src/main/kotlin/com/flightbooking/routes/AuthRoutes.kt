@@ -12,6 +12,16 @@ import com.flightbooking.models.UserSession
 import com.flightbooking.models.User
 import com.flightbooking.access.UserTableAccess
 
+/**
+ * Authentication routes for user registration, login, and logout.
+ *
+ * Routes:
+ * - GET  /register  -> renders the user registration page
+ * - POST /register  -> creates a new user account
+ * - GET  /login     -> renders the user login page
+ * - POST /login     -> authenticates a user and sets a session
+ * - GET  /logout    -> clears the session and redirects to landing page
+ */
 fun Route.authRoutes() {
     get("/register") {
         call.respond(PebbleContent("register.peb", mapOf()))
