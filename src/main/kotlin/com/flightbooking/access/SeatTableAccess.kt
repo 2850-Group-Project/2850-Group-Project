@@ -66,15 +66,18 @@ class SeatTableAccess {
         val ukIDs = ukAirports.map { it.id }
         val ukDomesticFlights = flightAccess.getDomesticUKFlights(ukIDs)
         val businessSeatLetters = listOf("A","C","D","F")
+        val premiumSeatLetters  = listOf("A","B","C","D","E","F")
         val economySeatLetters = listOf("A","B","C","D","E","F")
 
         for (flight in ukDomesticFlights) {
             val capacity = flight.capacity ?: 150
             val businessRows = 1..5
             val businessSeats = businessRows.count() * businessSeatLetters.count()
-            val remainingSeats = capacity - businessSeats
+            val premiumRows = 6..9
+            val premiumSeats = premiumRows.count() * premiumSeatLetters.count()
+            val remainingSeats = capacity - (businessSeats + premiumSeats)
             val economyRowsNeeded = kotlin.math.ceil(remainingSeats / 6.0).toInt()
-            val economyRows = 6 until (6 + economyRowsNeeded)
+            val economyRows = (premiumRows.last + 1) until (premiumRows.last + 1 + economyRowsNeeded)
 
             for (row in businessRows) {
                 for (letter in businessSeatLetters) {
@@ -95,11 +98,32 @@ class SeatTableAccess {
                     )
                 }
             }
+            for (row in premiumRows) {
+                for (letter in premiumSeatLetters) {
+                    val seatCode = "$row$letter"
+                    val extraLegroom = (row == premiumRows.first)
+
+                    createSeat(
+                        flightId = flight.id,
+                        seatCode = seatCode,
+                        cabinClass = "Premium Economy",
+                        position = when (letter) {
+                            "A", "F" -> "window"
+                            "C", "D" -> "aisle"
+                            else -> "middle"
+                        },
+                        extraLegroom = if (extraLegroom) 1 else 0,
+                        exitRow = 0,
+                        reducedMobility = 0,
+                        status = "available"
+                    )
+                }
+            }
             for (row in economyRows) {
                 for (letter in economySeatLetters) {
                     val seatCode = "$row$letter"
-                    val exitRow = (row == 12 || row == 14)
-                    val extraLegroom = exitRow || row == 6
+                    val exitRow = (row == 11 || row == 12)
+                    val extraLegroom = exitRow || row == economyRows.first
 
                     createSeat(
                         flightId = flight.id,

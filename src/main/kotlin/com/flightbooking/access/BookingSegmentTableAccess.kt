@@ -18,7 +18,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import com.flightbooking.tables.FlightTable
 import com.flightbooking.tables.BookingTable
 import com.flightbooking.tables.FlightFareTable
-
+import com.flightbooking.tables.FareClassTable
 
 class BookingSegmentTableAccess {
     fun getAll(): List<BookingSegment> = transaction {
@@ -49,13 +49,44 @@ class BookingSegmentTableAccess {
     fun generateBookingSegments(activeFlights: List<Int>) = transaction {
         println("generating booking segments")
         val bookings = BookingTable.selectAll().toList()
-        val faresByFlight = FlightFareTable
+        val flightFares = FlightFareTable
             .select { FlightFareTable.flightId inList activeFlights }
-            .groupBy { it[FlightFareTable.flightId] }
+            .toList()
+        val fareClassIds = flightFares.map { it[FlightFareTable.fareClassId] }.distinct()
+        val fareClasses = FareClassTable
+            .select { FareClassTable.id inList fareClassIds }
+            .associateBy { it[FareClassTable.id] }
+        val faresByFlightAndCabin: Map<Int, Map<String, List<ResultRow>>> =
+            flightFares.groupBy { it[FlightFareTable.flightId] }
+                .mapValues { (_, fares) ->
+                    fares.groupBy { fareRow ->
+                        val fareClassId = fareRow[FlightFareTable.fareClassId]
+                        val fareClass = fareClasses[fareClassId]
+                        fareClass?.get(FareClassTable.cabinClass) ?: "Economy"
+                    }
+                }
+
+        fun pickCabinClass(): String {
+            val roll = (1..100).random()
+            return when {
+                roll <= 6 -> "Business"          // 6%
+                roll <= 6 + 14 -> "Premium Economy" // 14%
+                else -> "Economy"               // 80%
+            }
+        }
+
         bookings.forEach { bookingRow ->
             val bookingId = bookingRow[BookingTable.id]
             val flightId = activeFlights.random()
-            val fareRow = faresByFlight[flightId]!!.random()
+            val desiredCabin = pickCabinClass()
+            val cabinMap = faresByFlightAndCabin[flightId]
+            val cabinFares = cabinMap?.get(desiredCabin).orEmpty()
+            val fareRow = when {
+                cabinFares.isNotEmpty() -> cabinFares.random()
+                cabinMap != null && cabinMap.isNotEmpty() ->
+                    cabinMap.values.flatten().random()
+                else -> error("No fares available for flight $flightId")
+            }
             val fareId = fareRow[FlightFareTable.id]
             BookingSegmentTable.insert {
                 it[BookingSegmentTable.bookingId] = bookingId
