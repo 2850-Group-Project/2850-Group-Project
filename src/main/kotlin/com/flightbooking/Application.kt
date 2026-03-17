@@ -26,7 +26,7 @@ import org.slf4j.event.Level
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import com.flightbooking.access.UserTableAccess
+import com.flightbooking.access.SeatTableAccess
 
 
 /**
@@ -43,7 +43,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureServer()
     initialiseDatabase()
-    UserTableAccess().fillMissingPhoneNumbers()
+    SeatTableAccess().generateUKDomesticSeats()
     registerRoutes()
 }
 

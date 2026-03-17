@@ -15,6 +15,9 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 
+import com.flightbooking.tables.FlightTable
+import com.flightbooking.tables.BookingTable
+
 class BookingSegmentTableAccess {
     fun getAll(): List<BookingSegment> = transaction {
         BookingSegmentTable.selectAll().map {
