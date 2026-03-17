@@ -26,7 +26,7 @@ import org.slf4j.event.Level
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import com.flightbooking.access.SeatTableAccess
+import com.flightbooking.access.PaymentTableAccess
 
 
 /**
@@ -43,7 +43,11 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureServer()
     initialiseDatabase()
-    SeatTableAccess().generateUKDomesticSeats()
+    val activeFlights = listOf(
+        2080, 4229, 4238, 4684, 4912,
+        4924, 4955, 5754, 5791, 7388
+    )
+    PaymentTableAccess().generatePayments()
     registerRoutes()
 }
 

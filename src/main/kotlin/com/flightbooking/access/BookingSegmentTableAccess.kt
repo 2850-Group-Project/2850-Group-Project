@@ -17,6 +17,8 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder
 
 import com.flightbooking.tables.FlightTable
 import com.flightbooking.tables.BookingTable
+import com.flightbooking.tables.FlightFareTable
+
 
 class BookingSegmentTableAccess {
     fun getAll(): List<BookingSegment> = transaction {
@@ -44,4 +46,23 @@ class BookingSegmentTableAccess {
         val rows = BookingSegmentTable.update({ BookingSegmentTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
+    fun generateBookingSegments(activeFlights: List<Int>) = transaction {
+        println("generating booking segments")
+        val bookings = BookingTable.selectAll().toList()
+        val faresByFlight = FlightFareTable
+            .select { FlightFareTable.flightId inList activeFlights }
+            .groupBy { it[FlightFareTable.flightId] }
+        bookings.forEach { bookingRow ->
+            val bookingId = bookingRow[BookingTable.id]
+            val flightId = activeFlights.random()
+            val fareRow = faresByFlight[flightId]!!.random()
+            val fareId = fareRow[FlightFareTable.id]
+            BookingSegmentTable.insert {
+                it[BookingSegmentTable.bookingId] = bookingId
+                it[BookingSegmentTable.flightId] = flightId
+                it[BookingSegmentTable.flightFareId] = fareId
+            }
+        }
+        println("done generating")
+    }
 }
