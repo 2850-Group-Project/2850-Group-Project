@@ -52,9 +52,21 @@ fun Route.staffAuthRoutes() {
         val lastName = params["lastName"]?.trim()
         val email = params["email"]?.trim().orEmpty()
         val password = params["password"].orEmpty()
+        val confirmPassword = params["confirmPassword"].orEmpty()
         val role = params["role"]?.trim()
         val inviteCode = params["inviteCode"]?.trim().orEmpty() 
         val expectedInvite = "STAFF-CHECK" 
+
+        if (password != confirmPassword) {
+            call.respond(
+                PebbleContent(
+                    "staff_register.peb",
+                    mapOf("error" to "Passwords do not match")
+                )
+            )
+            return@post
+        }
+
         if (inviteCode != expectedInvite) { 
              call.respond(PebbleContent("staff_register.peb", mapOf("error" to "Invalid invite code"))) 
               return@post 
