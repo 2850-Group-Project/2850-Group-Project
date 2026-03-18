@@ -18,6 +18,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder
 
 import com.flightbooking.access.AirportTableAccess
 import com.flightbooking.access.FlightTableAccess
+import com.flightbooking.tables.FlightTable
 
 class SeatTableAccess {
     fun getAll(): List<Seat> = transaction {
@@ -58,33 +59,31 @@ class SeatTableAccess {
             stmt -> stmt[column] = value } 
         rows > 0 }
     fun generateUKDomesticSeats(
-        airportAccess: AirportTableAccess = AirportTableAccess(),
-        flightAccess: FlightTableAccess = FlightTableAccess()
+        activeFlights: List<Int>
     ) = transaction {
         println("generating UK domestic seats")
-        val ukAirports = airportAccess.getByAttribute(com.flightbooking.tables.AirportTable.country,"United Kingdom")
-        val ukIDs = ukAirports.map { it.id }
-        val ukDomesticFlights = flightAccess.getDomesticUKFlights(ukIDs)
-        val businessSeatLetters = listOf("A","C","D","F")
+        val ukDomesticFlights = FlightTable
+            .select { FlightTable.id inList activeFlights }
+            .toList()
+        val businessSeatLetters = listOf("A","C","D","F")   // 2-2 layout
         val premiumSeatLetters  = listOf("A","B","C","D","E","F")
-        val economySeatLetters = listOf("A","B","C","D","E","F")
-
+        val economySeatLetters  = listOf("A","B","C","D","E","F")
         for (flight in ukDomesticFlights) {
-            val capacity = flight.capacity ?: 150
+            val flightId = flight[FlightTable.id]
+            val capacity = flight[FlightTable.capacity] ?: 150
             val businessRows = 1..5
             val businessSeats = businessRows.count() * businessSeatLetters.count()
             val premiumRows = 6..9
             val premiumSeats = premiumRows.count() * premiumSeatLetters.count()
             val remainingSeats = capacity - (businessSeats + premiumSeats)
             val economyRowsNeeded = kotlin.math.ceil(remainingSeats / 6.0).toInt()
-            val economyRows = (premiumRows.last + 1) until (premiumRows.last + 1 + economyRowsNeeded)
-
+            val economyStart = premiumRows.last + 1
+            val economyRows = economyStart until (economyStart + economyRowsNeeded)
             for (row in businessRows) {
                 for (letter in businessSeatLetters) {
-                    val seatCode = "$row$letter"
                     createSeat(
-                        flightId = flight.id,
-                        seatCode = seatCode,
+                        flightId = flightId,
+                        seatCode = "$row$letter",
                         cabinClass = "Business",
                         position = when (letter) {
                             "A", "F" -> "window"
@@ -100,12 +99,10 @@ class SeatTableAccess {
             }
             for (row in premiumRows) {
                 for (letter in premiumSeatLetters) {
-                    val seatCode = "$row$letter"
                     val extraLegroom = (row == premiumRows.first)
-
                     createSeat(
-                        flightId = flight.id,
-                        seatCode = seatCode,
+                        flightId = flightId,
+                        seatCode = "$row$letter",
                         cabinClass = "Premium Economy",
                         position = when (letter) {
                             "A", "F" -> "window"
@@ -120,14 +117,12 @@ class SeatTableAccess {
                 }
             }
             for (row in economyRows) {
+                val isExitRow = (row == economyRows.first + 4) || (row == economyRows.first + 5)
+                val extraLegroom = isExitRow || row == economyRows.first
                 for (letter in economySeatLetters) {
-                    val seatCode = "$row$letter"
-                    val exitRow = (row == 11 || row == 12)
-                    val extraLegroom = exitRow || row == economyRows.first
-
                     createSeat(
-                        flightId = flight.id,
-                        seatCode = seatCode,
+                        flightId = flightId,
+                        seatCode = "$row$letter",
                         cabinClass = "Economy",
                         position = when (letter) {
                             "A", "F" -> "window"
@@ -135,7 +130,7 @@ class SeatTableAccess {
                             else -> "middle"
                         },
                         extraLegroom = if (extraLegroom) 1 else 0,
-                        exitRow = if (exitRow) 1 else 0,
+                        exitRow = if (isExitRow) 1 else 0,
                         reducedMobility = 0,
                         status = "available"
                     )
