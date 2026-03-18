@@ -24,10 +24,6 @@ import io.ktor.server.http.content.*
 import io.ktor.http.HttpStatusCode
 import org.slf4j.event.Level
 
-import com.flightbooking.access.PassengerTableAccess
-import com.flightbooking.access.BookingSegmentTableAccess
-import com.flightbooking.access.SeatAssignmentTableAccess
-import com.flightbooking.access.SeatTableAccess
 
 /**
  * Entry point for the Ktor application.
@@ -43,24 +39,6 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureServer()
     initialiseDatabase()
-    val activeFlights = listOf(
-        2080, 4229, 4238, 4684, 4912,
-        4924, 4955, 5754, 5791, 7388,
-        8073, 8071, 7201, 8981, 4930
-    )
-    val passengers = PassengerTableAccess().generatePassengers()
-    val segments = BookingSegmentTableAccess().generateBookingSegments(
-        activeFlights = activeFlights,
-        passengersByBooking = passengers
-    )
-    SeatAssignmentTableAccess().generateSeatAssignments(
-        passengersByBooking = passengers,
-        segmentsByBooking = segments
-    )
-    SeatTableAccess().generateUKDomesticSeats(
-        activeFlights = activeFlights
-    )
-    SeatAssignmentTableAccess().assignSeats()
     registerRoutes()
 }
 
