@@ -9,6 +9,21 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 
+/**
+ * Staff authentication routes (login + registration).
+ *
+ * Routes:
+ * - GET  /staff/login: Renders the staff login page.
+ * - POST /staff/login: Validates credentials via [StaffAuthService.login]. On success, stores [StaffSession]
+ *   and redirects to `/staff/dashboard`. On failure, re-renders login with an error.
+ *
+ * - GET  /staff/register: Renders the staff registration page.
+ * - POST /staff/register: Validates an invite code, then registers a staff account via
+ *   [StaffAuthService.register]. On success, redirects to `/staff/login`. On failure, re-renders with an error.
+ *
+ * Security note:
+ * - Invite-code validation is a shared-secret gate to reduce unauthorised staff account creation.
+ */
 fun Route.staffAuthRoutes() {
     get("/staff/login") {
         call.respond(PebbleContent("staff_login.peb", mapOf<String, Any>()))
@@ -37,9 +52,21 @@ fun Route.staffAuthRoutes() {
         val lastName = params["lastName"]?.trim()
         val email = params["email"]?.trim().orEmpty()
         val password = params["password"].orEmpty()
+        val confirmPassword = params["confirmPassword"].orEmpty()
         val role = params["role"]?.trim()
         val inviteCode = params["inviteCode"]?.trim().orEmpty() 
         val expectedInvite = "STAFF-CHECK" 
+
+        if (password != confirmPassword) {
+            call.respond(
+                PebbleContent(
+                    "staff_register.peb",
+                    mapOf("error" to "Passwords do not match")
+                )
+            )
+            return@post
+        }
+
         if (inviteCode != expectedInvite) { 
              call.respond(PebbleContent("staff_register.peb", mapOf("error" to "Invalid invite code"))) 
               return@post 

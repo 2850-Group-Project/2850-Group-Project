@@ -22,6 +22,55 @@ data class UserSession(
     val firstName: String?
 )
 
+// data class for flight searches, contains data about the flight search (from home page)
+data class FlightSearch(
+    val tripType: String?,
+    val origin: String?,
+    val destination: String?,
+    val departureDate: String?,
+    val returnDate: String?,
+    val adults: String?,
+    val children: String?,
+    val infants: String?
+)
+
+// fare option for a specific flight
+data class FareOption(
+    val fareId: Int,
+    val fareClassId: Int,
+    val displayName: String?,
+    val cabinClass: String?,
+    val price: Double,
+    val currency: String,
+    val seatsAvailable: Int
+)
+
+// flight connection to fare options
+data class FlightWithFares(
+    val flightId: Int,
+    val flightNumber: Int?,
+    val departureDay: String?,
+    val departureTime: String?,
+    val arrivalTime: String?,
+    val duration: String?,
+    val status: String,
+    val capacity: Int?,
+    val originCode: String,
+    val destinationCode: String,
+    val fares: List<FareOption>
+) {
+    val cheapestFare: FareOption? get() = fares.minByOrNull { it.price }
+}
+
+// booking session data class that is used to keep track of all data about a booking in progress
+data class BookingSession(
+    val outboundFlightId: Int? = null,
+    val outboundFareId: Int? = null,
+    val returnFlightId: Int? = null,
+    val returnFareId: Int? = null,
+    val search: FlightSearch? = null
+)
+
 data class User(
     val id: Int,
     val email: String,
