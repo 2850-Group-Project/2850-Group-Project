@@ -5,6 +5,7 @@ val kotlinVersion = "1.9.22"
 
 plugins {
     kotlin("jvm") version "1.9.22"
+    kotlin("plugin.serialization") version "1.9.0"
     application
 }
 
@@ -29,6 +30,13 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+
+    // ktor client dependencies
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+
+    // implementation("com.h2database:h2:2.2.224")
     implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
     
     // exposed dependencies (abstraction over sql database)
@@ -46,6 +54,11 @@ dependencies {
     // simple logging
     implementation("org.slf4j:slf4j-simple:2.0.7")
 
+    // Client-side ContentNegotiation
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+    implementation("io.ktor:ktor-client-json:2.3.7")
+    implementation("io.ktor:ktor-client-serialization:2.3.7")
+    
     // testing
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation(kotlin("test"))
