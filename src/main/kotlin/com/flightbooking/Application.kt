@@ -32,6 +32,7 @@ import io.ktor.http.HttpStatusCode
 
 import org.slf4j.event.Level
 
+
 /**
  * Entry point for the Ktor application.
  */

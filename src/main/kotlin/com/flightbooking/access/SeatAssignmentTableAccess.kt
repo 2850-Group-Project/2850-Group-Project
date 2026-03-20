@@ -16,6 +16,13 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 
+import com.flightbooking.tables.PassengerTable
+import com.flightbooking.tables.BookingSegmentTable
+import com.flightbooking.tables.FlightFareTable
+import com.flightbooking.tables.FlightTable
+import com.flightbooking.tables.FareClassTable
+import com.flightbooking.tables.SeatTable
+import org.jetbrains.exposed.sql.and
 class SeatAssignmentTableAccess {
     fun getAll(): List<SeatAssignment> = transaction {
         SeatAssignmentTable.selectAll().map {
@@ -30,8 +37,8 @@ class SeatAssignmentTableAccess {
         passengerId: Int,
         bookingSegmentId: Int,
         seatId: Int?
-        ):Boolean = transaction { 
-        SeatAssignmentTable.insert { 
+    ): Boolean = transaction {
+        SeatAssignmentTable.insert {
             it[SeatAssignmentTable.passengerId] = passengerId
             it[SeatAssignmentTable.bookingSegmentId] = bookingSegmentId
             it[SeatAssignmentTable.seatId] = seatId
@@ -44,4 +51,45 @@ class SeatAssignmentTableAccess {
         val rows = SeatAssignmentTable.update({ SeatAssignmentTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
+    fun generateSeatAssignments(
+        passengersByBooking: Map<Int, List<Int>>,
+        segmentsByBooking: Map<Int, List<Int>>
+    ) = transaction {
+        println("generating seat assignments")
+        passengersByBooking.forEach { (bookingId, passengers) ->
+            val segments = segmentsByBooking[bookingId] ?: emptyList()
+            val segmentId = segments.firstOrNull() ?: return@forEach
+
+            for (passengerId in passengers) {
+                SeatAssignmentTable.insert {
+                    it[SeatAssignmentTable.passengerId] = passengerId
+                    it[SeatAssignmentTable.bookingSegmentId] = segmentId
+                    it[SeatAssignmentTable.seatId] = null
+                }
+            }
+        }
+        println("done generating seat assignments")
+    }
+    fun assignSeats() = transaction {
+        println("assigning seats")
+        val assignments = SeatAssignmentTable.selectAll().toList()
+        assignments.forEach { assignment ->
+            val assignmentId = assignment[SeatAssignmentTable.id]
+            val segmentId = assignment[SeatAssignmentTable.bookingSegmentId]
+            val segment = BookingSegmentTable
+                .select { BookingSegmentTable.id eq segmentId }
+                .first()
+            val flightId = segment[BookingSegmentTable.flightId]
+            val seat = SeatTable
+                .select { SeatTable.flightId eq flightId }
+                .firstOrNull()
+            if (seat != null) {
+                SeatAssignmentTable.update({ SeatAssignmentTable.id eq assignmentId }) {
+                    it[SeatAssignmentTable.seatId] = seat[SeatTable.id]
+                }
+            }
+        }
+        println("done assigning seats")
+    }
 }
+    

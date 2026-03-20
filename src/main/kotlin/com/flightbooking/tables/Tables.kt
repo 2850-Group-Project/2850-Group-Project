@@ -149,7 +149,7 @@ object SeatTable : Table("seat") {
 object SeatAssignmentTable : Table("seat_assignment") {
     val id = integer("seat_assignment_id").autoIncrement()
     val passengerId = integer("passenger_id").references(PassengerTable.id).uniqueIndex()
-    val bookingSegmentId = integer("booking_segment_id").references(BookingSegmentTable.id).uniqueIndex()
+    val bookingSegmentId = integer("booking_segment_id").references(BookingSegmentTable.id)
     val seatId = integer("seat_id").references(SeatTable.id).nullable()
 
     override val primaryKey = PrimaryKey(id)
