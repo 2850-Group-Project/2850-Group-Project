@@ -13,6 +13,7 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.insert
@@ -33,6 +34,22 @@ class AirportTableAccess {
         //accepts attribute you're searching by and the value you want it to be
         AirportTable.select { attribute eq value } 
             .map { it.toAirport() } 
+    }
+
+    fun getAirportCodeByOrigin(origin: String): String? = transaction {
+        AirportTable.select {
+            (AirportTable.iataCode like "%$origin%") or
+            (AirportTable.city like "%$origin%") or
+            (AirportTable.name like "%$origin%")
+        }.firstOrNull()?.get(AirportTable.iataCode)
+    }
+
+    fun getCityByOrigin(origin: String): String? = transaction {
+        AirportTable.select {
+            (AirportTable.iataCode like "%$origin%") or
+            (AirportTable.city like "%$origin%") or
+            (AirportTable.name like "%$origin%")
+        }.firstOrNull()?.get(AirportTable.city)
     }
 
     fun createAirport(

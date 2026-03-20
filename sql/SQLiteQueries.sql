@@ -3,9 +3,10 @@
 --      RUN WITH CTRL+SHIFT+Q         --
 ----------------------------------------
 
+
+
+select * from airport;
 select * from flight;
-
-
 
 ----------------------------------------
 --            TABLE NAMES             --
@@ -213,6 +214,171 @@ select * from flight;
 ----------------------------------------
 
 -- GENERATED THIS DATA USING CLAUDE BECAUSE I AM LAZY
+
+
+-- -- LHR -> DXB flights around today (2026-03-14) so they show in ±5 day window
+-- INSERT INTO "flight" VALUES (NULL, 401, 1, 5, '2026-03-10 06:00:00', '2026-03-10 17:00:00', 'scheduled', 280);
+-- INSERT INTO "flight" VALUES (NULL, 402, 1, 5, '2026-03-11 09:30:00', '2026-03-11 20:30:00', 'scheduled', 280);
+-- INSERT INTO "flight" VALUES (NULL, 403, 1, 5, '2026-03-12 14:00:00', '2026-03-13 01:00:00', 'scheduled', 300);
+-- INSERT INTO "flight" VALUES (NULL, 404, 1, 5, '2026-03-13 07:00:00', '2026-03-13 18:00:00', 'scheduled', 220);
+-- INSERT INTO "flight" VALUES (NULL, 405, 1, 5, '2026-03-14 08:00:00', '2026-03-14 19:00:00', 'scheduled', 300);
+-- INSERT INTO "flight" VALUES (NULL, 406, 1, 5, '2026-03-15 11:00:00', '2026-03-15 22:00:00', 'scheduled', 280);
+-- INSERT INTO "flight" VALUES (NULL, 407, 1, 5, '2026-03-16 16:00:00', '2026-03-17 03:00:00', 'scheduled', 260);
+-- INSERT INTO "flight" VALUES (NULL, 408, 1, 5, '2026-03-17 20:00:00', '2026-03-18 07:00:00', 'scheduled', 300);
+-- INSERT INTO "flight" VALUES (NULL, 409, 1, 5, '2026-03-18 05:30:00', '2026-03-18 16:30:00', 'scheduled', 280);
+-- INSERT INTO "flight" VALUES (NULL, 410, 1, 5, '2026-03-19 13:00:00', '2026-03-20 00:00:00', 'delayed',   300);
+
+-- -- DXB -> LHR return flights around today (2026-03-16) ±5 day window
+-- INSERT INTO "flight" VALUES (NULL, 411, 5, 1, '2026-03-10 08:00:00', '2026-03-10 13:00:00', 'scheduled', 280);
+-- INSERT INTO "flight" VALUES (NULL, 412, 5, 1, '2026-03-11 13:00:00', '2026-03-11 18:30:00', 'scheduled', 260);
+-- INSERT INTO "flight" VALUES (NULL, 413, 5, 1, '2026-03-12 07:30:00', '2026-03-12 12:30:00', 'scheduled', 300);
+-- INSERT INTO "flight" VALUES (NULL, 414, 5, 1, '2026-03-13 22:00:00', '2026-03-14 03:00:00', 'scheduled', 220);
+-- INSERT INTO "flight" VALUES (NULL, 415, 5, 1, '2026-03-14 10:00:00', '2026-03-14 15:00:00', 'scheduled', 300);
+-- INSERT INTO "flight" VALUES (NULL, 416, 5, 1, '2026-03-15 15:00:00', '2026-03-15 20:00:00', 'scheduled', 280);
+-- INSERT INTO "flight" VALUES (NULL, 417, 5, 1, '2026-03-16 06:00:00', '2026-03-16 11:00:00', 'scheduled', 260);
+-- INSERT INTO "flight" VALUES (NULL, 418, 5, 1, '2026-03-17 18:30:00', '2026-03-17 23:30:00', 'delayed',   300);
+-- INSERT INTO "flight" VALUES (NULL, 419, 5, 1, '2026-03-18 09:00:00', '2026-03-18 14:00:00', 'scheduled', 280);
+-- INSERT INTO "flight" VALUES (NULL, 420, 5, 1, '2026-03-19 21:00:00', '2026-03-20 02:00:00', 'scheduled', 300);
+
+-- -- Flight fares for DXB -> LHR return flights (flights 411-420)
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=411 AND origin_airport=5 AND destination_airport=1), 1, 199.99, 'GBP', 180, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=411 AND origin_airport=5 AND destination_airport=1), 2, 349.99, 'GBP', 60,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=411 AND origin_airport=5 AND destination_airport=1), 3, 899.99, 'GBP', 20,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=412 AND origin_airport=5 AND destination_airport=1), 1, 179.99, 'GBP', 200, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=412 AND origin_airport=5 AND destination_airport=1), 2, 299.99, 'GBP', 50,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=412 AND origin_airport=5 AND destination_airport=1), 3, 849.99, 'GBP', 15,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=413 AND origin_airport=5 AND destination_airport=1), 1, 219.99, 'GBP', 150, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=413 AND origin_airport=5 AND destination_airport=1), 2, 379.99, 'GBP', 45,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=413 AND origin_airport=5 AND destination_airport=1), 3, 949.99, 'GBP', 18,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=414 AND origin_airport=5 AND destination_airport=1), 1, 159.99, 'GBP', 180, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=414 AND origin_airport=5 AND destination_airport=1), 2, 279.99, 'GBP', 55,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=414 AND origin_airport=5 AND destination_airport=1), 3, 799.99, 'GBP', 22,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=415 AND origin_airport=5 AND destination_airport=1), 1, 249.99, 'GBP', 120, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=415 AND origin_airport=5 AND destination_airport=1), 2, 399.99, 'GBP', 40,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=415 AND origin_airport=5 AND destination_airport=1), 3, 999.99, 'GBP', 12,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=416 AND origin_airport=5 AND destination_airport=1), 1, 189.99, 'GBP', 200, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=416 AND origin_airport=5 AND destination_airport=1), 2, 319.99, 'GBP', 50,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=416 AND origin_airport=5 AND destination_airport=1), 3, 869.99, 'GBP', 16,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=417 AND origin_airport=5 AND destination_airport=1), 1, 209.99, 'GBP', 160, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=417 AND origin_airport=5 AND destination_airport=1), 2, 359.99, 'GBP', 48,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=417 AND origin_airport=5 AND destination_airport=1), 3, 919.99, 'GBP', 14,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=418 AND origin_airport=5 AND destination_airport=1), 1, 169.99, 'GBP', 220, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=418 AND origin_airport=5 AND destination_airport=1), 2, 289.99, 'GBP', 52,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=418 AND origin_airport=5 AND destination_airport=1), 3, 829.99, 'GBP', 20,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=419 AND origin_airport=5 AND destination_airport=1), 1, 229.99, 'GBP', 140, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=419 AND origin_airport=5 AND destination_airport=1), 2, 389.99, 'GBP', 42,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=419 AND origin_airport=5 AND destination_airport=1), 3, 979.99, 'GBP', 10,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=420 AND origin_airport=5 AND destination_airport=1), 1, 139.99, 'GBP', 240, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=420 AND origin_airport=5 AND destination_airport=1), 2, 259.99, 'GBP', 58,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=420 AND origin_airport=5 AND destination_airport=1), 3, 779.99, 'GBP', 24,  '2026-01-01', '2026-03-20');
+
+-- -- Fare classes (if not already inserted)
+-- INSERT OR IGNORE INTO "fare_class" VALUES (1, 'Y', 'Economy',  'Economy Standard', 0, 'no cancellation',  0, 0, 0, 0, 1, 7,  0, 0,  1.0, NULL, 'Basic economy fare',                      datetime('now'), datetime('now'));
+-- INSERT OR IGNORE INTO "fare_class" VALUES (2, 'W', 'Economy',  'Economy Flex',     1, 'free cancellation', 1, 0, 0, 0, 1, 7,  1, 23, 1.2, NULL, 'Flexible economy with one checked bag',   datetime('now'), datetime('now'));
+-- INSERT OR IGNORE INTO "fare_class" VALUES (3, 'J', 'Business', 'Business Flex',    1, 'free cancellation', 1, 1, 1, 1, 1, 10, 2, 32, 2.0, NULL, 'Full business class experience',          datetime('now'), datetime('now'));
+
+-- Flight fares for each new flight (3 fare classes each)
+-- Get the flight_ids first with: SELECT flight_id, flight_number FROM flight WHERE origin_airport=1 AND destination_airport=5;
+-- Then replace the flight_id values below accordingly
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=401 AND origin_airport=1 AND destination_airport=5), 1, 199.99, 'GBP', 180, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=401 AND origin_airport=1 AND destination_airport=5), 2, 349.99, 'GBP', 60,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=401 AND origin_airport=1 AND destination_airport=5), 3, 899.99, 'GBP', 20,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=402 AND origin_airport=1 AND destination_airport=5), 1, 179.99, 'GBP', 200, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=402 AND origin_airport=1 AND destination_airport=5), 2, 299.99, 'GBP', 50,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=402 AND origin_airport=1 AND destination_airport=5), 3, 849.99, 'GBP', 15,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=403 AND origin_airport=1 AND destination_airport=5), 1, 219.99, 'GBP', 150, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=403 AND origin_airport=1 AND destination_airport=5), 2, 379.99, 'GBP', 45,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=403 AND origin_airport=1 AND destination_airport=5), 3, 949.99, 'GBP', 18,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=404 AND origin_airport=1 AND destination_airport=5), 1, 159.99, 'GBP', 180, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=404 AND origin_airport=1 AND destination_airport=5), 2, 279.99, 'GBP', 55,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=404 AND origin_airport=1 AND destination_airport=5), 3, 799.99, 'GBP', 22,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=405 AND origin_airport=1 AND destination_airport=5), 1, 249.99, 'GBP', 120, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=405 AND origin_airport=1 AND destination_airport=5), 2, 399.99, 'GBP', 40,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=405 AND origin_airport=1 AND destination_airport=5), 3, 999.99, 'GBP', 12,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=406 AND origin_airport=1 AND destination_airport=5), 1, 189.99, 'GBP', 200, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=406 AND origin_airport=1 AND destination_airport=5), 2, 319.99, 'GBP', 50,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=406 AND origin_airport=1 AND destination_airport=5), 3, 869.99, 'GBP', 16,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=407 AND origin_airport=1 AND destination_airport=5), 1, 209.99, 'GBP', 160, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=407 AND origin_airport=1 AND destination_airport=5), 2, 359.99, 'GBP', 48,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=407 AND origin_airport=1 AND destination_airport=5), 3, 919.99, 'GBP', 14,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=408 AND origin_airport=1 AND destination_airport=5), 1, 169.99, 'GBP', 220, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=408 AND origin_airport=1 AND destination_airport=5), 2, 289.99, 'GBP', 52,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=408 AND origin_airport=1 AND destination_airport=5), 3, 829.99, 'GBP', 20,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=409 AND origin_airport=1 AND destination_airport=5), 1, 229.99, 'GBP', 140, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=409 AND origin_airport=1 AND destination_airport=5), 2, 389.99, 'GBP', 42,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=409 AND origin_airport=1 AND destination_airport=5), 3, 979.99, 'GBP', 10,  '2026-01-01', '2026-03-20');
+
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=410 AND origin_airport=1 AND destination_airport=5), 1, 139.99, 'GBP', 240, '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=410 AND origin_airport=1 AND destination_airport=5), 2, 259.99, 'GBP', 58,  '2026-01-01', '2026-03-20');
+-- INSERT INTO "flight_fare" VALUES (NULL, (SELECT flight_id FROM flight WHERE flight_number=410 AND origin_airport=1 AND destination_airport=5), 3, 779.99, 'GBP', 24,  '2026-01-01', '2026-03-20');
+
+
+
+-- -- More flights
+-- INSERT INTO flight (flight_number, origin_airport, destination_airport, scheduled_departure_time, scheduled_arrival_time, status, capacity) VALUES
+-- -- LHR <-> JFK
+-- (101, 1, 2, '2026-04-01 08:00', '2026-04-01 11:00', 'scheduled', 180),
+-- (102, 2, 1, '2026-04-01 14:00', '2026-04-02 02:00', 'scheduled', 180),
+-- (103, 1, 2, '2026-04-02 09:30', '2026-04-02 12:30', 'scheduled', 220),
+-- (104, 2, 1, '2026-04-02 16:00', '2026-04-03 04:00', 'scheduled', 220),
+
+-- -- LHR <-> CDG
+-- (201, 1, 3, '2026-04-01 06:00', '2026-04-01 08:15', 'scheduled', 150),
+-- (202, 3, 1, '2026-04-01 10:00', '2026-04-01 10:15', 'scheduled', 150),
+-- (203, 1, 3, '2026-04-01 18:00', '2026-04-01 20:15', 'scheduled', 160),
+-- (204, 3, 1, '2026-04-02 07:00', '2026-04-02 07:15', 'scheduled', 160),
+
+-- -- LHR <-> MAN
+-- (301, 1, 4, '2026-04-01 07:00', '2026-04-01 08:05', 'scheduled', 100),
+-- (302, 4, 1, '2026-04-01 09:00', '2026-04-01 10:05', 'scheduled', 100),
+-- (303, 1, 4, '2026-04-01 13:00', '2026-04-01 14:05', 'scheduled', 120),
+-- (304, 4, 1, '2026-04-01 17:00', '2026-04-01 18:05', 'scheduled', 120),
+
+-- -- LHR <-> DXB
+-- (401, 1, 5, '2026-04-01 10:00', '2026-04-01 21:00', 'scheduled', 280),
+-- (402, 5, 1, '2026-04-01 23:00', '2026-04-02 03:30', 'scheduled', 280),
+-- (403, 1, 5, '2026-04-02 14:00', '2026-04-03 01:00', 'scheduled', 300),
+-- (404, 5, 1, '2026-04-03 08:00', '2026-04-03 12:30', 'scheduled', 300),
+
+-- -- JFK <-> CDG
+-- (501, 2, 3, '2026-04-01 11:00', '2026-04-02 00:00', 'scheduled', 200),
+-- (502, 3, 2, '2026-04-02 13:00', '2026-04-02 15:30', 'scheduled', 200),
+-- (503, 2, 3, '2026-04-03 22:00', '2026-04-04 11:00', 'scheduled', 240),
+
+-- -- JFK <-> DXB
+-- (601, 2, 5, '2026-04-01 22:00', '2026-04-02 18:00', 'scheduled', 280),
+-- (602, 5, 2, '2026-04-02 03:00', '2026-04-02 09:00', 'scheduled', 280),
+
+-- -- MAN <-> CDG
+-- (701, 4, 3, '2026-04-01 07:30', '2026-04-01 10:00', 'scheduled', 130),
+-- (702, 3, 4, '2026-04-01 12:00', '2026-04-01 12:30', 'scheduled', 130),
+-- (703, 4, 3, '2026-04-02 15:00', '2026-04-02 17:30', 'scheduled', 140),
+
+-- -- MAN <-> DXB
+-- (801, 4, 5, '2026-04-01 09:00', '2026-04-01 19:30', 'scheduled', 260),
+-- (802, 5, 4, '2026-04-02 02:00', '2026-04-02 06:30', 'scheduled', 260),
+
+-- -- CDG <-> DXB
+-- (901, 3, 5, '2026-04-01 08:00', '2026-04-01 16:30', 'scheduled', 270),
+-- (902, 5, 3, '2026-04-01 18:00', '2026-04-02 22:30', 'scheduled', 270);
 
 -- -- Airports
 -- INSERT INTO "airport" VALUES (1, 'LHR', 'London Heathrow', 'London', 'GB');

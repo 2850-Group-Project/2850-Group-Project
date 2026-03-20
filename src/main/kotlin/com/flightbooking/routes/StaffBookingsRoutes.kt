@@ -16,6 +16,27 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Instant
 import java.util.UUID
 
+/**
+ * Staff bookings management routes.
+ *
+ * Routes:
+ * - GET  /staff/bookings:
+ *   - Requires [StaffSession]; redirects to `/staff/login` if missing.
+ *   - Loads staff display info, flights list, seats grouped by flight, and booking records.
+ *   - Supports optional query param `q` (booking id filter) for listing existing bookings.
+ *   - Renders `staff_bookings.peb` with the model data.
+ *
+ * - POST /staff/bookings/create:
+ *   - Requires [StaffSession]; redirects to `/staff/login` if missing.
+ *   - Creates a booking for a passenger email + flight, optionally assigns a seat.
+ *   - Redirects back to `/staff/bookings` (with `error` query param if validation fails).
+ *
+ * - POST /staff/bookings/update:
+ *   - Requires [StaffSession]; redirects to `/staff/login` if missing.
+ *   - Updates booking status and allows updating flight/seat for the booking segment.
+ *   - Enforces that a seat (if selected) belongs to the selected flight.
+ *   - Redirects back to `/staff/bookings`.
+ */
 fun Route.staffBookingsRoutes() {
 
     get("/staff/bookings") {
@@ -250,8 +271,19 @@ fun Route.staffBookingsRoutes() {
             call.respondRedirect("/staff/bookings")
             return@post
         }
+        var errMsg: String? = null
 
         transaction {
+            val userRow = UserTable
+                .select { UserTable.email eq passengerEmail }
+                .limit(1)
+                .firstOrNull()
+            if (userRow == null) {
+                errMsg="No user found for this email"
+                return@transaction
+            }
+
+            val userIdOrNull = userRow[UserTable.id]
             val bookingRef = "BK-" + UUID.randomUUID().toString().replace("-", "").take(10).uppercase()
             val createdAtStr = Instant.now().toString()
 
@@ -262,7 +294,7 @@ fun Route.staffBookingsRoutes() {
                 it[BookingTable.bookingStatus] = bookingStatus
                 it[BookingTable.cancelledAt] = null
                 it[BookingTable.amendable] = 1
-                it[BookingTable.userId] = null
+                it[BookingTable.userId] = userIdOrNull
             } get BookingTable.id
 
             val passengerId = PassengerTable.insert {
@@ -304,6 +336,10 @@ fun Route.staffBookingsRoutes() {
                     SeatAssignmentTable.update({ SeatAssignmentTable.id eq seatAssignmentId }) { it[SeatAssignmentTable.seatId] = seatId }
                 }
             }
+        }
+        if (errMsg != null) {
+            call.respondRedirect("/staff/bookings?error=$errMsg")
+            return@post
         }
         call.respondRedirect("/staff/bookings")
     }
