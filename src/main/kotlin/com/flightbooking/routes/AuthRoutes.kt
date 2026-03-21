@@ -30,8 +30,19 @@ fun Route.authRoutes() {
     val params = call.receiveParameters()
     val email = params["email"]?.trim().orEmpty()
     val password = params["password"].orEmpty()
+    val confirmPassword = params["confirmPassword"].orEmpty()
     val firstName = params["firstName"]?.trim()
     val lastName = params["lastName"]?.trim()
+
+    if (password != confirmPassword) {
+        call.respond(
+            PebbleContent(
+                "register.peb",
+                mapOf("error" to "Passwords do not match")
+            )
+        )
+        return@post
+    }
 
     if (AuthService.register(email, password, firstName, lastName)) {
         call.respondRedirect("/login")

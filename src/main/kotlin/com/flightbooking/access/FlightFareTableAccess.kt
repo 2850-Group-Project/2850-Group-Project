@@ -16,6 +16,10 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 
+import com.flightbooking.access.AirportTableAccess
+import com.flightbooking.access.FlightTableAccess
+import com.flightbooking.access.FareClassTableAccess
+
 class FlightFareTableAccess {
     fun getAll(): List<FlightFare> = transaction {
         FlightFareTable.selectAll().map {
@@ -52,4 +56,48 @@ class FlightFareTableAccess {
         val rows = FlightFareTable.update({ FlightFareTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
+    
+    fun generateUKDomesticFares(
+        airportAccess: AirportTableAccess = AirportTableAccess(),
+        flightAccess: FlightTableAccess = FlightTableAccess(),
+        fareClassAccess: FareClassTableAccess = FareClassTableAccess()
+    ) = transaction {
+        println("generating UK fares")
+        val ukAirports = airportAccess.getByAttribute(com.flightbooking.tables.AirportTable.country,"United Kingdom")
+        val ukIDs = ukAirports.map { it.id }
+        val ukDomesticFlights = flightAccess.getDomesticUKFlights(ukIDs)
+
+        val fareClasses = fareClassAccess.getAll()
+
+        for (flight in ukDomesticFlights) {
+            for (fareClass in fareClasses) {
+                val existing = getByAttribute(
+                    com.flightbooking.tables.FlightFareTable.flightId, flight.id
+                ).any { it.fareClassId == fareClass.id }
+                if (existing) continue
+                val multiplier = when (fareClass.id) {
+                    1 -> 1.0
+                    2 -> 1.2
+                    3 -> 2.0
+                    4 -> 1.5
+                    5 -> 1.8
+                    else -> 1.0
+                }
+                val basePrice = 40 + (flight.id % 50) * 1.2
+                val capacity = flight.capacity ?: 100
+                val seatsAvailable = (capacity / (fareClass.id + 2)).coerceAtLeast(5)
+
+                createFlightFare(
+                    flightId = flight.id,
+                    fareClassId = fareClass.id,
+                    price = basePrice * multiplier,
+                    currency = "GBP",
+                    seatsAvailable = seatsAvailable,
+                    saleStart = null,
+                    saleEnd = null
+                )
+            }
+        }
+        println("generated")
+    }
 }

@@ -16,6 +16,7 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import java.time.Instant
+import com.flightbooking.service.AuthService
 
 class UserTableAccess {
     fun getAll(): List<User> = transaction {
@@ -60,4 +61,61 @@ class UserTableAccess {
             .firstOrNull()
             ?.let { it.toUser() }
     }
+    fun generateUsers(count: Int = 200) {
+        val firstNames = listOf(
+            "Liam","Noah","Oliver","Elijah","James",
+            "Emma","Olivia","Ava","Sophia","Isabella",
+            "Lucas","Mason","Ethan","Logan","Aiden",
+            "Amelia","Mia","Charlotte","Harper","Evelyn"
+        )
+        val lastNames = listOf(
+            "Smith","Johnson","Williams","Brown","Jones",
+            "Garcia","Miller","Davis","Rodriguez","Martinez",
+            "Hernandez","Lopez","Gonzalez","Wilson","Anderson",
+            "Thomas","Taylor","Moore","Jackson","Martin"
+        )
+        val namePairs = firstNames.flatMap { first ->
+            lastNames.map { last -> first to last}
+        }.shuffled()
+        val limitedPairs = namePairs.take(count)
+        val startId = transaction {
+            UserTable.selectAll().count() + 1
+        }
+        limitedPairs.forEachIndexed { index, (first, last) ->
+            val id = startId + index
+
+            val email = "${first.lowercase()}.${last.lowercase()}@gmail.com"
+            val password = "UserPass%02d".format(id)
+            AuthService.register(
+                email = email,
+                password = password,
+                firstName = first,
+                lastName = last
+            )
+            val dob = java.time.LocalDate.now()
+                .minusYears((18..80).random().toLong())
+                .minusMonths((0..11).random().toLong())
+                .minusDays((0..27).random().toLong())
+                .toString()
+
+            transaction {
+                UserTable.update({ UserTable.email eq email }) {
+                    it[UserTable.dateOfBirth] = dob
+                }
+            }
+        }
+    }
+    fun fillMissingPhoneNumbers() = transaction {
+        val users = UserTable.select { UserTable.phoneNumber.isNull() }.toList()
+
+        users.forEachIndexed { index, row ->
+            val id = row[UserTable.id]
+            val phone = "07700" + "%06d".format(id)
+
+            UserTable.update({ UserTable.id eq id }) {
+                it[phoneNumber] = phone
+            }
+        }
+    }
+
 }

@@ -469,6 +469,9 @@
           <label for="password">Create Password</label>
           <input class="input" id="password" type="password" name="password" placeholder="••••••••" required />
 
+          <label for="confirmPassword">Confirm Password</label>
+          <input class="input" id="confirmPassword" type="password" name="confirmPassword" placeholder="••••••••" required />
+
           <div class="strength">
             <span class="dot"></span>
             <span>STRONG PASSWORD</span>

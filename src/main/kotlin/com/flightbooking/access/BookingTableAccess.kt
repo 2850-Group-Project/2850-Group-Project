@@ -16,6 +16,9 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import java.time.Instant
+import com.flightbooking.tables.UserTable
+import java.time.LocalDateTime
+
 
 class BookingTableAccess {
     fun getAll(): List<Booking> = transaction {
@@ -52,4 +55,37 @@ class BookingTableAccess {
         val rows = BookingTable.update({ BookingTable.id eq id }) { 
             stmt -> stmt[column] = value } 
         rows > 0 }
+    fun generateBookings() = transaction {
+        println("generating bookings")
+        val users = UserTable.selectAll().toList()
+        users.forEach { row ->
+            val userId = row[UserTable.id]
+
+            val numberOfBookings = (1..2).random()
+            repeat(numberOfBookings) {
+                val bookingRef = generateBookingReference()
+
+                val isCancelled = (1..10).random() == 1
+                val cancelledAt = if (isCancelled) {
+                    java.time.LocalDateTime.now()
+                    .minusDays((1..300).random().toLong())
+                    .toString()
+                } else null
+                BookingTable.insert {
+                    it[BookingTable.userId] = userId
+                    it[BookingTable.bookingReference] = bookingRef
+                    it[BookingTable.paymentId] = null
+                    it[BookingTable.bookingStatus] = if (isCancelled) "cancelled" else "confirmed"
+                    it[BookingTable.cancelledAt] = cancelledAt
+                    it[BookingTable.amendable] = if (isCancelled) 0 else 1
+                }
+            }
+        }
+        println("done generating")
+    }
+    fun generateBookingReference(): String {
+        val letters = ('A'..'Z').shuffled().take(3).joinToString("")
+        val numbers = (100..999).random()
+        return "$letters$numbers"
+    }
 }

@@ -23,6 +23,8 @@ import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.JoinType
 
 import java.time.LocalDate
@@ -179,6 +181,12 @@ class FlightTableAccess {
     fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 
         val rows = FlightTable.update({ FlightTable.id eq id }) { 
             stmt -> stmt[column] = value } 
-        rows > 0 
+        rows > 0 }
+
+    fun getDomesticUKFlights(ukAirportIDs: List<Int>): List<Flight> = transaction {
+        FlightTable.select {
+            (FlightTable.originAirport inList ukAirportIDs) and
+            (FlightTable.destinationAirport inList ukAirportIDs)
+        }.map { it.toFlight() }
     }
 }
