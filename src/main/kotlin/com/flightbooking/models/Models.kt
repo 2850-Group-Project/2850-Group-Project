@@ -62,13 +62,30 @@ data class FlightWithFares(
     val cheapestFare: FareOption? get() = fares.minByOrNull { it.price }
 }
 
+// raw passenger data from the form, before it's saved to the DB
+data class PassengerInput(
+    val type: String,           // adult, child, infant
+    val title: String?,
+    val firstName: String,
+    val lastName: String,
+    val dateOfBirth: String?,
+    val gender: String?,
+    val email: String?,
+    val nationality: String?,
+    val documentType: String?,
+    val documentNumber: String?,
+    val documentCountry: String?,
+    val documentExpiry: String?,
+)
+
 // booking session data class that is used to keep track of all data about a booking in progress
 data class BookingSession(
     val outboundFlightId: Int? = null,
     val outboundFareId: Int? = null,
     val returnFlightId: Int? = null,
     val returnFareId: Int? = null,
-    val search: FlightSearch? = null
+    val search: FlightSearch? = null,
+    val passengers: List<PassengerInput> = emptyList(), // list of passengers (with passenger data in booking session)
 )
 
 data class User(
