@@ -9,6 +9,7 @@ import com.flightbooking.routes.pagesRoutes
 import com.flightbooking.routes.staffBookingsRoutes
 import com.flightbooking.routes.flightRoutes
 import com.flightbooking.routes.bookingRoutes
+import com.flightbooking.routes.paymentRoutes
 
 import com.flightbooking.models.UserSession
 import com.flightbooking.models.StaffSession
@@ -138,5 +139,6 @@ private fun Application.registerRoutes() {
         staffBookingsRoutes()
         flightRoutes()
         bookingRoutes()
+        paymentRoutes()
     }
 }

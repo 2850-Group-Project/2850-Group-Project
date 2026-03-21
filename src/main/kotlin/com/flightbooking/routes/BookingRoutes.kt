@@ -36,10 +36,10 @@ import kotlin.text.toIntOrNull
 fun Route.bookingRoutes() {
     post("/flights/passengers/submit") {
         // need to add check to make sure that booking session exists 
-        val UserSession = call.sessions.get<UserSession>()
+        val userSession = call.sessions.get<UserSession>()
         val bookingSession = call.sessions.get<BookingSession>()
 
-        if (UserSession == null) {
+        if (userSession == null) {
             call.respondRedirect("/login")
             return@post
         }
@@ -81,8 +81,7 @@ fun Route.bookingRoutes() {
         call.sessions.set(bookingSession.copy(passengers = passengers))
 
         val newBookingSession = call.sessions.get<BookingSession>()
-        println(newBookingSession)
 
-        call.respondRedirect("/flights/seat_selection")
+        call.respondRedirect("/payment")
     }
 }
