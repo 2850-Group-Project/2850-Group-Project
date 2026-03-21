@@ -35,6 +35,7 @@ class FareClassTableAccess {
             .map { it.toFareClass() }
     }
 
+    @Suppress("LongParameterList")
     fun createFareClass(
         classCode: String,
         cabinClass: String?, 

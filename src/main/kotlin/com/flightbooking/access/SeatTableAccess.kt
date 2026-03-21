@@ -30,6 +30,8 @@ class SeatTableAccess {
         SeatTable.select { attribute eq value } 
             .map { it.toSeat() } 
     }
+
+    @Suppress("LongParameterList")
     fun createSeat(
         flightId: Int,
         seatCode: String,

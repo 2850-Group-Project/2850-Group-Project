@@ -1,13 +1,9 @@
 > Task :checkKotlinGradlePluginConfigurationErrors
 > Task :processResources UP-TO-DATE
 
-> Task :detekt
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightTableAccess.kt:145:21: The function createFlight(flightNumber: Int?, originAirport: Int, destinationAirport: Int, scheduledDepartureTime: String?, scheduledArrivalTime: String?, status: String, capacity: Int?) has too many parameters. The current threshold is set to 6. [LongParameterList]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:35:22: The function createPayment(bookingId: Int, amount: Double?, paymentMethod: String?, paymentStatus: String, paidAt: String?, providerReference: String?, currency: String) has too many parameters. The current threshold is set to 6. [LongParameterList]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt:38:24: The function createFareClass(classCode: String, cabinClass: String?, displayName: String?, refundable: Int, cancelProtocol: String, advancedSeatSelection: Int, priorityCheckin: Int, priorityBoarding: Int, loungeAccess: Int, carryOnAllowed: Int, carryOnWeightKg: Int, checkedBaggagePieces: Int, checkedBaggageWeightKg: Int, milesEarnRate: Double, minimumMilesForBooking: Int?, description: String?, updatedAt: String) has too many parameters. The current threshold is set to 6. [LongParameterList]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:33:19: The function createSeat(flightId: Int, seatCode: String, cabinClass: String?, position: String?, extraLegroom: Int, exitRow: Int, reducedMobility: Int, status: String) has too many parameters. The current threshold is set to 6. [LongParameterList]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:61:9: The function generateUKDomesticSeats is too long (79). The maximum length is 60. [LongMethod]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:61:9: The function generateUKDomesticSeats appears to be too complex based on Cyclomatic Complexity (complexity: 27). Defined complexity threshold for methods is set to '15' [CyclomaticComplexMethod]
+> Task :detekt FAILED
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:63:9: The function generateUKDomesticSeats is too long (79). The maximum length is 60. [LongMethod]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:63:9: The function generateUKDomesticSeats appears to be too complex based on Cyclomatic Complexity (complexity: 27). Defined complexity threshold for methods is set to '15' [CyclomaticComplexMethod]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PassengerTableAccess.kt:34:24: The function createPassenger(bookingId: Int?, email: String?, checkedIn: Int, title: String?, firstName: String?, lastName: String?, dateOfBirth: String?, gender: String?, nationality: String?, documentType: String?, documentNumber: String?, documentCountry: String?, documentExpiry: String?) has too many parameters. The current threshold is set to 6. [LongParameterList]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingTableAccess.kt:33:22: The function createBooking(userId: Int?, bookingReference: String, paymentId: Int?, bookingStatus: String, cancelledAt: String?, amendable: Int) has too many parameters. The current threshold is set to 6. [LongParameterList]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/models/Models.kt:1:1: File '/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/models/Models.kt' with '14' functions detected. Defined threshold inside files is set to '11' [TooManyFunctions]
@@ -106,26 +102,26 @@
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightTableAccess.kt:75:36: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightTableAccess.kt:108:44: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightTableAccess.kt:109:48: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:107:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:66:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:67:33: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:68:35: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:71:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:71:38: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:73:66: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:73:72: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt:85:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:109:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:68:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:69:33: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:70:35: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:73:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:73:38: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:75:66: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:75:72: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt:86:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingSegmentTableAccess.kt:73:28: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingSegmentTableAccess.kt:75:25: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingSegmentTableAccess.kt:76:25: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingSegmentTableAccess.kt:92:18: Private property `passengerId` is unused. [UnusedPrivateProperty]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:73:60: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:74:35: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:76:31: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:76:34: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:79:71: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:120:61: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:120:95: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:75:60: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:76:35: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:78:31: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:78:34: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:81:71: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:122:61: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:122:95: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/AirportTableAccess.kt:104:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/AirportTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PassengerTableAccess.kt:80:14: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PassengerTableAccess.kt:80:20: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
@@ -271,7 +267,6 @@
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/service/AuthService.kt:21:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/service/AuthService.kt is not ending with a new line. [NewLineAtEndOfFile]
 
 
-> Task :detekt FAILED
 > Task :compileKotlin
 
 [Incubating] Problems report is available at: file:///workspaces/2850-Group-Project/build/reports/problems/problems-report.html
