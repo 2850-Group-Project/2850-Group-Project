@@ -30,6 +30,8 @@ class FlightFareTableAccess {
         FlightFareTable.select { attribute eq value } 
             .map { it.toFlightFare() } 
     }
+    
+    @Suppress("LongParameterList")
     fun createFlightFare(
         flightId: Int, 
         fareClassId: Int, 

@@ -1,16 +1,7 @@
 > Task :checkKotlinGradlePluginConfigurationErrors
-> Task :compileKotlin UP-TO-DATE
-> Task :compileJava NO-SOURCE
 > Task :processResources UP-TO-DATE
-> Task :classes UP-TO-DATE
-> Task :jar UP-TO-DATE
-> Task :startScripts UP-TO-DATE
-> Task :distTar UP-TO-DATE
-> Task :distZip UP-TO-DATE
-> Task :assemble UP-TO-DATE
 
 > Task :detekt
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:33:25: The function createFlightFare(flightId: Int, fareClassId: Int, price: Double, currency: String, seatsAvailable: Int, saleStart: String?, saleEnd: String?) has too many parameters. The current threshold is set to 6. [LongParameterList]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightTableAccess.kt:145:21: The function createFlight(flightNumber: Int?, originAirport: Int, destinationAirport: Int, scheduledDepartureTime: String?, scheduledArrivalTime: String?, status: String, capacity: Int?) has too many parameters. The current threshold is set to 6. [LongParameterList]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:35:22: The function createPayment(bookingId: Int, amount: Double?, paymentMethod: String?, paymentStatus: String, paidAt: String?, providerReference: String?, currency: String) has too many parameters. The current threshold is set to 6. [LongParameterList]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt:38:24: The function createFareClass(classCode: String, cabinClass: String?, displayName: String?, refundable: Int, cancelProtocol: String, advancedSeatSelection: Int, priorityCheckin: Int, priorityBoarding: Int, loungeAccess: Int, carryOnAllowed: Int, carryOnWeightKg: Int, checkedBaggagePieces: Int, checkedBaggageWeightKg: Int, milesEarnRate: Double, minimumMilesForBooking: Int?, description: String?, updatedAt: String) has too many parameters. The current threshold is set to 6. [LongParameterList]
@@ -93,18 +84,18 @@
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:226:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:228:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:229:37: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:103:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:80:26: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:81:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:82:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:105:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:82:26: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:83:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:83:26: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:86:33: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:86:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:86:57: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:87:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:88:84: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:84:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:84:26: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:85:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:85:26: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:88:33: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:88:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:88:57: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:89:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:90:84: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatAssignmentTableAccess.kt:95:5: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatAssignmentTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/UserTableAccess.kt:96:30: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/UserTableAccess.kt:96:34: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
@@ -281,6 +272,7 @@
 
 
 > Task :detekt FAILED
+> Task :compileKotlin
 
 [Incubating] Problems report is available at: file:///workspaces/2850-Group-Project/build/reports/problems/problems-report.html
 
@@ -289,4 +281,4 @@ Deprecated Gradle features were used in this build, making it incompatible with 
 You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
 
 For more on this, please refer to https://docs.gradle.org/9.3.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-8 actionable tasks: 2 executed, 6 up-to-date
+4 actionable tasks: 3 executed, 1 up-to-date

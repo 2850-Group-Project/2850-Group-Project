@@ -142,6 +142,7 @@ class FlightTableAccess {
      * @return true if the insert succeeded
      * @throws ExposedSQLException if the insert fails
      */
+    @Suppress("LongParameterList")
     fun createFlight(
         flightNumber: Int?, 
         originAirport: Int, 
