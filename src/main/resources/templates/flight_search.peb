@@ -230,6 +230,11 @@
       {% endif %}
     </section>
     
+    <div id="confirm-btn" class="confirm-btn">
+      <a href="/flights/passengers" class="btn-primary confirm-btn-inner">
+          Continue to passenger information →
+      </a>
+    </div>
 
   </main>
 
