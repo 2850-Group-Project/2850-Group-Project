@@ -2,8 +2,9 @@ package com.flightbooking.tables
 
 import org.jetbrains.exposed.sql.Table
 
-// these objects act as boxes which help us reference the tables
-
+/**
+ * Exposed table definition for the `airport` table.
+ */
 object AirportTable : Table("airport") {
     val id = integer("airport_id").autoIncrement()
     val iataCode = varchar("iata_code", 10).uniqueIndex()
@@ -14,6 +15,9 @@ object AirportTable : Table("airport") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `flight` table.
+ */
 object FlightTable : Table("flight") {
     val id = integer("flight_id").autoIncrement()
     val flightNumber = integer("flight_number").nullable()
@@ -27,6 +31,9 @@ object FlightTable : Table("flight") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `fare_class` table.
+ */
 object FareClassTable : Table("fare_class") {
     val id = integer("fare_class_id").autoIncrement()
     val classCode = varchar("class_code", 10).uniqueIndex()
@@ -51,6 +58,9 @@ object FareClassTable : Table("fare_class") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `flight_fare` table.
+ */
 object FlightFareTable : Table("flight_fare") {
     val id = integer("flight_fare_id").autoIncrement()
     val flightId = integer("flight_id").references(FlightTable.id)
@@ -64,6 +74,9 @@ object FlightFareTable : Table("flight_fare") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `user` table.
+ */
 object UserTable : Table("user") {
     val id = integer("user_id").autoIncrement()
     val email = varchar("email", 255).uniqueIndex()
@@ -78,6 +91,9 @@ object UserTable : Table("user") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `booking` table.
+ */
 object BookingTable : Table("booking") {
     val id = integer("booking_id").autoIncrement()
     val userId = integer("user_id").references(UserTable.id).nullable()
@@ -91,6 +107,9 @@ object BookingTable : Table("booking") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `payment` table.
+ */
 object PaymentTable : Table("payment") {
     val id = integer("payment_id").autoIncrement()
     val bookingId = integer("booking_id").references(BookingTable.id).uniqueIndex()
@@ -104,6 +123,9 @@ object PaymentTable : Table("payment") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `passenger` table.
+ */
 object PassengerTable : Table("passenger") {
     val id = integer("passenger_id").autoIncrement()
     val bookingId = integer("booking_id").references(BookingTable.id).nullable()
@@ -123,6 +145,9 @@ object PassengerTable : Table("passenger") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `booking_segment` table.
+ */
 object BookingSegmentTable : Table("booking_segment") {
     val id = integer("booking_segment_id").autoIncrement()
     val bookingId = integer("booking_id").references(BookingTable.id)
@@ -132,6 +157,9 @@ object BookingSegmentTable : Table("booking_segment") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `seat` table.
+ */
 object SeatTable : Table("seat") {
     val id = integer("seat_id").autoIncrement()
     val flightId = integer("flight_id").references(FlightTable.id)
@@ -146,6 +174,9 @@ object SeatTable : Table("seat") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `seat_assignment` table.
+ */
 object SeatAssignmentTable : Table("seat_assignment") {
     val id = integer("seat_assignment_id").autoIncrement()
     val passengerId = integer("passenger_id").references(PassengerTable.id).uniqueIndex()
@@ -155,6 +186,9 @@ object SeatAssignmentTable : Table("seat_assignment") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `staff` table.
+ */
 object StaffTable : Table("staff") {
     val id = integer("staff_id").autoIncrement()
     val email = varchar("email", 255).uniqueIndex()
@@ -168,6 +202,9 @@ object StaffTable : Table("staff") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `complaint` table.
+ */
 object ComplaintTable : Table("complaint") {
     val id = integer("complaint_id").autoIncrement()
     val userId = integer("user_id").references(UserTable.id).nullable()
@@ -180,6 +217,9 @@ object ComplaintTable : Table("complaint") {
     override val primaryKey = PrimaryKey(id)
 }
 
+/**
+ * Exposed table definition for the `notification` table.
+ */
 object NotificationTable : Table("notification") {
     val id = integer("notification_id").autoIncrement()
     val userId = integer("user_id").references(UserTable.id).nullable()
