@@ -46,7 +46,6 @@ fun Route.staffBookingsRoutes() {
             return@get
         }
         val q = call.request.queryParameters["q"]?.trim().orEmpty()
-        val qId = q.toIntOrNull()
         val model = transaction {
             val staffRow = StaffTable.select { StaffTable.email eq session.staffEmail }.limit(1).firstOrNull()
             if (staffRow == null) {

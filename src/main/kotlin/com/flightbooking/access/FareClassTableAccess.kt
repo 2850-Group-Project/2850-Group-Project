@@ -35,6 +35,7 @@ class FareClassTableAccess {
             .map { it.toFareClass() }
     }
 
+    @Suppress("LongParameterList")
     fun createFareClass(
         classCode: String,
         cabinClass: String?, 
@@ -53,8 +54,8 @@ class FareClassTableAccess {
         minimumMilesForBooking: Int?,
         description: String?,
         updatedAt: String
-        ):Boolean = transaction { 
-        FareClassTable.insert { 
+        ):Boolean = transaction {
+        FareClassTable.insert {
             it[FareClassTable.classCode] = classCode 
             it[FareClassTable.cabinClass] = cabinClass 
             it[FareClassTable.displayName] = displayName 
@@ -76,10 +77,15 @@ class FareClassTableAccess {
         }
         true
     }
-    fun deleteByID(id: Int) = transaction { 
-        FareClassTable.deleteWhere { FareClassTable.id eq id } }
-    fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction { 
-        val rows = FareClassTable.update({ FareClassTable.id eq id }) { 
-            stmt -> stmt[column] = value } 
-        rows > 0 }
+
+    fun deleteByID(id: Int) = transaction {
+        FareClassTable.deleteWhere { FareClassTable.id eq id }
+    }
+
+    fun <T> updateRecordByAttribute(id: Int, column: Column<T>, value: T): Boolean = transaction {
+        val rows = FareClassTable.update({ FareClassTable.id eq id }) {
+            stmt -> stmt[column] = value
+        }
+        rows > 0 
+    }
 }
