@@ -14,6 +14,13 @@ const val DOCUMENT_COUNTRY_LENGTH : Int = 10
 const val SHORTER_FIELD_LENGTH : Int = 20
 const val SHORTEST_FIELD_LENGTH : Int = 10
 
+const val DEFAULT_CARRY_ON_WEIGHT_ALLOWED : Int = 7
+
+const val MIN_AGE = 18
+const val MAX_AGE = 80
+const val MAX_MONTHS = 11
+const val MAX_DAYS = 27
+
 const val FARE_CLASS_ECONOMY_MULTIPLIER = 1.0
 const val FARE_CLASS_ECONOMY_PLUS_MULTIPLIER = 1.2
 const val FARE_CLASS_BUSINESS_MULTIPLIER = 2.0
