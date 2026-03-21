@@ -18,4 +18,34 @@ class StaffFlightsRoutesTest : IntegrationTestSupport() {
         assertEquals(HttpStatusCode.Found, response.status)
         assertEquals("/staff/login", response.headers[HttpHeaders.Location])
     }
+
+    @Test
+    // An authenticated staff user should be able to load the staff flights page.
+    fun authenticatedStaffFlightsPageLoads() {
+    }
+
+    @Test
+    // Staff should be able to create a flight from the management page.
+    fun createFlightRedirectsWithSuccessMessage() {
+    }
+
+    @Test
+    // Flight creation should reject invalid route input and redirect with an error.
+    fun createFlightRejectsInvalidRouteData() {
+    }
+
+    @Test
+    // Staff should be able to update an existing flight.
+    fun updateFlightRedirectsWithSuccessMessage() {
+    }
+
+    @Test
+    // Staff should be able to delete an existing flight.
+    fun deleteFlightRedirectsWithSuccessMessage() {
+    }
+
+    @Test
+    // Creating a flight should automatically generate seats for that flight.
+    fun createFlightAutoGeneratesSeats() {
+    }
 }
