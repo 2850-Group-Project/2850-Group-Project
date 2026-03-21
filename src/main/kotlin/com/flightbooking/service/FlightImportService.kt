@@ -16,7 +16,7 @@ class FlightImportService(
     suspend fun importAllFlights() {
         println("importAllFlight running")
         val airports = airportAccess.getAll()
-        val iataToID = airports.associate { it.iataCode!! to it.id!! }
+        val iataToID = airports.associate { it.iataCode to it.id }
 
         var fetched = 0
         var skippedMissingIata = 0
