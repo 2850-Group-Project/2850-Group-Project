@@ -24,8 +24,8 @@ fun Route.flightRoutes() {
 
         val params = call.receiveParameters()
         val flightId = params["flightId"]?.toIntOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing flightId")
-        val fareId = params["fareId"]?.toIntOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing flightId")
-        val leg = params["leg"]?.toString() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing flightId")
+        val fareId = params["fareId"]?.toIntOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing fareId")
+        val leg = params["leg"]?.toString() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing leg")
         
         val search = FlightSearch(
             tripType = params["tripType"],

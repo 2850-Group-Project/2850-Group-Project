@@ -470,3 +470,26 @@
   .summary-divider { display: none; }
   .flight-card { flex: 0 0 300px; }
 }
+
+.confirm-btn {
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: bottom 0.3s ease;
+  z-index: 100;
+}
+
+.confirm-btn--visible {
+  bottom: 32px;
+}
+
+.confirm-btn-inner {
+  display: block;
+  padding: 16px 48px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
