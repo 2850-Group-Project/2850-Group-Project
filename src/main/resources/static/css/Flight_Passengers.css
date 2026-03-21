@@ -1,0 +1,193 @@
+.passengers-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 35px 40px;
+    animation: fadeUp .4s ease both;
+}
+
+.passengers-header {
+    margin-bottom: 32px;
+}
+
+.passengers-title {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -.5px;
+    margin-bottom: 6px;
+}
+
+.passengers-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,.45);
+}
+
+.passenger-card {
+    background: rgba(15,19,32,.85);
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    animation: fadeUp .4s ease both;
+    transition: .2s ease;
+}
+
+.passenger-card:hover {
+    border-color: rgba(63,94,251,.35);
+    background: rgba(63,94,251,.07);
+}
+
+.passenger-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 22px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    background: rgba(10,12,18,.4);
+}
+
+.passenger-card-title {
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: -.2px;
+    color: rgba(255,255,255,.90);
+}
+
+.passenger-type-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 3px 10px;
+    border-radius: 8px;
+}
+
+.passenger-type-badge--adult {
+    background: rgba(63,94,251,.15);
+    border: 1px solid rgba(63,94,251,.30);
+    color: #7b9cfc;
+}
+
+.passenger-type-badge--child {
+    background: rgba(34,197,94,.12);
+    border: 1px solid rgba(34,197,94,.25);
+    color: #4ade80;
+}
+
+.passenger-type-badge--infant {
+    background: rgba(245,158,11,.12);
+    border: 1px solid rgba(245,158,11,.20);
+    color: #fbbf24;
+}
+
+.passenger-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 22px;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 200px;
+}
+
+.field-group--narrow {
+    flex: 0 1 140px;
+}
+
+.field-group label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,.90);
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.field-group input,
+.field-group select {
+    padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(10,12,18,.5);
+    color: rgba(255,255,255,.90);
+    transition: border-color .18s ease, background .18s ease;
+}
+
+.field-group input::placeholder {
+    color: rgba(255,255,255,.20);
+    font-weight: 400;
+}
+
+.field-group select option {
+    background: #0f1320;
+    color: rgba(255,255,255,.90);
+}
+
+.field-group input:focus,
+.field-group select:focus {
+    outline: none;
+    border-color: rgba(63,94,251,.60);
+    background: rgba(63,94,251,.07);
+    box-shadow: 0 0 0 2px rgba(63,94,251,.15);
+}
+
+.passenger-card-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,.06);
+    margin: 8px 0;
+}
+
+.passenger-section-label {
+    width: 100%;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: rgba(255,255,255,.30);
+    margin: 0;
+}
+
+.passengers-submit {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+    padding-bottom: 60px;
+}
+
+.passengers-submit-btn {
+    padding: 14px 40px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, var(--accent), #5b7afc);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .18s ease;
+    box-shadow: 0 4px 14px rgba(63,94,251,.30);
+    letter-spacing: .3px;
+}
+
+.passengers-submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(63,94,251,.45);
+}
+
+.passengers-submit-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(63,94,251,.30);
+    background: linear-gradient(135deg, #3550e0, #4f6ef0);
+    transition: .05s ease;
+}
+
+@media (max-width: 860px) {
+    .passengers-section { padding: 20px; }
+    .field-group { flex: 1 1 140px; }
+    .field-group--narrow { flex: 1 1 100px; }
+}

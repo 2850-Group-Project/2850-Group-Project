@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/static/css/Home.css">
+  <link rel="stylesheet" href="/static/css/Flight_Search.css">
+  <link rel="stylesheet" href="/static/css/Flight_Passengers.css">
+  <title>SkyBook - Passenger Details</title>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    {% if isLoggedIn %}
+      <a href="/home" class="brand">
+    {% else %}
+      <a href="/" class="brand">
+    {% endif %}
+      <div class="brand-badge">✈️</div>
+      <span class="brand-title">SkyFlow</span>
+    </a>
+    <div class="nav-right">
+      <a href="/profile/bookings" class="btn-ghost">My Bookings</a>
+      <a href="/profile" class="btn-primary">My Account</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- SEARCH SUMMARY -->
+    <section class="search-summary">
+      <div class="summary-inner">
+        <div class="summary-route">
+          <span class="summary-airport">{{ search.origin }}</span>
+          {% if search.tripType == "return" %}
+            <span class="summary-arrow">⇄</span>
+          {% else %}
+            <span class="summary-arrow">→</span>
+          {% endif %}
+          <span class="summary-airport">{{ search.destination }}</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-meta">
+          <div class="summary-item">
+            <span class="summary-label">Departure</span>
+            <span class="summary-value">{{ search.departureDate }}</span>
+          </div>
+          {% if search.tripType == "return" %}
+          <div class="summary-item">
+            <span class="summary-label">Return</span>
+            <span class="summary-value">{{ search.returnDate }}</span>
+          </div>
+          {% endif %}
+          <div class="summary-item">
+            <span class="summary-label">Passengers</span>
+            <span class="summary-value">
+              {{ search.adults }} adult{% if search.adults != "1" %}s{% endif %}
+              {% if search.children != "0" %}, {{ search.children }} child{% if search.children != "1" %}ren{% endif %}{% endif %}
+              {% if search.infants != "0" %}, {{ search.infants }} infant{% if search.infants != "1" %}s{% endif %}{% endif %}
+            </span>
+          </div>
+        </div>
+        <a href="/flights/search" class="btn-ghost summary-edit">Back to flights</a>
+      </div>
+    </section>
+
+    <section class="passengers-section">
+      <div class="passengers-header">
+        <h2 class="passengers-title">Passenger Details</h2>
+        <p class="passengers-subtitle">Please enter details exactly as they appear on each passenger's travel document.</p>
+      </div>
+
+      <form method="POST" action="/flights/passengers/submit">
+
+        <!-- ADULTS -->
+        {% for p in adults %}
+        <div class="passenger-card">
+          <div class="passenger-card-header">
+            <span class="passenger-type-badge passenger-type-badge--adult">Adult</span>
+            <span class="passenger-card-title">Adult {{ p.label }}</span>
+          </div>
+          <div class="passenger-fields">
+            <input type="hidden" name="passengers[{{ p.idx }}][type]" value="adult" />
+
+            <div class="field-group field-group--narrow">
+              <label>Title</label>
+              <select name="passengers[{{ p.idx }}][title]" required>
+                <option value="">—</option>
+                <option value="Mr">Mr</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Ms">Ms</option>
+                <option value="Dr">Dr</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>First name</label>
+              <input type="text" name="passengers[{{ p.idx }}][firstName]" placeholder="As on passport" required />
+            </div>
+
+            <div class="field-group">
+              <label>Last name</label>
+              <input type="text" name="passengers[{{ p.idx }}][lastName]" placeholder="As on passport" required />
+            </div>
+
+            <div class="field-group">
+              <label>Date of birth</label>
+              <input type="date" name="passengers[{{ p.idx }}][dateOfBirth]" required />
+            </div>
+
+            <div class="field-group field-group--narrow">
+              <label>Gender</label>
+              <select name="passengers[{{ p.idx }}][gender]" required>
+                <option value="">—</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>Email</label>
+              <input type="email" name="passengers[{{ p.idx }}][email]" placeholder="For booking confirmation" />
+            </div>
+
+            <div class="field-group field-group--narrow">
+              <label>Nationality</label>
+              <input type="text" name="passengers[{{ p.idx }}][nationality]" placeholder="e.g. GB" maxlength="2" />
+            </div>
+
+            <div class="passenger-card-divider"></div>
+            <p class="passenger-section-label">Travel Document</p>
+
+            <div class="field-group field-group--narrow">
+              <label>Document type</label>
+              <select name="passengers[{{ p.idx }}][documentType]">
+                <option value="passport">Passport</option>
+                <option value="id_card">ID Card</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>Document number</label>
+              <input type="text" name="passengers[{{ p.idx }}][documentNumber]" placeholder="e.g. 123456789" />
+            </div>
+
+            <div class="field-group field-group--narrow">
+              <label>Issuing country</label>
+              <input type="text" name="passengers[{{ p.idx }}][documentCountry]" placeholder="e.g. GB" maxlength="2" />
+            </div>
+
+            <div class="field-group">
+              <label>Expiry date</label>
+              <input type="date" name="passengers[{{ p.idx }}][documentExpiry]" />
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <!-- CHILDREN -->
+        {% for p in children %}
+        <div class="passenger-card">
+          <div class="passenger-card-header">
+            <span class="passenger-type-badge passenger-type-badge--child">Child</span>
+            <span class="passenger-card-title">Child {{ p.label }}</span>
+          </div>
+          <div class="passenger-fields">
+            <input type="hidden" name="passengers[{{ p.idx }}][type]" value="child" />
+
+            <div class="field-group field-group--narrow">
+              <label>Title</label>
+              <select name="passengers[{{ p.idx }}][title]">
+                <option value="Master">Master</option>
+                <option value="Miss">Miss</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>First name</label>
+              <input type="text" name="passengers[{{ p.idx }}][firstName]" placeholder="As on passport" required />
+            </div>
+
+            <div class="field-group">
+              <label>Last name</label>
+              <input type="text" name="passengers[{{ p.idx }}][lastName]" placeholder="As on passport" required />
+            </div>
+
+            <div class="field-group">
+              <label>Date of birth</label>
+              <input type="date" name="passengers[{{ p.idx }}][dateOfBirth]" required />
+            </div>
+
+            <div class="field-group field-group--narrow">
+              <label>Gender</label>
+              <select name="passengers[{{ p.idx }}][gender]">
+                <option value="">—</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="field-group field-group--narrow">
+              <label>Nationality</label>
+              <input type="text" name="passengers[{{ p.idx }}][nationality]" placeholder="e.g. GB" maxlength="2" />
+            </div>
+
+            <div class="passenger-card-divider"></div>
+            <p class="passenger-section-label">Travel Document</p>
+
+            <div class="field-group field-group--narrow">
+              <label>Document type</label>
+              <select name="passengers[{{ p.idx }}][documentType]">
+                <option value="passport">Passport</option>
+                <option value="id_card">ID Card</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>Document number</label>
+              <input type="text" name="passengers[{{ p.idx }}][documentNumber]" />
+            </div>
+
+            <div class="field-group field-group--narrow">
+              <label>Issuing country</label>
+              <input type="text" name="passengers[{{ p.idx }}][documentCountry]" placeholder="e.g. GB" maxlength="2" />
+            </div>
+
+            <div class="field-group">
+              <label>Expiry date</label>
+              <input type="date" name="passengers[{{ p.idx }}][documentExpiry]" />
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <!-- INFANTS -->
+        {% for p in infants %}
+        <div class="passenger-card">
+          <div class="passenger-card-header">
+            <span class="passenger-type-badge passenger-type-badge--infant">Infant</span>
+            <span class="passenger-card-title">Infant {{ p.label }}</span>
+          </div>
+          <div class="passenger-fields">
+            <input type="hidden" name="passengers[{{ p.idx }}][type]" value="infant" />
+
+            <div class="field-group">
+              <label>First name</label>
+              <input type="text" name="passengers[{{ p.idx }}][firstName]" placeholder="As on passport" required />
+            </div>
+
+            <div class="field-group">
+              <label>Last name</label>
+              <input type="text" name="passengers[{{ p.idx }}][lastName]" placeholder="As on passport" required />
+            </div>
+
+            <div class="field-group">
+              <label>Date of birth</label>
+              <input type="date" name="passengers[{{ p.idx }}][dateOfBirth]" required />
+            </div>
+
+            <div class="field-group field-group--narrow">
+              <label>Nationality</label>
+              <input type="text" name="passengers[{{ p.idx }}][nationality]" placeholder="e.g. GB" maxlength="2" />
+            </div>
+
+            <div class="passenger-card-divider"></div>
+            <p class="passenger-section-label">Travel Document</p>
+
+            <div class="field-group">
+              <label>Passport number</label>
+              <input type="text" name="passengers[{{ p.idx }}][documentNumber]" />
+            </div>
+
+            <div class="field-group field-group--narrow">
+              <label>Issuing country</label>
+              <input type="text" name="passengers[{{ p.idx }}][documentCountry]" placeholder="e.g. GB" maxlength="2" />
+            </div>
+
+            <div class="field-group">
+              <label>Expiry date</label>
+              <input type="date" name="passengers[{{ p.idx }}][documentExpiry]" />
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="passengers-submit">
+          <button type="submit" class="btn-primary passengers-submit-btn">
+            Continue to payment →
+          </button>
+        </div>
+
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 SkyBook. All rights reserved lol</span>
+    <div class="footer-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/help">Help</a>
+      <a href="/complaints">Complaints</a>
+    </div>
+  </footer>
+
+</body>
+</html>

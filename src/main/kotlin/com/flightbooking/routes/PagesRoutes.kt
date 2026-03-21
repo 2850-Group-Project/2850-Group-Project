@@ -17,7 +17,9 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import com.flightbooking.models.UserSession
+import com.flightbooking.models.BookingSession
 import com.flightbooking.models.FlightSearch
+import com.flightbooking.models.FlightWithFares
 
 import com.flightbooking.routes.authRoutes
 
@@ -75,7 +77,8 @@ fun Route.pagesRoutes() {
 
         println(search)
 
-        if (search.origin == null || search.destination == null) {
+        if (search.origin == null || search.destination == null || search.adults == "0") {
+            call.respondRedirect("/home")
             return@get
         }
 
@@ -99,9 +102,12 @@ fun Route.pagesRoutes() {
         val outboundFlights = flightTable.getFlightsAroundDate(originAirportCode, destinationAirportCode, LocalDate.parse(search.departureDate))
 
         // get inbound flight data (for trip type = return)
-        val inboundFlights = flightTable.getFlightsAroundDate(destinationAirportCode, originAirportCode, LocalDate.parse(search.returnDate))
-        println("INBOUND FLIGHT DATA VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
-        println(inboundFlights)
+        var inboundFlights: List<FlightWithFares> = emptyList()
+        if (search.tripType == "return") {
+            inboundFlights = flightTable.getFlightsAroundDate(destinationAirportCode, originAirportCode, LocalDate.parse(search.returnDate))
+            println("INBOUND FLIGHT DATA VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+            println(inboundFlights)
+        }
 
         call.respond(PebbleContent("flight_search.peb", mapOf(
             "userSession" to session,
@@ -109,6 +115,42 @@ fun Route.pagesRoutes() {
             "search" to search,
             "outboundFlights" to outboundFlights,
             "returnFlights" to inboundFlights,
+        )))
+    }
+
+    get("/flights/passengers") {
+        // need to add check to a booking/user session exists before loading the page
+        val UserSession = call.sessions.get<UserSession>()
+        val BookingSession = call.sessions.get<BookingSession>()
+
+        println(BookingSession)
+
+        if (UserSession == null) {
+            call.respondRedirect("/login")
+            return@get
+        }
+
+        if (BookingSession == null) {
+            call.respondRedirect("/home")
+            return@get
+        }
+
+        val adultsCount = BookingSession.search?.adults?.toIntOrNull() ?: 0
+        val childrenCount = BookingSession.search?.children?.toIntOrNull() ?: 0
+        val infantsCount = BookingSession.search?.infants?.toIntOrNull() ?: 0
+
+        val adultsList = (0 until adultsCount).map { mapOf("label" to it + 1, "idx" to it) }
+        val childrenList = (0 until childrenCount).map { mapOf("label" to it + 1, "idx" to adultsCount + it) }
+        val infantsList = (0 until infantsCount).map { mapOf("label" to it + 1, "idx" to adultsCount + childrenCount + it) }
+
+
+        call.respond(PebbleContent("flight_passengers.peb", mapOf<String, Any>(
+            "userSession" to UserSession,
+            "bookingSession" to BookingSession,
+            "search" to (BookingSession.search ?: ""),
+            "adults" to adultsList,
+            "children" to childrenList,
+            "infants" to infantsList,
         )))
     }
 
