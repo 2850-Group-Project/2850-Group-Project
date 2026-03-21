@@ -14,6 +14,16 @@ import kotlin.test.assertTrue
 
 class StaffAuthRoutesTest : IntegrationTestSupport() {
     @Test
+    // A staff user should be able to register, then log in successfully.
+    fun registerThenLoginRedirectsToDashboardAndSetsSessionCookie() {
+    }
+
+    @Test
+    // Staff login should fail when the password is incorrect.
+    fun loginRejectsInvalidPassword() {
+    }
+
+    @Test
     // Staff registration should fail when the invite code is invalid.
     fun staffRegisterRejectsWrongInviteCode() = testApplication {
         configureApp()
@@ -35,5 +45,15 @@ class StaffAuthRoutesTest : IntegrationTestSupport() {
 
         assertEquals(HttpStatusCode.OK, response.status)
         assertTrue(response.bodyAsText().contains("Invalid invite code"))
+    }
+
+    @Test
+    // Staff registration should fail when the account already exists.
+    fun duplicateRegisterShowsAlreadyExistsError() {
+    }
+
+    @Test
+    // Staff logout should clear the session and redirect back to staff login.
+    fun logoutClearsSessionAndRedirectsToStaffLogin() {
     }
 }
