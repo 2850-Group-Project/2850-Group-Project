@@ -38,7 +38,15 @@ class StaffAuthRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Staff login should fail when the password is incorrect.
-    fun loginRejectsInvalidPassword() {
+    fun loginRejectsInvalidPassword() = testApplication {
+        configureApp()
+        val client = createClient { followRedirects = false }
+
+        client.registerStaff()
+        val response = client.loginStaff(password = "WrongPass123!")
+
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertTrue(response.bodyAsText().contains("Invalid staff credentials"))
     }
 
     @Test
@@ -67,7 +75,17 @@ class StaffAuthRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Staff registration should fail when the account already exists.
-    fun duplicateRegisterShowsAlreadyExistsError() {
+    fun duplicateRegisterShowsAlreadyExistsError() = testApplication {
+        configureApp()
+        val client = createClient { followRedirects = false }
+
+        val firstResponse = client.registerStaff()
+        assertEquals(HttpStatusCode.Found, firstResponse.status)
+        assertEquals("/staff/login", firstResponse.headers[HttpHeaders.Location])
+
+        val secondResponse = client.registerStaff()
+        assertEquals(HttpStatusCode.OK, secondResponse.status)
+        assertTrue(secondResponse.bodyAsText().contains("Staff already exists"))
     }
 
     @Test
