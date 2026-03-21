@@ -108,7 +108,7 @@ class UserTableAccess {
     fun fillMissingPhoneNumbers() = transaction {
         val users = UserTable.select { UserTable.phoneNumber.isNull() }.toList()
 
-        users.forEachIndexed { index, row ->
+        users.forEachIndexed { _, row ->
             val id = row[UserTable.id]
             val phone = "07700" + "%06d".format(id)
 
