@@ -176,6 +176,7 @@
                   <span class="flight-airport">{{ flight.originCode }}</span>
                 </div>
                 <div class="flight-duration">
+                  <span class="flight-duration-label-departure-day">{{ flight.departureDay }}</span>
                   <div class="flight-duration-line">
                     <span class="flight-duration-dot"></span>
                     <span class="flight-duration-bar"></span>
