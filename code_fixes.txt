@@ -1,5 +1,6 @@
 > Task :checkKotlinGradlePluginConfigurationErrors
 > Task :processResources UP-TO-DATE
+> Task :compileKotlin
 
 > Task :detekt FAILED
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/models/Models.kt:1:1: File '/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/models/Models.kt' with '14' functions detected. Defined threshold inside files is set to '11' [TooManyFunctions]
@@ -13,80 +14,13 @@
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/PagesRoutes.kt:123:13: Variable names should match the pattern: [a-z][A-Za-z0-9]* [VariableNaming]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/PagesRoutes.kt:124:13: Variable names should match the pattern: [a-z][A-Za-z0-9]* [VariableNaming]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/BookingRoutes.kt:39:13: Variable names should match the pattern: [a-z][A-Za-z0-9]* [VariableNaming]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:10:41: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:11:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:12:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:13:38: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:26:70: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:27:66: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:28:36: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:39:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:40:45: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:41:47: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:43:53: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:49:65: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:55:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:56:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:69:40: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:71:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:72:39: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:82:34: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:83:49: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:84:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:85:41: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:86:47: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:87:48: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:88:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:89:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:100:57: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:102:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:103:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:104:47: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:117:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:118:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:119:37: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:120:59: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:121:40: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:132:34: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:134:34: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:135:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:136:41: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:137:48: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:138:36: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:139:46: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:140:49: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:141:53: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:142:55: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:143:53: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:166:41: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:167:45: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:168:40: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:172:36: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:194:34: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:195:49: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:196:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:197:41: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:198:47: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:199:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:200:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:211:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:213:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:214:36: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:226:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:228:43: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:229:37: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:105:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:82:26: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:83:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:84:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:84:26: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:85:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:85:26: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:88:33: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:88:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:88:57: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:89:51: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:90:84: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/constants/Constants.kt:34:34: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/constants/Constants.kt is not ending with a new line. [NewLineAtEndOfFile]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:4:1: com.flightbooking.constants.* is a wildcard import. Replace it with fully qualified imports. [WildcardImport]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:50:65: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:140:46: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/tables/Tables.kt:212:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:23:1: com.flightbooking.constants.* is a wildcard import. Replace it with fully qualified imports. [WildcardImport]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FlightFareTableAccess.kt:95:1: Line detected, which is longer than the defined maximum line length in the code style. [MaxLineLength]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatAssignmentTableAccess.kt:95:5: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatAssignmentTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/UserTableAccess.kt:96:30: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/UserTableAccess.kt:96:34: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
@@ -262,15 +196,13 @@
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/service/AuthService.kt:21:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/service/AuthService.kt is not ending with a new line. [NewLineAtEndOfFile]
 
 
-> Task :compileKotlin
-
 [Incubating] Problems report is available at: file:///workspaces/2850-Group-Project/build/reports/problems/problems-report.html
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
 Execution failed for task ':detekt'.
-> Analysis failed with 260 weighted issues.
+> Analysis failed with 193 weighted issues.
 
 * Try:
 > Run with --stacktrace option to get the stack trace.
@@ -284,5 +216,5 @@ You can use '--warning-mode all' to show the individual deprecation warnings and
 
 For more on this, please refer to https://docs.gradle.org/9.3.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
 
-BUILD FAILED in 7s
+BUILD FAILED in 4s
 4 actionable tasks: 3 executed, 1 up-to-date

@@ -20,6 +20,8 @@ import com.flightbooking.access.AirportTableAccess
 import com.flightbooking.access.FlightTableAccess
 import com.flightbooking.access.FareClassTableAccess
 
+import com.flightbooking.constants.*
+
 class FlightFareTableAccess {
     fun getAll(): List<FlightFare> = transaction {
         FlightFareTable.selectAll().map {
@@ -76,18 +78,21 @@ class FlightFareTableAccess {
                 val existing = getByAttribute(
                     com.flightbooking.tables.FlightFareTable.flightId, flight.id
                 ).any { it.fareClassId == fareClass.id }
+                
                 if (existing) continue
+
                 val multiplier = when (fareClass.id) {
-                    1 -> 1.0
-                    2 -> 1.2
-                    3 -> 2.0
-                    4 -> 1.5
-                    5 -> 1.8
-                    else -> 1.0
+                    FARE_CLASS_ECONOMY_ID -> FARE_CLASS_ECONOMY_MULTIPLIER
+                    FARE_CLASS_ECONOMY_PLUS_ID -> FARE_CLASS_ECONOMY_PLUS_MULTIPLIER
+                    FARE_CLASS_BUSINESS_ID -> FARE_CLASS_BUSINESS_MULTIPLIER
+                    FARE_CLASS_PREMIUM_ECONOMY_ID -> FARE_CLASS_PREMIUM_ECONOMY_MULTIPLIER
+                    FARE_CLASS_FIRST_ID -> FARE_CLASS_FIRST_MULTIPLIER
+                    else -> FARE_CLASS_ECONOMY_MULTIPLIER
                 }
-                val basePrice = 40 + (flight.id % 50) * 1.2
-                val capacity = flight.capacity ?: 100
-                val seatsAvailable = (capacity / (fareClass.id + 2)).coerceAtLeast(5)
+
+                val basePrice = BASE_PRICE_OFFSET + (flight.id % BASE_PRICE_FLIGHT_MOD) * BASE_PRICE_MULTIPLIER
+                val capacity = flight.capacity ?: DEFAULT_CAPACITY
+                val seatsAvailable = (capacity / (fareClass.id + SEATS_DIVIDER_OFFSET)).coerceAtLeast(MIN_SEATS_AVAILABLE)
 
                 createFlightFare(
                     flightId = flight.id,

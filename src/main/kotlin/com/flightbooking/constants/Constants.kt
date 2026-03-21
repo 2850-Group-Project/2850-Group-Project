@@ -1,0 +1,34 @@
+package com.flightbooking.constants
+
+const val IATA_CODE_LENGTH : Int = 10
+const val STANDARD_FIELD_LENGTH : Int = 255
+const val SHORT_FIELD_LENGTH : Int = 50
+const val CLASS_CODE_LENGTH : Int = 10
+const val CURRENCY_LENGTH : Int = 10
+const val DOB_LENGTH : Int = 20
+const val PASSENGER_TITLE_LENGTH : Int = 20
+const val GENDER_LENGTH : Int = 10
+const val DOCUMENT_NUMBER_LENGTH : Int = 100
+const val DOCUMENT_EXPIRY_LENGTH : Int = 20
+const val DOCUMENT_COUNTRY_LENGTH : Int = 10
+const val SHORTER_FIELD_LENGTH : Int = 20
+const val SHORTEST_FIELD_LENGTH : Int = 10
+
+const val FARE_CLASS_ECONOMY_MULTIPLIER = 1.0
+const val FARE_CLASS_ECONOMY_PLUS_MULTIPLIER = 1.2
+const val FARE_CLASS_BUSINESS_MULTIPLIER = 2.0
+const val FARE_CLASS_PREMIUM_ECONOMY_MULTIPLIER = 1.5
+const val FARE_CLASS_FIRST_MULTIPLIER = 1.8
+
+const val FARE_CLASS_ECONOMY_ID = 1
+const val FARE_CLASS_ECONOMY_PLUS_ID = 2
+const val FARE_CLASS_BUSINESS_ID = 3
+const val FARE_CLASS_PREMIUM_ECONOMY_ID = 4
+const val FARE_CLASS_FIRST_ID = 5
+
+const val BASE_PRICE_OFFSET = 40
+const val BASE_PRICE_FLIGHT_MOD = 50
+const val BASE_PRICE_MULTIPLIER = 1.2
+const val DEFAULT_CAPACITY = 100
+const val SEATS_DIVIDER_OFFSET = 2
+const val MIN_SEATS_AVAILABLE = 5
