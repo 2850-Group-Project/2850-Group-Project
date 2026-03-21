@@ -10,6 +10,8 @@ import com.flightbooking.tables.AirportTable
 import com.flightbooking.tables.FlightFareTable
 import com.flightbooking.tables.FareClassTable
 
+import com.flightbooking.constants.*
+
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
@@ -71,8 +73,8 @@ class FlightTableAccess {
         date: LocalDate,
         ): List<FlightWithFares> {
         // clamp to today so we don't show flights that have already departed (previous days)
-        val dateFrom = maxOf(date.minusDays(5), LocalDate.now()).toString()
-        val dateTo = date.plusDays(5).toString()
+        val dateFrom = maxOf(date.minusDays(DAYS_BEFORE_AND_AFTER_TO_SHOW), LocalDate.now()).toString()
+        val dateTo = date.plusDays(DAYS_BEFORE_AND_AFTER_TO_SHOW).toString()
 
         // aliases for simplicity
         val originAirport = AirportTable.alias("origin")
@@ -80,8 +82,18 @@ class FlightTableAccess {
 
         return transaction {
             FlightTable
-                .join(originAirport, JoinType.INNER, FlightTable.originAirport, originAirport[AirportTable.id])
-                .join(destinationAirport, JoinType.INNER, FlightTable.destinationAirport, destinationAirport[AirportTable.id])
+                .join(
+                    originAirport, 
+                    JoinType.INNER, 
+                    FlightTable.originAirport, 
+                    originAirport[AirportTable.id]
+                )
+                .join(
+                    destinationAirport, 
+                    JoinType.INNER, 
+                    FlightTable.destinationAirport, 
+                    destinationAirport[AirportTable.id]
+                )
                 .join(FlightFareTable, JoinType.LEFT, FlightTable.id, FlightFareTable.flightId)
                 .join(FareClassTable, JoinType.LEFT, FlightFareTable.fareClassId, FareClassTable.id)
                 .select {
@@ -142,6 +154,7 @@ class FlightTableAccess {
      * @return true if the insert succeeded
      * @throws ExposedSQLException if the insert fails
      */
+    @Suppress("LongParameterList")
     fun createFlight(
         flightNumber: Int?, 
         originAirport: Int, 

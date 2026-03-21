@@ -6,6 +6,10 @@ val kotlinVersion = "1.9.22"
 plugins {
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.serialization") version "1.9.0"
+
+    // Plugin for KDocs and code quality checks.
+    // id("io.gitlab.arturbosch.detekt") version "1.23.7"
+    
     application
 }
 
@@ -69,3 +73,15 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+// detekt {
+//     buildUponDefaultConfig = true
+// }
+
+// tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+//     reports {
+//         html.required.set(true)
+//         html.outputLocation.set(file("build/reports/detekt/detekt.html"))
+//         txt.required.set(true)
+//     }
+// }

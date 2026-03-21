@@ -15,8 +15,11 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
+
 import java.time.Instant
+
 import com.flightbooking.service.AuthService
+import com.flightbooking.constants.*
 
 class UserTableAccess {
     fun getAll(): List<User> = transaction {
@@ -93,9 +96,9 @@ class UserTableAccess {
                 lastName = last
             )
             val dob = java.time.LocalDate.now()
-                .minusYears((18..80).random().toLong())
-                .minusMonths((0..11).random().toLong())
-                .minusDays((0..27).random().toLong())
+                .minusYears((MIN_AGE..MAX_AGE).random().toLong())
+                .minusMonths((0..MAX_MONTHS).random().toLong())
+                .minusDays((0..MAX_DAYS).random().toLong())
                 .toString()
 
             transaction {
@@ -108,7 +111,7 @@ class UserTableAccess {
     fun fillMissingPhoneNumbers() = transaction {
         val users = UserTable.select { UserTable.phoneNumber.isNull() }.toList()
 
-        users.forEachIndexed { index, row ->
+        users.forEachIndexed { _, row ->
             val id = row[UserTable.id]
             val phone = "07700" + "%06d".format(id)
 

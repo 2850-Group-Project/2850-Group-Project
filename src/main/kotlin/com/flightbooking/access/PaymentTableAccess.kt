@@ -32,6 +32,8 @@ class PaymentTableAccess {
         PaymentTable.select { attribute eq value } 
             .map { it.toPayment() } 
     }
+
+    @Suppress("LongParameterList")
     fun createPayment(
         bookingId: Int, 
         amount: Double?, 

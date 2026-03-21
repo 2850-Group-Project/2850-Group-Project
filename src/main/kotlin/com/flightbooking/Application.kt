@@ -29,10 +29,12 @@ import io.ktor.server.sessions.*
 import io.ktor.server.response.*
 import io.ktor.server.http.content.*
 
+import java.sql.SQLException
+import java.io.IOException
+
 import io.ktor.http.HttpStatusCode
 
 import org.slf4j.event.Level
-
 
 /**
  * Entry point for the Ktor application.
@@ -61,6 +63,10 @@ fun Application.testModule(testDbUrl: String) {
     registerRoutes()
 }
 
+/**
+ * Installs Ktor plugins: logging, error pages, content negotiation, Pebble templates,
+ * and cookie-backed sessions for [UserSession], [StaffSession], and [BookingSession].
+ */
 private fun Application.configureServer() {
     install(CallLogging) {
         level = Level.INFO
@@ -105,6 +111,10 @@ private fun Application.configureServer() {
     }
 }
 
+/**
+ * Connects to the database via [DBFactory]. If [url] is null, uses the default config.
+ * Disposes the application gracefully on failure rather than leaving it partially started.
+ */
 private fun Application.initialiseDatabase(url: String? = null) {
     // Start up DB abstraction instance
     try {
@@ -113,12 +123,19 @@ private fun Application.initialiseDatabase(url: String? = null) {
         } else {
             DBFactory.init(url = url)
         }
-    } catch (e: Throwable) {
+    } catch (e: SQLException) {
         log.error("Failed to init DBFactory", e)
-        dispose() // gracefull exit instead of abrupt error thrown
+        dispose()
+    } catch (e: IOException) {
+        log.error("Failed to init DBFactory", e)
+        dispose()
     }
 }
 
+/**
+ * Mounts route handlers. 
+ * Includes static assets, auth, pages, staff, flights, and bookings.
+ */
 private fun Application.registerRoutes() {
     // Prepare and load the routes
     routing {
@@ -128,9 +145,11 @@ private fun Application.registerRoutes() {
         get("/") {
             call.respondRedirect("/login")
         }
+
         get("/__health") {
             call.respondText("ok")
         }
+
         authRoutes()
         staffAuthRoutes()
         pagesRoutes()
