@@ -29,6 +29,9 @@ import io.ktor.server.sessions.*
 import io.ktor.server.response.*
 import io.ktor.server.http.content.*
 
+import java.sql.SQLException
+import java.io.IOException
+
 import io.ktor.http.HttpStatusCode
 
 import org.slf4j.event.Level
@@ -120,9 +123,12 @@ private fun Application.initialiseDatabase(url: String? = null) {
         } else {
             DBFactory.init(url = url)
         }
-    } catch (e: Throwable) {
+    } catch (e: SQLException) {
         log.error("Failed to init DBFactory", e)
-        dispose() // gracefull exit instead of abrupt error thrown
+        dispose()
+    } catch (e: IOException) {
+        log.error("Failed to init DBFactory", e)
+        dispose()
     }
 }
 

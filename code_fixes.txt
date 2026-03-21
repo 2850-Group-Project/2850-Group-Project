@@ -2,10 +2,6 @@
 > Task :processResources UP-TO-DATE
 
 > Task :detekt FAILED
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:63:9: The function generateUKDomesticSeats is too long (79). The maximum length is 60. [LongMethod]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:63:9: The function generateUKDomesticSeats appears to be too complex based on Cyclomatic Complexity (complexity: 27). Defined complexity threshold for methods is set to '15' [CyclomaticComplexMethod]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PassengerTableAccess.kt:34:24: The function createPassenger(bookingId: Int?, email: String?, checkedIn: Int, title: String?, firstName: String?, lastName: String?, dateOfBirth: String?, gender: String?, nationality: String?, documentType: String?, documentNumber: String?, documentCountry: String?, documentExpiry: String?) has too many parameters. The current threshold is set to 6. [LongParameterList]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingTableAccess.kt:33:22: The function createBooking(userId: Int?, bookingReference: String, paymentId: Int?, bookingStatus: String, cancelledAt: String?, amendable: Int) has too many parameters. The current threshold is set to 6. [LongParameterList]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/models/Models.kt:1:1: File '/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/models/Models.kt' with '14' functions detected. Defined threshold inside files is set to '11' [TooManyFunctions]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/StaffPagesRoutes.kt:31:11: The function staffPagesRoutes is too long (251). The maximum length is 60. [LongMethod]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/StaffPagesRoutes.kt:31:11: The function staffPagesRoutes appears to be too complex based on Cyclomatic Complexity (complexity: 37). Defined complexity threshold for methods is set to '15' [CyclomaticComplexMethod]
@@ -13,7 +9,6 @@
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/PagesRoutes.kt:33:11: The function pagesRoutes appears to be too complex based on Cyclomatic Complexity (complexity: 40). Defined complexity threshold for methods is set to '15' [CyclomaticComplexMethod]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/StaffBookingsRoutes.kt:40:11: The function staffBookingsRoutes is too long (273). The maximum length is 60. [LongMethod]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/StaffBookingsRoutes.kt:40:11: The function staffBookingsRoutes appears to be too complex based on Cyclomatic Complexity (complexity: 35). Defined complexity threshold for methods is set to '15' [CyclomaticComplexMethod]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/Application.kt:123:14: The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled. [TooGenericExceptionCaught]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/database/DatabaseFactory.kt:15:8: The file name 'DatabaseFactory' does not match the name of the single top-level declaration 'DBFactory'. [MatchingDeclarationName]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/PagesRoutes.kt:123:13: Variable names should match the pattern: [a-z][A-Za-z0-9]* [VariableNaming]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/routes/PagesRoutes.kt:124:13: Variable names should match the pattern: [a-z][A-Za-z0-9]* [VariableNaming]
@@ -110,18 +105,18 @@
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:73:38: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:75:66: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PaymentTableAccess.kt:75:72: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt:86:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt:91:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/FareClassTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingSegmentTableAccess.kt:73:28: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingSegmentTableAccess.kt:75:25: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingSegmentTableAccess.kt:76:25: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/BookingSegmentTableAccess.kt:92:18: Private property `passengerId` is unused. [UnusedPrivateProperty]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:75:60: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:76:35: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:78:31: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:78:34: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:81:71: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:122:61: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:122:95: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:85:35: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:86:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:86:35: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:134:67: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:139:57: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/SeatTableAccess.kt:139:91: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/AirportTableAccess.kt:104:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/AirportTableAccess.kt is not ending with a new line. [NewLineAtEndOfFile]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PassengerTableAccess.kt:80:14: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/access/PassengerTableAccess.kt:80:20: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
@@ -254,7 +249,7 @@
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/Application.kt:28:1: io.ktor.server.sessions.* is a wildcard import. Replace it with fully qualified imports. [WildcardImport]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/Application.kt:29:1: io.ktor.server.response.* is a wildcard import. Replace it with fully qualified imports. [WildcardImport]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/Application.kt:30:1: io.ktor.server.http.content.* is a wildcard import. Replace it with fully qualified imports. [WildcardImport]
-/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/Application.kt:138:9: Forbidden TODO todo marker in comment, please do the changes. [ForbiddenComment]
+/workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/Application.kt:144:9: Forbidden TODO todo marker in comment, please do the changes. [ForbiddenComment]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/service/AirportImportService.kt:40:2: The file /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/service/AirportImportService.kt is not ending with a new line. [NewLineAtEndOfFile]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/service/AirportImportService.kt:17:9: The loop contains more than one break or continue statement. The code should be refactored to increase readability. [LoopWithTooManyJumpStatements]
 /workspaces/2850-Group-Project/src/main/kotlin/com/flightbooking/service/AirportImportService.kt:13:21: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
@@ -271,9 +266,23 @@
 
 [Incubating] Problems report is available at: file:///workspaces/2850-Group-Project/build/reports/problems/problems-report.html
 
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':detekt'.
+> Analysis failed with 260 weighted issues.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
 Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
 
 You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
 
 For more on this, please refer to https://docs.gradle.org/9.3.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 7s
 4 actionable tasks: 3 executed, 1 up-to-date
