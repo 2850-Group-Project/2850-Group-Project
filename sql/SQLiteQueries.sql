@@ -19,6 +19,7 @@ SELECT MAX(flight_fare_id) FROM flight_fare;
 -- payment
 -- passenger
 -- booking_segment
+-- change_request
 -- seat
 -- seat_assignment
 -- staff
@@ -171,6 +172,26 @@ SELECT MAX(flight_fare_id) FROM flight_fare;
 --   FOREIGN KEY ("passenger_id") REFERENCES "passenger" ("passenger_id"),
 --   FOREIGN KEY ("booking_segment_id") REFERENCES "booking_segment" ("booking_segment_id"),
 --   FOREIGN KEY ("seat_id") REFERENCES "seat" ("seat_id")
+-- );
+
+-- CREATE TABLE "change_request" (
+--   "change_request_id" INTEGER PRIMARY KEY,
+--   "user_id" INTEGER NOT NULL,
+--   "booking_id" INTEGER NOT NULL,
+--   "booking_segment_id" INTEGER NOT NULL,
+--   "current_flight_id" INTEGER,
+--   "requested_flight_id" INTEGER,
+--   "requested_seat_id" INTEGER,
+--   "reason" TEXT,
+--   "status" TEXT DEFAULT 'pending',         -- pending / approved / rejected / cancelled
+--   "created_at" TEXT DEFAULT (datetime('now')),
+--   "updated_at" TEXT DEFAULT (datetime('now')),
+--   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id"),
+--   FOREIGN KEY ("booking_id") REFERENCES "booking" ("booking_id"),
+--   FOREIGN KEY ("booking_segment_id") REFERENCES "booking_segment" ("booking_segment_id"),
+--   FOREIGN KEY ("current_flight_id") REFERENCES "flight" ("flight_id"),
+--   FOREIGN KEY ("requested_flight_id") REFERENCES "flight" ("flight_id"),
+--   FOREIGN KEY ("requested_seat_id") REFERENCES "seat" ("seat_id")
 -- );
 
 -- CREATE TABLE "staff" (

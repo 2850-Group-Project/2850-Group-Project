@@ -8,6 +8,7 @@ import com.flightbooking.routes.staffPagesRoutes
 import com.flightbooking.routes.pagesRoutes
 import com.flightbooking.routes.staffBookingsRoutes
 import com.flightbooking.routes.flightRoutes
+import com.flightbooking.routes.changeRequestRoutes
 import com.flightbooking.routes.bookingRoutes
 
 import com.flightbooking.models.UserSession
@@ -157,5 +158,6 @@ private fun Application.registerRoutes() {
         staffBookingsRoutes()
         flightRoutes()
         bookingRoutes()
+        changeRequestRoutes()
     }
 }
