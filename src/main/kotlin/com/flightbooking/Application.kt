@@ -61,6 +61,10 @@ fun Application.testModule(testDbUrl: String) {
     registerRoutes()
 }
 
+/**
+ * Installs Ktor plugins: logging, error pages, content negotiation, Pebble templates,
+ * and cookie-backed sessions for [UserSession], [StaffSession], and [BookingSession].
+ */
 private fun Application.configureServer() {
     install(CallLogging) {
         level = Level.INFO
@@ -105,6 +109,10 @@ private fun Application.configureServer() {
     }
 }
 
+/**
+ * Connects to the database via [DBFactory]. If [url] is null, uses the default config.
+ * Disposes the application gracefully on failure rather than leaving it partially started.
+ */
 private fun Application.initialiseDatabase(url: String? = null) {
     // Start up DB abstraction instance
     try {
@@ -119,6 +127,10 @@ private fun Application.initialiseDatabase(url: String? = null) {
     }
 }
 
+/**
+ * Mounts route handlers. 
+ * Includes static assets, auth, pages, staff, flights, and bookings.
+ */
 private fun Application.registerRoutes() {
     // Prepare and load the routes
     routing {
@@ -128,9 +140,11 @@ private fun Application.registerRoutes() {
         get("/") {
             call.respondRedirect("/login")
         }
+        
         get("/__health") {
             call.respondText("ok")
         }
+
         authRoutes()
         staffAuthRoutes()
         pagesRoutes()
