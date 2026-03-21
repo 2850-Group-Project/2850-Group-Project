@@ -1,6 +1,7 @@
 package com.flightbooking
 
 import io.ktor.client.HttpClient
+import io.ktor.client.request.get
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -90,7 +91,22 @@ class StaffAuthRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Staff logout should clear the session and redirect back to staff login.
-    fun logoutClearsSessionAndRedirectsToStaffLogin() {
+    fun logoutClearsSessionAndRedirectsToStaffLogin() = testApplication {
+        configureApp()
+        val client = createClient { followRedirects = false }
+
+        client.registerStaff()
+        val loginResponse = client.loginStaff()
+        assertEquals(HttpStatusCode.Found, loginResponse.status)
+        assertEquals("/staff/dashboard", loginResponse.headers[HttpHeaders.Location])
+
+        val logoutResponse = client.get("/staff/logout")
+        assertEquals(HttpStatusCode.Found, logoutResponse.status)
+        assertEquals("/staff/login", logoutResponse.headers[HttpHeaders.Location])
+
+        val dashboardResponse = client.get("/staff/dashboard")
+        assertEquals(HttpStatusCode.Found, dashboardResponse.status)
+        assertEquals("/staff/login", dashboardResponse.headers[HttpHeaders.Location])
     }
 
     // Submit a valid staff registration form, with optional overrides for reuse in other tests.
