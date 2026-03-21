@@ -49,7 +49,35 @@ class StaffFlightsRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Staff should be able to create a flight from the management page.
-    fun createFlightRedirectsWithSuccessMessage() {
+    fun createFlightRedirectsWithSuccessMessage() = testApplication {
+        configureApp()
+        val client = createClient {
+            followRedirects = false
+            install(HttpCookies)
+        }
+        client.get("/__health")
+        val originAirportId = seedAirport("LHR", "London Heathrow")
+        val destinationAirportId = seedAirport("DXB", "Dubai International")
+
+        client.registerStaff()
+        val loginResponse = client.loginStaff()
+        assertEquals(HttpStatusCode.Found, loginResponse.status)
+
+        val response = client.submitForm(
+            url = "/staff/flights/create",
+            formParameters = parameters {
+                append("flightNumber", "101")
+                append("originId", originAirportId.toString())
+                append("destId", destinationAirportId.toString())
+                append("dep", "2026-04-01 09:00:00")
+                append("arr", "2026-04-01 11:00:00")
+                append("status", "scheduled")
+                append("capacity", "180")
+            }
+        )
+
+        assertEquals(HttpStatusCode.Found, response.status)
+        assertEquals("/staff/flights?ok=Flight created", response.headers[HttpHeaders.Location])
     }
 
     @Test
