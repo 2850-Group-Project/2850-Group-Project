@@ -1,6 +1,8 @@
 package com.flightbooking
 
 import com.flightbooking.tables.AirportTable
+import com.flightbooking.tables.FlightTable
+import com.flightbooking.tables.SeatTable
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.request.get
@@ -10,7 +12,10 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.parameters
 import io.ktor.server.testing.testApplication
+import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -117,7 +122,51 @@ class StaffFlightsRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Staff should be able to update an existing flight.
-    fun updateFlightRedirectsWithSuccessMessage() {
+    fun updateFlightRedirectsWithSuccessMessage() = testApplication {
+        configureApp()
+        val client = createClient {
+            followRedirects = false
+            install(HttpCookies)
+        }
+        client.get("/__health")
+        val originAirportId = seedAirport("LHR", "London Heathrow")
+        val destinationAirportId = seedAirport("DXB", "Dubai International")
+
+        client.registerStaff()
+        val loginResponse = client.loginStaff()
+        assertEquals(HttpStatusCode.Found, loginResponse.status)
+
+        val createResponse = client.submitForm(
+            url = "/staff/flights/create",
+            formParameters = parameters {
+                append("flightNumber", "303")
+                append("originId", originAirportId.toString())
+                append("destId", destinationAirportId.toString())
+                append("dep", "2026-04-03 09:00:00")
+                append("arr", "2026-04-03 11:00:00")
+                append("status", "scheduled")
+                append("capacity", "12")
+            }
+        )
+        assertEquals(HttpStatusCode.Found, createResponse.status)
+
+        val flightId = latestFlightId()
+        val response = client.submitForm(
+            url = "/staff/flights/update",
+            formParameters = parameters {
+                append("id", flightId.toString())
+                append("flightNumber", "404")
+                append("originId", destinationAirportId.toString())
+                append("destId", originAirportId.toString())
+                append("dep", "2026-04-04 13:30:00")
+                append("arr", "2026-04-04 20:45:00")
+                append("status", "delayed")
+                append("capacity", "16")
+            }
+        )
+
+        assertEquals(HttpStatusCode.Found, response.status)
+        assertEquals("/staff/flights?ok=Flight updated", response.headers[HttpHeaders.Location])
     }
 
     @Test
@@ -127,7 +176,41 @@ class StaffFlightsRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Creating a flight should automatically generate seats for that flight.
-    fun createFlightAutoGeneratesSeats() {
+    fun createFlightAutoGeneratesSeats() = testApplication {
+        configureApp()
+        val client = createClient {
+            followRedirects = false
+            install(HttpCookies)
+        }
+        client.get("/__health")
+        val originAirportId = seedAirport("LHR", "London Heathrow")
+        val destinationAirportId = seedAirport("DXB", "Dubai International")
+
+        client.registerStaff()
+        val loginResponse = client.loginStaff()
+        assertEquals(HttpStatusCode.Found, loginResponse.status)
+
+        val response = client.submitForm(
+            url = "/staff/flights/create",
+            formParameters = parameters {
+                append("flightNumber", "202")
+                append("originId", originAirportId.toString())
+                append("destId", destinationAirportId.toString())
+                append("dep", "2026-04-02 09:00:00")
+                append("arr", "2026-04-02 11:00:00")
+                append("status", "scheduled")
+                append("capacity", "8")
+            }
+        )
+
+        assertEquals(HttpStatusCode.Found, response.status)
+
+        val newestFlightId = latestFlightId()
+        val seatCodes = seatCodesForFlight(newestFlightId)
+
+        assertEquals(8, seatCodes.size)
+        assertEquals("1A", seatCodes.first())
+        assertEquals("2B", seatCodes.last())
     }
 
     // Submit a valid staff registration form for staff flights tests.
@@ -167,5 +250,22 @@ class StaffFlightsRoutesTest : IntegrationTestSupport() {
             it[city] = null
             it[country] = null
         }.resultedValues!!.first()[AirportTable.id]
+    }
+
+    // Fetch the most recently created flight id for post-create assertions.
+    private fun latestFlightId(): Int = transaction {
+        FlightTable
+            .selectAll()
+            .orderBy(FlightTable.id, SortOrder.DESC)
+            .limit(1)
+            .first()[FlightTable.id]
+    }
+
+    // Read generated seat codes for a flight in creation order.
+    private fun seatCodesForFlight(flightId: Int): List<String> = transaction {
+        SeatTable
+            .select { SeatTable.flightId eq flightId }
+            .orderBy(SeatTable.id, SortOrder.ASC)
+            .map { it[SeatTable.seatCode] }
     }
 }
