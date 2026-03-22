@@ -14,9 +14,9 @@ fun Route.paymentRoutes() {
     get("/payment") {
         val userSession = call.sessions.get<UserSession>()
         val bookingSession = call.sessions.get<BookingSession>()
-        println("DEBUG bookingSession = $bookingSession")
-        println("DEBUG bookingSession.search = ${bookingSession?.search}")
-        println("DEBUG bookingSession.passengers = ${bookingSession?.passengers}")
+        println("bookingSession = $bookingSession")
+        println("bookingSession.search = ${bookingSession?.search}")
+        println("bookingSession.passengers = ${bookingSession?.passengers}")
 
         if (userSession == null) {
             call.respondRedirect("/login")
