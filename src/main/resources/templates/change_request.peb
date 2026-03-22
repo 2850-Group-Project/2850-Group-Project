@@ -182,7 +182,7 @@
       </div>
       <div class="right">
         <span class="pill">{{ userSession.firstName }} • {{ userSession.userEmail }}</span>
-        <a class="navbtn" href=" ">← My Bookings</a >
+        <a class="navbtn" href="/profile/bookings">← My Bookings</a >
         <a class="navbtn red" href="/logout">Logout</a >
       </div>
     </div>
