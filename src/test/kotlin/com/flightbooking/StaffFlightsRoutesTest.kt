@@ -171,7 +171,44 @@ class StaffFlightsRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Staff should be able to delete an existing flight.
-    fun deleteFlightRedirectsWithSuccessMessage() {
+    fun deleteFlightRedirectsWithSuccessMessage() = testApplication {
+        configureApp()
+        val client = createClient {
+            followRedirects = false
+            install(HttpCookies)
+        }
+        client.get("/__health")
+        val originAirportId = seedAirport("LHR", "London Heathrow")
+        val destinationAirportId = seedAirport("DXB", "Dubai International")
+
+        client.registerStaff()
+        val loginResponse = client.loginStaff()
+        assertEquals(HttpStatusCode.Found, loginResponse.status)
+
+        val createResponse = client.submitForm(
+            url = "/staff/flights/create",
+            formParameters = parameters {
+                append("flightNumber", "505")
+                append("originId", originAirportId.toString())
+                append("destId", destinationAirportId.toString())
+                append("dep", "2026-04-05 09:00:00")
+                append("arr", "2026-04-05 11:00:00")
+                append("status", "scheduled")
+                append("capacity", "20")
+            }
+        )
+        assertEquals(HttpStatusCode.Found, createResponse.status)
+
+        val flightId = latestFlightId()
+        val response = client.submitForm(
+            url = "/staff/flights/delete",
+            formParameters = parameters {
+                append("id", flightId.toString())
+            }
+        )
+
+        assertEquals(HttpStatusCode.Found, response.status)
+        assertEquals("/staff/flights?ok=Flight deleted", response.headers[HttpHeaders.Location])
     }
 
     @Test
