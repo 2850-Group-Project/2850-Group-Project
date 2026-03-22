@@ -75,7 +75,7 @@ data class PassengerInput(
     val documentType: String?,
     val documentNumber: String?,
     val documentCountry: String?,
-    val documentExpiry: String?,
+    val documentExpiry: String?
 )
 
 // booking session data class that is used to keep track of all data about a booking in progress
@@ -85,7 +85,7 @@ data class BookingSession(
     val returnFlightId: Int? = null,
     val returnFareId: Int? = null,
     val search: FlightSearch? = null,
-    val passengers: List<PassengerInput> = emptyList(), // list of passengers (with passenger data in booking session)
+    val passengers: List<PassengerInput> = emptyList() // list of passengers (with passenger data in booking session)
 )
 
 data class User(
