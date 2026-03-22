@@ -231,3 +231,25 @@ object NotificationTable : Table("notification") {
 
     override val primaryKey = PrimaryKey(id)
 }
+
+/**
+ * Exposed table definition for the `change_request` table.
+ */
+object ChangeRequestTable : Table("change_request") {
+    val id = integer("change_request_id").autoIncrement()
+    override val primaryKey = PrimaryKey(id)
+
+    val userId = integer("user_id")
+    val bookingId = integer("booking_id")
+    val bookingSegmentId = integer("booking_segment_id")
+
+    val currentFlightId = integer("current_flight_id").nullable()
+    val requestedFlightId = integer("requested_flight_id").nullable()
+    val requestedSeatId = integer("requested_seat_id").nullable()
+
+    val reason = text("reason").nullable()
+    val status = varchar("status", 32).default("pending") // pending/approved/rejected/cancelled
+
+    val createdAt = varchar("created_at", 64).nullable()
+    val updatedAt = varchar("updated_at", 64).nullable()
+}
