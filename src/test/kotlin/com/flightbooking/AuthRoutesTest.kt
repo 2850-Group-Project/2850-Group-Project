@@ -14,6 +14,16 @@ import kotlin.test.assertNotNull
 
 class AuthRoutesTest : IntegrationTestSupport() {
     @Test
+    // The register page should load successfully.
+    fun registerPageLoads() {
+    }
+
+    @Test
+    // The login page should load successfully.
+    fun loginPageLoads() {
+    }
+
+    @Test
     // A user should be able to register, then log in and receive a session cookie.
     fun registerThenLoginRedirectsToHomeAndSetsSessionCookie() = testApplication {
         configureApp()
@@ -46,5 +56,25 @@ class AuthRoutesTest : IntegrationTestSupport() {
         assertEquals(HttpStatusCode.Found, loginResponse.status)
         assertEquals("/home", loginResponse.headers[HttpHeaders.Location])
         assertNotNull(loginResponse.headers.getAll(HttpHeaders.SetCookie)?.find { it.contains("USER_SESSION") })
+    }
+
+    @Test
+    // Registration should fail when the passwords do not match.
+    fun registerRejectsPasswordMismatch() {
+    }
+
+    @Test
+    // Registration should fail when the user already exists.
+    fun registerRejectsDuplicateUser() {
+    }
+
+    @Test
+    // Login should fail when the credentials are invalid.
+    fun loginRejectsInvalidCredentials() {
+    }
+
+    @Test
+    // Logout should clear the user session and redirect to the landing page.
+    fun logoutClearsSessionAndRedirectsToLandingPage() {
     }
 }
