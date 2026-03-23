@@ -94,7 +94,39 @@ class AuthRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Registration should fail when the user already exists.
-    fun registerRejectsDuplicateUser() {
+    fun registerRejectsDuplicateUser() = testApplication {
+        configureApp()
+
+        val firstResponse = client.post("/register") {
+            contentType(ContentType.Application.FormUrlEncoded)
+            setBody(
+                listOf(
+                    "email" to "student@example.com",
+                    "password" to "Password123!",
+                    "confirmPassword" to "Password123!",
+                    "firstName" to "Student",
+                    "lastName" to "Alex"
+                ).formUrlEncode()
+            )
+        }
+        assertEquals(HttpStatusCode.Found, firstResponse.status)
+        assertEquals("/login", firstResponse.headers[HttpHeaders.Location])
+
+        val secondResponse = client.post("/register") {
+            contentType(ContentType.Application.FormUrlEncoded)
+            setBody(
+                listOf(
+                    "email" to "student@example.com",
+                    "password" to "Password123!",
+                    "confirmPassword" to "Password123!",
+                    "firstName" to "Student",
+                    "lastName" to "Alex"
+                ).formUrlEncode()
+            )
+        }
+
+        assertEquals(HttpStatusCode.OK, secondResponse.status)
+        assertEquals(true, secondResponse.bodyAsText().contains("User already exists"))
     }
 
     @Test
