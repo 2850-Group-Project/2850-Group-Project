@@ -1,6 +1,7 @@
 package com.flightbooking
 
 import com.flightbooking.tables.AirportTable
+import com.flightbooking.tables.BookingTable
 import com.flightbooking.tables.FareClassTable
 import com.flightbooking.tables.FlightFareTable
 import com.flightbooking.tables.FlightTable
@@ -13,7 +14,9 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.parameters
 import io.ktor.server.testing.testApplication
+import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -58,7 +61,48 @@ class StaffBookingsRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Staff should be able to update a booking status successfully.
-    fun updateBookingStatusRedirectsWithSuccessMessage() {
+    fun updateBookingStatusRedirectsWithSuccessMessage() = testApplication {
+        configureApp()
+        val client = createClient {
+            followRedirects = false
+            install(HttpCookies)
+        }
+        client.get("/__health")
+
+        val originAirportId = seedAirport("LHR", "London Heathrow")
+        val destinationAirportId = seedAirport("DXB", "Dubai International")
+        val flightId = seedFlight(originAirportId, destinationAirportId)
+        val fareClassId = seedFareClass()
+        seedFlightFare(flightId, fareClassId)
+        seedUser("passenger@example.com", "Pat", "Smith")
+
+        client.registerStaff()
+        val loginResponse = client.loginStaff()
+        assertEquals(HttpStatusCode.Found, loginResponse.status)
+
+        val createResponse = client.submitForm(
+            url = "/staff/bookings/create",
+            formParameters = parameters {
+                append("passengerEmail", "passenger@example.com")
+                append("passengerFirstName", "Pat")
+                append("passengerLastName", "Smith")
+                append("flightId", flightId.toString())
+                append("bookingStatus", "pending")
+            }
+        )
+        assertEquals(HttpStatusCode.Found, createResponse.status)
+
+        val bookingId = latestBookingId()
+        val response = client.submitForm(
+            url = "/staff/bookings/update",
+            formParameters = parameters {
+                append("bookingId", bookingId.toString())
+                append("bookingStatus", "confirmed")
+            }
+        )
+
+        assertEquals(HttpStatusCode.Found, response.status)
+        assertEquals("/staff/bookings", response.headers[HttpHeaders.Location])
     }
 
     @Test
@@ -172,5 +216,14 @@ class StaffBookingsRoutesTest : IntegrationTestSupport() {
             it[createdAt] = "2026-04-01T00:00:00Z"
             it[accountStatus] = "active"
         }.resultedValues!!.first()[UserTable.id]
+    }
+
+    // Fetch the most recently created booking id for follow-up update assertions.
+    private fun latestBookingId(): Int = transaction {
+        BookingTable
+            .selectAll()
+            .orderBy(BookingTable.id, SortOrder.DESC)
+            .limit(1)
+            .first()[BookingTable.id]
     }
 }
