@@ -131,7 +131,35 @@ class AuthRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Login should fail when the credentials are invalid.
-    fun loginRejectsInvalidCredentials() {
+    fun loginRejectsInvalidCredentials() = testApplication {
+        configureApp()
+
+        val registerResponse = client.post("/register") {
+            contentType(ContentType.Application.FormUrlEncoded)
+            setBody(
+                listOf(
+                    "email" to "student@example.com",
+                    "password" to "Password123!",
+                    "confirmPassword" to "Password123!",
+                    "firstName" to "Stu",
+                    "lastName" to "Dent"
+                ).formUrlEncode()
+            )
+        }
+        assertEquals(HttpStatusCode.Found, registerResponse.status)
+
+        val response = client.post("/login") {
+            contentType(ContentType.Application.FormUrlEncoded)
+            setBody(
+                listOf(
+                    "email" to "student@example.com",
+                    "password" to "WrongPass123!"
+                ).formUrlEncode()
+            )
+        }
+
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(true, response.bodyAsText().contains("Invalid credentials"))
     }
 
     @Test
