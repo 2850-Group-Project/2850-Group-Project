@@ -48,8 +48,8 @@ class AuthRoutesTest : IntegrationTestSupport() {
                     "email" to "student@example.com",
                     "password" to "Password123!",
                     "confirmPassword" to "Password123!",
-                    "firstName" to "Stu",
-                    "lastName" to "Dent"
+                    "firstName" to "Student",
+                    "lastName" to "Alex"
                 ).formUrlEncode()
             )
         }
@@ -72,7 +72,24 @@ class AuthRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Registration should fail when the passwords do not match.
-    fun registerRejectsPasswordMismatch() {
+    fun registerRejectsPasswordMismatch() = testApplication {
+        configureApp()
+
+        val response = client.post("/register") {
+            contentType(ContentType.Application.FormUrlEncoded)
+            setBody(
+                listOf(
+                    "email" to "student@example.com",
+                    "password" to "Password123!",
+                    "confirmPassword" to "Mismatch123!",
+                    "firstName" to "Student",
+                    "lastName" to "Alex"
+                ).formUrlEncode()
+            )
+        }
+
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(true, response.bodyAsText().contains("Passwords do not match"))
     }
 
     @Test
