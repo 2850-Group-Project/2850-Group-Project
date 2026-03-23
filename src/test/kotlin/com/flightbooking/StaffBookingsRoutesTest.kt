@@ -162,7 +162,66 @@ class StaffBookingsRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Reassigning a booking to a different flight should handle seat state correctly.
-    fun reassignBookingFlightHandlesSeatCorrectly() {
+    fun reassignBookingFlightHandlesSeatCorrectly() = testApplication {
+        configureApp()
+        val client = createClient {
+            followRedirects = false
+            install(HttpCookies)
+        }
+        client.get("/__health")
+
+        val originAirportId = seedAirport("LHR", "London Heathrow")
+        val destinationAirportId = seedAirport("DXB", "Dubai International")
+        val originalFlightId = seedFlight(originAirportId, destinationAirportId)
+        val newFlightId = seedFlight(destinationAirportId, originAirportId)
+        val fareClassId = seedFareClass()
+        seedFlightFare(originalFlightId, fareClassId)
+        seedFlightFare(newFlightId, fareClassId)
+        seedUser("passenger@example.com", "Pat", "Smith")
+        val originalSeatId = seedSeat(originalFlightId, "1A")
+
+        client.registerStaff()
+        val loginResponse = client.loginStaff()
+        assertEquals(HttpStatusCode.Found, loginResponse.status)
+
+        val createResponse = client.submitForm(
+            url = "/staff/bookings/create",
+            formParameters = parameters {
+                append("passengerEmail", "passenger@example.com")
+                append("passengerFirstName", "Pat")
+                append("passengerLastName", "Smith")
+                append("flightId", originalFlightId.toString())
+                append("bookingStatus", "pending")
+            }
+        )
+        assertEquals(HttpStatusCode.Found, createResponse.status)
+
+        val bookingId = latestBookingId()
+        val assignSeatResponse = client.submitForm(
+            url = "/staff/bookings/update",
+            formParameters = parameters {
+                append("bookingId", bookingId.toString())
+                append("bookingStatus", "confirmed")
+                append("flightId", originalFlightId.toString())
+                append("seatId", originalSeatId.toString())
+            }
+        )
+        assertEquals(HttpStatusCode.Found, assignSeatResponse.status)
+
+        val response = client.submitForm(
+            url = "/staff/bookings/update",
+            formParameters = parameters {
+                append("bookingId", bookingId.toString())
+                append("bookingStatus", "confirmed")
+                append("flightId", newFlightId.toString())
+            }
+        )
+
+        assertEquals(HttpStatusCode.Found, response.status)
+        assertEquals("/staff/bookings", response.headers[HttpHeaders.Location])
+        assertEquals(newFlightId, segmentFlightIdForBooking(bookingId))
+        assertEquals("available", seatStatus(originalSeatId))
+        assertEquals(null, assignedSeatIdForBooking(bookingId))
     }
 
     // Submit a valid staff registration form for staff bookings tests.
@@ -303,5 +362,21 @@ class StaffBookingsRoutesTest : IntegrationTestSupport() {
             .limit(1)
             .firstOrNull()
             ?.get(SeatAssignmentTable.seatId)
+    }
+
+    // Read the current flight id from the booking's first segment.
+    private fun segmentFlightIdForBooking(bookingId: Int): Int = transaction {
+        BookingSegmentTable
+            .select { BookingSegmentTable.bookingId eq bookingId }
+            .limit(1)
+            .first()[BookingSegmentTable.flightId]
+    }
+
+    // Read the current seat status after reassignment operations.
+    private fun seatStatus(seatId: Int): String = transaction {
+        SeatTable
+            .select { SeatTable.id eq seatId }
+            .limit(1)
+            .first()[SeatTable.status]
     }
 }
