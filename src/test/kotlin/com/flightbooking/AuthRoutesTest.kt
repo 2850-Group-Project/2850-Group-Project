@@ -27,7 +27,12 @@ class AuthRoutesTest : IntegrationTestSupport() {
 
     @Test
     // The login page should load successfully.
-    fun loginPageLoads() {
+    fun loginPageLoads() = testApplication {
+        configureApp()
+
+        val response = client.get("/login")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(true, response.bodyAsText().contains("Login"))
     }
 
     @Test
