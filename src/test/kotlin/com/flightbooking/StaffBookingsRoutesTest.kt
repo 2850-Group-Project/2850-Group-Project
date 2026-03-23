@@ -2,9 +2,12 @@ package com.flightbooking
 
 import com.flightbooking.tables.AirportTable
 import com.flightbooking.tables.BookingTable
+import com.flightbooking.tables.BookingSegmentTable
 import com.flightbooking.tables.FareClassTable
 import com.flightbooking.tables.FlightFareTable
 import com.flightbooking.tables.FlightTable
+import com.flightbooking.tables.SeatAssignmentTable
+import com.flightbooking.tables.SeatTable
 import com.flightbooking.tables.UserTable
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
@@ -15,7 +18,9 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.parameters
 import io.ktor.server.testing.testApplication
 import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.Test
@@ -107,7 +112,52 @@ class StaffBookingsRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Staff should be able to change the seat assignment for a booking.
-    fun changeSeatAssignmentRedirectsWithSuccessMessage() {
+    fun changeSeatAssignmentRedirectsWithSuccessMessage() = testApplication {
+        configureApp()
+        val client = createClient {
+            followRedirects = false
+            install(HttpCookies)
+        }
+        client.get("/__health")
+
+        val originAirportId = seedAirport("LHR", "London Heathrow")
+        val destinationAirportId = seedAirport("DXB", "Dubai International")
+        val flightId = seedFlight(originAirportId, destinationAirportId)
+        val fareClassId = seedFareClass()
+        seedFlightFare(flightId, fareClassId)
+        seedUser("passenger@example.com", "Pat", "Smith")
+        val seatId = seedSeat(flightId, "1A")
+
+        client.registerStaff()
+        val loginResponse = client.loginStaff()
+        assertEquals(HttpStatusCode.Found, loginResponse.status)
+
+        val createResponse = client.submitForm(
+            url = "/staff/bookings/create",
+            formParameters = parameters {
+                append("passengerEmail", "passenger@example.com")
+                append("passengerFirstName", "Pat")
+                append("passengerLastName", "Smith")
+                append("flightId", flightId.toString())
+                append("bookingStatus", "pending")
+            }
+        )
+        assertEquals(HttpStatusCode.Found, createResponse.status)
+
+        val bookingId = latestBookingId()
+        val response = client.submitForm(
+            url = "/staff/bookings/update",
+            formParameters = parameters {
+                append("bookingId", bookingId.toString())
+                append("bookingStatus", "confirmed")
+                append("flightId", flightId.toString())
+                append("seatId", seatId.toString())
+            }
+        )
+
+        assertEquals(HttpStatusCode.Found, response.status)
+        assertEquals("/staff/bookings", response.headers[HttpHeaders.Location])
+        assertEquals(seatId, assignedSeatIdForBooking(bookingId))
     }
 
     @Test
@@ -218,6 +268,20 @@ class StaffBookingsRoutesTest : IntegrationTestSupport() {
         }.resultedValues!!.first()[UserTable.id]
     }
 
+    // Insert an available seat row for seat-assignment booking tests.
+    private fun seedSeat(flightId: Int, seatCode: String): Int = transaction {
+        SeatTable.insert {
+            it[SeatTable.flightId] = flightId
+            it[SeatTable.seatCode] = seatCode
+            it[cabinClass] = null
+            it[position] = null
+            it[extraLegroom] = 0
+            it[exitRow] = 0
+            it[reducedMobility] = 0
+            it[status] = "available"
+        }.resultedValues!!.first()[SeatTable.id]
+    }
+
     // Fetch the most recently created booking id for follow-up update assertions.
     private fun latestBookingId(): Int = transaction {
         BookingTable
@@ -225,5 +289,19 @@ class StaffBookingsRoutesTest : IntegrationTestSupport() {
             .orderBy(BookingTable.id, SortOrder.DESC)
             .limit(1)
             .first()[BookingTable.id]
+    }
+
+    // Read the seat currently assigned to the booking's first segment.
+    private fun assignedSeatIdForBooking(bookingId: Int): Int? = transaction {
+        val segmentId = BookingSegmentTable
+            .select { BookingSegmentTable.bookingId eq bookingId }
+            .limit(1)
+            .first()[BookingSegmentTable.id]
+
+        SeatAssignmentTable
+            .select { SeatAssignmentTable.bookingSegmentId eq segmentId }
+            .limit(1)
+            .firstOrNull()
+            ?.get(SeatAssignmentTable.seatId)
     }
 }
