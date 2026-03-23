@@ -1,5 +1,7 @@
 package com.flightbooking
 
+import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -15,7 +17,12 @@ import kotlin.test.assertNotNull
 class AuthRoutesTest : IntegrationTestSupport() {
     @Test
     // The register page should load successfully.
-    fun registerPageLoads() {
+    fun registerPageLoads() = testApplication {
+        configureApp()
+
+        val response = client.get("/register")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(true, response.bodyAsText().contains("Create Account"))
     }
 
     @Test
