@@ -1,5 +1,6 @@
 package com.flightbooking
 
+import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.client.request.post
@@ -141,8 +142,8 @@ class AuthRoutesTest : IntegrationTestSupport() {
                     "email" to "student@example.com",
                     "password" to "Password123!",
                     "confirmPassword" to "Password123!",
-                    "firstName" to "Stu",
-                    "lastName" to "Dent"
+                    "firstName" to "Student",
+                    "lastName" to "Alex"
                 ).formUrlEncode()
             )
         }
@@ -164,6 +165,45 @@ class AuthRoutesTest : IntegrationTestSupport() {
 
     @Test
     // Logout should clear the user session and redirect to the landing page.
-    fun logoutClearsSessionAndRedirectsToLandingPage() {
+    fun logoutClearsSessionAndRedirectsToLandingPage() = testApplication {
+        configureApp()
+        val client = createClient {
+            followRedirects = false
+            install(HttpCookies)
+        }
+
+        val registerResponse = client.post("/register") {
+            contentType(ContentType.Application.FormUrlEncoded)
+            setBody(
+                listOf(
+                    "email" to "student@example.com",
+                    "password" to "Password123!",
+                    "confirmPassword" to "Password123!",
+                    "firstName" to "Student",
+                    "lastName" to "Alex"
+                ).formUrlEncode()
+            )
+        }
+        assertEquals(HttpStatusCode.Found, registerResponse.status)
+
+        val loginResponse = client.post("/login") {
+            contentType(ContentType.Application.FormUrlEncoded)
+            setBody(
+                listOf(
+                    "email" to "student@example.com",
+                    "password" to "Password123!"
+                ).formUrlEncode()
+            )
+        }
+        assertEquals(HttpStatusCode.Found, loginResponse.status)
+        assertEquals("/home", loginResponse.headers[HttpHeaders.Location])
+
+        val logoutResponse = client.get("/logout")
+        assertEquals(HttpStatusCode.Found, logoutResponse.status)
+        assertEquals("/", logoutResponse.headers[HttpHeaders.Location])
+
+        val homeResponse = client.get("/home")
+        assertEquals(HttpStatusCode.Found, homeResponse.status)
+        assertEquals("/login", homeResponse.headers[HttpHeaders.Location])
     }
 }
