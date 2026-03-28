@@ -83,6 +83,6 @@ fun Route.bookingRoutes() {
         val newBookingSession = call.sessions.get<BookingSession>()
         println(newBookingSession)
 
-        call.respondRedirect("/flights/seat_selection")
+        call.respondRedirect("/flights/seats")
     }
 }

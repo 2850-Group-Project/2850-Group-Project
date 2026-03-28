@@ -8,6 +8,7 @@ import com.flightbooking.routes.staffPagesRoutes
 import com.flightbooking.routes.staffNotificationsRoutes
 import com.flightbooking.routes.pagesRoutes
 import com.flightbooking.routes.staffBookingsRoutes
+import com.flightbooking.routes.seatSelectionRoutes
 import com.flightbooking.routes.flightRoutes
 import com.flightbooking.routes.changeRequestRoutes
 import com.flightbooking.routes.bookingRoutes
@@ -106,7 +107,8 @@ private fun Application.configureServer() {
             cookie.path = "/"
             cookie.httpOnly = true
         }
-        cookie<BookingSession>("BOOKING_SESSION") {
+        
+        cookie<BookingSession>("BOOKING_SESSION", storage = SessionStorageMemory()) {
             cookie.path = "/"
             cookie.httpOnly = true
         }
@@ -161,5 +163,6 @@ private fun Application.registerRoutes() {
         flightRoutes()
         bookingRoutes()
         changeRequestRoutes()
+        seatSelectionRoutes()
     }
 }
