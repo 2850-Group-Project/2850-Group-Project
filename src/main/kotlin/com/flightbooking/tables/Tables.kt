@@ -1,7 +1,20 @@
 package com.flightbooking.tables
 
 import org.jetbrains.exposed.sql.Table
-import com.flightbooking.constants.*
+import com.flightbooking.constants.IATA_CODE_LENGTH
+import com.flightbooking.constants.STANDARD_FIELD_LENGTH
+import com.flightbooking.constants.SHORT_FIELD_LENGTH
+import com.flightbooking.constants.DEFAULT_CARRY_ON_WEIGHT_ALLOWED
+import com.flightbooking.constants.CLASS_CODE_LENGTH
+import com.flightbooking.constants.CURRENCY_LENGTH
+import com.flightbooking.constants.DOB_LENGTH
+import com.flightbooking.constants.PASSENGER_TITLE_LENGTH
+import com.flightbooking.constants.GENDER_LENGTH
+import com.flightbooking.constants.SHORTEST_FIELD_LENGTH
+import com.flightbooking.constants.DOCUMENT_NUMBER_LENGTH
+import com.flightbooking.constants.DOCUMENT_COUNTRY_LENGTH
+import com.flightbooking.constants.DOCUMENT_EXPIRY_LENGTH
+import com.flightbooking.constants.SHORTER_FIELD_LENGTH
 
 /**
  * Exposed table definition for the `airport` table.
@@ -235,6 +248,7 @@ object NotificationTable : Table("notification") {
 /**
  * Exposed table definition for the `change_request` table.
  */
+
 object ChangeRequestTable : Table("change_request") {
     val id = integer("change_request_id").autoIncrement()
     override val primaryKey = PrimaryKey(id)
@@ -248,8 +262,8 @@ object ChangeRequestTable : Table("change_request") {
     val requestedSeatId = integer("requested_seat_id").nullable()
 
     val reason = text("reason").nullable()
-    val status = varchar("status", 32).default("pending") // pending/approved/rejected/cancelled
+    val status = varchar("status", SHORT_FIELD_LENGTH).default("pending") // pending/approved/rejected/cancelled
 
-    val createdAt = varchar("created_at", 64).nullable()
-    val updatedAt = varchar("updated_at", 64).nullable()
+    val createdAt = varchar("created_at", STANDARD_FIELD_LENGTH).nullable()
+    val updatedAt = varchar("updated_at", STANDARD_FIELD_LENGTH).nullable()
 }
