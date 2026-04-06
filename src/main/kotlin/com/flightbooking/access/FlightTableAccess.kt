@@ -10,7 +10,7 @@ import com.flightbooking.tables.AirportTable
 import com.flightbooking.tables.FlightFareTable
 import com.flightbooking.tables.FareClassTable
 
-import com.flightbooking.constants.*
+import com.flightbooking.constants.DAYS_BEFORE_AND_AFTER_TO_SHOW
 
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -33,6 +33,8 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.Duration
+
+const val HOURS_DENOMINATOR : Int = 60
 
 /**
  * Provides database access operations for the [FlightTable].
@@ -117,8 +119,8 @@ class FlightTableAccess {
 
                     val duration = if (dep != null && arr != null) {
                         val mins = Duration.between(dep, arr).toMinutes()
-                        val hours = mins / 60
-                        val remaining = mins % 60
+                        val hours = mins / HOURS_DENOMINATOR
+                        val remaining = mins % HOURS_DENOMINATOR
                         if (remaining == 0L) "${hours}h" else "${hours}h ${remaining}m"
                     } else "N/A"
 
